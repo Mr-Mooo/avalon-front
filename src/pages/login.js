@@ -2,13 +2,14 @@ import React from "react";
 import { Form, Input, Button, Checkbox, Row, Col, notification } from "antd";
 
 import "antd/dist/antd.css";
-import "../index.css";
+import "./login.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loginApi } from '../services/user';
 
 const Loginform = () => {
   const login = async options => {
+    console.log(options);
     const loginRes = await loginApi(options);
     if (loginRes) {
       notification.success({

@@ -25,28 +25,28 @@ class PicturesWall extends React.Component {
         name: "image.png",
         status: "done",
         url:
-          "https://images.unsplash.com/photo-1548247416-ec66f4900b2e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=663&q=80"
+          "../img/photo3.jpg"
       },
       {
         uid: "-2",
         name: "image.png",
         status: "done",
         url:
-          "https://images.unsplash.com/photo-1589201968286-dfb786c4f846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=676&q=80"
+          "../img/photo4.jpg"
       },
       {
         uid: "-3",
         name: "image.png",
         status: "done",
         url:
-          "https://images.unsplash.com/photo-1588971450634-cea736e3fab4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=658&q=80"
+          "../img/photo5.jpg"
       },
       {
         uid: "-4",
         name: "image.png",
         status: "done",
-        url:
-          "https://images.unsplash.com/photo-1588823420733-f5871965b18f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+        path:
+          "../img/photo6.jpg"
       },
       {
         uid: "-5",

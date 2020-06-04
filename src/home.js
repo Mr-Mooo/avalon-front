@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Layout, Menu, BackTop, Row, Col } from "antd";
+import { Layout, Menu, BackTop, Row, Col, Affix } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import SearchNav from "./components/search";
 import TaskHeader from "./components/taskheader";
@@ -12,7 +12,7 @@ import MailHeader from "./components/mail-header";
 import MainContent from "./components/main-content";
 import AllHotAuthors from "./components/all-hot-authors/all-hot-authors";
 import AllTopTopics from "./components/all-top-topics/all-top-topics";
-import Login from "./components/login";
+import Login from "./pages/login";
 import Profile from "./components/profile-center/profile";
 import SignUp from "./components/signup/signup";
 import Messagetab from "./components/message/message";
@@ -35,6 +35,7 @@ const { SubMenu } = Menu;
 
 export default function Home() {
   const pathName = window.location.pathname;
+  const bottom = 5;
   return (
     <Router>
       <Layout>
@@ -68,10 +69,12 @@ export default function Home() {
           <Route path="/recharge" component={Recharge} exact />
           <Route path="/forgot-password" component={ForgotPassword} exact />
         </Content>
+        <Affix offsetBottom={bottom}>
         <Footer className="align-center">
           Footer content goes here...
           <BackTop />
         </Footer>
+        </Affix>
       </Layout>
     </Router>
   );

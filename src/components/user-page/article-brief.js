@@ -28,13 +28,13 @@ export default function ArticleBrief() {
             className="margin-author-img"
             shape="square"
             size={64}
-            src="https://images.unsplash.com/photo-1480796927426-f609979314bd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+            src="../img/photo7.jpg"
           />
           <Avatar
             className="margin-author-img"
             shape="square"
             size={64}
-            src="https://images.unsplash.com/photo-1492571350019-22de08371fd3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2149&q=80"
+            path="../img/photp8.jpg"
           />
           <br />
           <Row>

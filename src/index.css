@@ -10,18 +10,12 @@
 
 .login-card {
   max-width: 800px;
-  margin-top: 10%;
+
+  /* margin-top: 10%; */
   margin: auto;
   background: #fff;
 }
-.login-panel-bg {
-  background: url("https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1371&q=80");
-  background-size: cover;
-}
-.login-background {
-  padding-top: 10%;
-  background: #346990;
-}
+
 
 body {
   height: 100%;
@@ -214,7 +208,7 @@ div#root {
 }
 
 .ant-layout-header{
-  background: url("https://images.unsplash.com/photo-1590688129541-4bbd91f54e5a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+  background: url("./img/photo2.jpeg");
   height: 100%;
   margin-bottom: 20px;
 }
