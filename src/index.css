@@ -1,3 +1,7 @@
+.ant-layout {
+  min-height: 100%;
+}
+
 .login-form {
   max-width: 500px;
 }
@@ -15,7 +19,6 @@
   margin: auto;
   background: #fff;
 }
-
 
 body {
   height: 100%;
@@ -192,47 +195,44 @@ div#root {
   margin: auto;
 }
 
-.img-caption{
+.img-caption {
   position: absolute;
   bottom: 40px;
   right: 0px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 1rem;
-  font-size:0.9em;
-
+  font-size: 0.9em;
 }
-.ant-menu{
+.ant-menu {
   background: none;
   float: right;
   color: #ffffff;
 }
 
-.ant-layout-header{
+.ant-layout-header {
   background: url("./img/photo2.jpeg");
   height: 100%;
   margin-bottom: 20px;
 }
 
-.ant-input-search{
+.ant-input-search {
   padding-top: 15px;
 }
-.ant-menu-horizontal
-{
-  border-bottom:0px solid;
+.ant-menu-horizontal {
+  border-bottom: 0px solid;
 }
-.ant-menu-item-selected
-{
-  border-bottom:0px solid;
+.ant-menu-item-selected {
+  border-bottom: 0px solid;
 }
-.ant-menu-item:hover{
-  border-bottom:0px solid;
+.ant-menu-item:hover {
+  border-bottom: 0px solid;
 }
-.header-nav{
+.header-nav {
   padding-top: 2%;
-    padding-bottom: 2%;
+  padding-bottom: 2%;
 }
-.ant-menu-submenu-title{
-  font-size:1.5rem;
-  padding:0 10px;
-  background:#1890ff; 
+.ant-menu-submenu-title {
+  font-size: 1.5rem;
+  padding: 0 10px;
+  background: #1890ff;
 }
