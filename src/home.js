@@ -1,26 +1,26 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Layout, Menu, BackTop, Row, Col, Affix } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+// import { HomeOutlined } from "@ant-design/icons";
 import SearchNav from "./components/search";
-import TaskHeader from "./components/taskheader";
-import ProfileHeader from "./components/profile-popover";
-import AddNewArticle from "./components/add-article";
-import MailHeader from "./components/mail-header";
+// import TaskHeader from "./components/taskheader";
+// import ProfileHeader from "./components/profile-popover";
+// import AddNewArticle from "./components/add-article";
+// import MailHeader from "./components/mail-header";
 
 import MainContent from "./components/main-content";
 import AllHotAuthors from "./components/all-hot-authors/all-hot-authors";
 import AllTopTopics from "./components/all-top-topics/all-top-topics";
 import Login from "./pages/login";
 import Profile from "./components/profile-center/profile";
-import SignUp from "./components/signup/signup";
+import SignUp from "./pages/signup/signup";
 import Messagetab from "./components/message/message";
 import TopicCenter from "./components/topic-center/topic-center";
 import UserPage from "./components/user-page/user-page";
 import Recharge from "./components/recharge/recharge";
 import ForgotPassword from "./components/forgot-password";
-import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
+// import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 
 import "antd/dist/antd.css";
 import "./index.css";
@@ -29,7 +29,7 @@ import TopMenu from "./components/topmenu/topmenu";
 
 
 const { Header, Footer, Content } = Layout;
-const { SubMenu } = Menu;
+// const { SubMenu } = Menu;
 
 
 
@@ -40,7 +40,7 @@ export default function Home() {
     <Router>
       <Layout>
         {
-          pathName !== '/login' && (
+          (pathName !== '/' && pathName !== '/sign-up' && pathName !== '/forgot-password') && (
             <Header>
             <div className="mainwidth header-nav">
             <Row>
@@ -57,10 +57,10 @@ export default function Home() {
         }
 
         <Content>
-          <Route path="/" component={MainContent} exact />
+          <Route path="/" component={Login} exact />
+          <Route path="/dashboard" component={MainContent} exact />
           <Route path="/all-hot-authors" component={AllHotAuthors} exact />
           <Route path="/all-top-topics" component={AllTopTopics} exact />
-          <Route path="/login" component={Login} replace />
           <Route path="/profile" component={Profile} exact />
           <Route path="/sign-up" component={SignUp} exact />
           <Route path="/message" component={Messagetab} exact />

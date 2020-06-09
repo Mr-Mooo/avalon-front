@@ -6,7 +6,7 @@ import { config, myFetch } from '../utils';
 // 登录
 export const loginApi = async options => {
   const res = await myFetch(
-    `${config.base_url}/login`,
+    `${config.base_url}/user/login`,
     // `https://goant-dev.rootant.org/ucenter/api/sme/login`,
     options,
     'POST',
