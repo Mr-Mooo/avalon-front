@@ -4,23 +4,31 @@ import { Button, Dropdown, Menu, Modal } from "antd";
 import { FileOutlined, EditOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "../index.css";
-import AddArticleContent from "./addarticle-content";
-import AddImageContent from "./addimage-content";
+import AddArticleContent from "./Modal/addarticle-content";
+import AddImageContent from "./Modal/addimage-content";
 
 class Addarticle extends React.Component {
-  state = { visible: false };
+  state = {
+    // warranteeTable: [],
+    // bankActive: 'ccb',
+    // bankList: [], //银行列表
+    // visible: false,
+    modifyVisible: false,
+    // modalVisble: false,
+  };
 
   showModal = () => {
+    console.log(11111111)
     this.setState({
       visible: true
     });
   };
 
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
+  handleOk = async (content, checked) => {
+    console.log(content, checked);
+    // this.setState({
+    //   visible: false
+    // });
   };
 
   handleCancel = e => {
@@ -31,19 +39,31 @@ class Addarticle extends React.Component {
   };
 
   render() {
+    const { modifyVisible} = this.state;
     return (
       <div>
-        <Button type="link" onClick={this.showModal}>
+        <Button type="link"
+        onClick={() => {
+                this.setState({
+                  modifyVisible: true,
+                });
+              }}>
           <FileOutlined /> 文章投稿
         </Button>
-        <Modal
+        <AddArticleContent
           title="文章投稿"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          visible={modifyVisible}
+          onOk={({ content, resonsItem: checked }) => {
+            this.handleOk(content, checked);
+          }}
+          onCancel={() => {
+            this.setState({
+              modifyVisible: false,
+            });
+          }}
         >
-          <AddArticleContent />
-        </Modal>
+          {/* <AddArticleContent /> */}
+        </AddArticleContent>
       </div>
     );
   }

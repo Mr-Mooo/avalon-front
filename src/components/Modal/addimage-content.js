@@ -1,7 +1,7 @@
 import React from "react";
 
 import "antd/dist/antd.css";
-import "../index.css";
+import "../../index.css";
 import { Upload, Modal, Input, Tag, Radio } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 

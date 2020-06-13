@@ -12,7 +12,7 @@ import HomeShoppingTab from "./home-shopping-tab";
 
 const { Content } = Layout;
 
-const { useBreakpoint } = Grid;
+// const { useBreakpoint } = Grid;
 
 export default function MainContent() {
   return (
