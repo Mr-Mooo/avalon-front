@@ -140,16 +140,19 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
             duration: 2,
           });
         }
-        if (promise.code === 1006) {
+        if (promise.code === 4001) {
           sessionStorage.clear();
-          // history.push('/login'); 
+          // this.props.history.push('/login'); 
+          
+          window.location.replace('http://localhost:3000/login');
           // const urlParams = new URL(window.location.href);
           // console.log(urlParams, 'urlParams')
         }
       }
-      if (res.statusCode === 401) {
+      if (res.statusCode === 4001) {
         sessionStorage.clear();
-        // history.push('/login');
+        // this.props.history.push('/dashboard');
+        window.location.replace('http://localhost:3000/dashboard');
       }
       return false;
     }
@@ -164,7 +167,8 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
         message.error(e.response.body.msg, 2);
         // new LightTip().error(e.response.body.msg, 2);
       }
-      // history.push('/login');
+      // this.props.history.push('/dashboard');
+      window.location.replace('http://localhost:3000/dashboard');
     } else {
       // console.log(e.response.body, 'e.response.body.msg')
       errTip(e, url);

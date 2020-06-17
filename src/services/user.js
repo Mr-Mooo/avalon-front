@@ -17,3 +17,19 @@ export const loginApi = async options => {
   }
   return false;
 };
+
+// 登出
+export const logoutApi = async options => {
+  const res = await myFetch(
+    `${config.base_url}/user/logout`,
+    // `https://goant-dev.rootant.org/ucenter/api/sme/login`,
+    options,
+    'POST',
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res.data;
+  }
+  return false;
+};
+

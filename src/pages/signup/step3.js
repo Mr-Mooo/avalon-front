@@ -10,7 +10,7 @@ export default function Step3() {
     <Card className="align-center">
       <CheckCircleOutlined style={{ fontSize: 30 }} />
       <h1>注册成功</h1>
-      <Link to="/home">
+      <Link to="/">
         <Button type="primary">确定并登陆</Button>
       </Link>
     </Card>

@@ -8,8 +8,17 @@ import { BrowserRouter as Router, withRouter, Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import { loginApi } from '../services/user';
 import ForgotPassword from "../components/forgot-password";
-
+let i = 1
 class Login extends React.PureComponent {
+
+  componentWillMount() {
+    if(i === 1){
+      console.log(this.props)
+      // window.location.reload();
+      i++;
+    }
+    console.log('App-页面即将加载')
+  }
 // const Loginform = () => {
   // const login = async options => {
   //   console.log(options);
@@ -66,7 +75,9 @@ class Login extends React.PureComponent {
       //   type: 'global/getBankData',
       // });
       // this.getLoanSimpleDetailApi();
-      this.props.history.push('/dashboard');
+      // this.props.history.push('/dashboard');
+      
+      window.location.replace('http://localhost:3000/dashboard');
     }
   };
 
@@ -74,6 +85,13 @@ class Login extends React.PureComponent {
     console.log('Failed:', errorInfo);
   };
   render() {
+    const {
+      children,
+      location: { pathname },
+    } = this.props;
+
+    // window.location.reload();
+    // location.reload()
     return (
       
     <div className="login-card">
@@ -119,20 +137,17 @@ class Login extends React.PureComponent {
         </Form.Item>
         <Router>
           <Form.Item>
-            {/* <Link to="/" replace> */}
               <Button type="primary" htmlType="submit" block>
                 登陆
               </Button>
-            {/* </Link> */}
-            {/* <Link to="/sign-up" > */}
-              {/* <Button onClick={this.props.history.push('/sign-up')} className="margin-t" block> */}
               <Button onClick={() => {
-                this.props.history.push('/sign-up');
+                {/* this.props.history.push('/sign-up'); */}
+                
+                  window.location.replace('http://localhost:3000/sign-up');
                   }}
                   className="margin-t" block>
                 注册
               </Button>
-            {/* </Link> */}
             <br />
             <br />
               <a href={"/forgot-password"} className="margin-t">

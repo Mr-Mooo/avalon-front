@@ -36,6 +36,7 @@ const { Header, Footer, Content } = Layout;
 export default function Home() {
   const pathName = window.location.pathname;
   const bottom = 5;
+  console.log(1234567);
   return (
     <Router>
       <Layout>

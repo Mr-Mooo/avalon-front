@@ -23,35 +23,51 @@ const steps = [
   }
 ];
 
-class ProcessSteps extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      current: 0
-    };
+class Signup extends React.Component {
+  state = {
+    current: 0,
+  };
+  componentDidMount() {
+    
+    const { location } = this.props;
+    console.log(location)
   }
-
   next() {
     const current = this.state.current + 1;
+    console.log(current);
+    console.log(this.state);
+    console.log(this.props);
     this.setState({ current });
   }
 
   prev() {
     const current = this.state.current - 1;
+    console.log(current);
+    console.log(this.state);
+    console.log(this.props);
     this.setState({ current });
   }
 
   render() {
     const { current } = this.state;
     return (
+      <Card className="mainwidth">
       <div>
         <Steps current={current}>
           {steps.map(item => (
             <Step key={item.title} title={item.title} />
           ))}
-          <div className="steps-content">{steps[current].content}</div>
         </Steps>
+        
+        <div className="steps-content">{steps[current].content}</div>
+        
         <div className="steps-action">
+          
+          {current === 1 && (
+            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+              上一步
+            </Button>
+          )}
           {current < steps.length - 1 && (
             <Button type="primary" onClick={() => this.next()}>
               下一步
@@ -65,21 +81,11 @@ class ProcessSteps extends React.Component {
               完成
             </Button>
           )}
-          {current > 0 && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              上一步
-            </Button>
-          )}
         </div>
       </div>
+    </Card>
     );
   }
 }
 
-export default function Signup() {
-  return (
-    <Card className="mainwidth">
-      <ProcessSteps />
-    </Card>
-  );
-}
+export default Signup;

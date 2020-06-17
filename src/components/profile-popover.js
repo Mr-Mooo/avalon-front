@@ -1,14 +1,33 @@
 import React from "react";
 
-import { Button, Col, Row, Avatar, Popover, Divider, Progress } from "antd";
+import { Button, Col, Row, Avatar, Popover, Divider, Progress, notification } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "../index.css";
+import { logoutApi } from '../services/user';
 
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
-export default function ProfileHeader() {
-  const profilepop = (
+// export default function ProfileHeader() {
+
+  class ProfileHeader extends React.PureComponent {
+    onClick = async () => {
+      
+      // this.props.history.push('/');
+      const logoutRes = await logoutApi({});
+      if (logoutRes) {
+        notification.success({
+          message: '登出成功',
+          description: null,
+          duration: 2,
+        });
+      }
+      
+      window.location.replace('http://localhost:3000/');
+    }
+render(){
+  return (
+    <Popover content={(
     <div className="author-popover">
       {" "}
       <Avatar className="margin-bt-sm" size={64} icon={<UserOutlined />} />
@@ -48,18 +67,15 @@ export default function ProfileHeader() {
           充值中心
         </Button>
       </Link>
-      <Link to="/login" replace>
-        <Button size="small" type="primary" className="margin-sm">
+        <Button size="small" type="primary" onClick={this.onClick} className="margin-sm">
           退出登录
         </Button>
-      </Link>
     </div>
-  );
-
-  return (
-    <Popover content={profilepop}>
+  )}>
       {" "}
       <Avatar className="margin-bt-sm" size={32} icon={<UserOutlined />} />
     </Popover>
   );
 }
+  }
+export default withRouter(ProfileHeader);

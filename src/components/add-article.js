@@ -12,7 +12,7 @@ class Addarticle extends React.Component {
     // warranteeTable: [],
     // bankActive: 'ccb',
     // bankList: [], //银行列表
-    // visible: false,
+    visible: false,
     modifyVisible: false,
     // modalVisble: false,
   };

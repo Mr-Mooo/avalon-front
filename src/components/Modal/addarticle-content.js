@@ -3,8 +3,9 @@ import React, { PureComponent, Fragment } from 'react';
 
 import "antd/dist/antd.css";
 import "../../index.css";
-import { Form, Modal, Input, Select, Checkbox } from "antd";
+import { Form, Modal, Input, Select, Checkbox, message, notification } from "antd";
 import FormItem from 'antd/lib/form/FormItem';
+import { addContentApi } from '../../services/content';
 
 const { Option } = Select;
 
@@ -12,31 +13,76 @@ const { TextArea } = Input;
 
   // const dataForm = form.getFieldsValue();
 class AddArticleContent extends PureComponent {
-  constructor() {
-    super();
-  }
+  state = {
+    // warranteeTable: [],
+    // bankActive: 'ccb',
+    // bankList: [], //银行列表
+    visible: true,
+    // modalVisble: false,
+  };
  handleChange(value) {
   console.log(`selected ${value}`);
 }
  onChange(e) {
   console.log(`checked = ${e.target.checked}`);
 }
+
+onCancel = e =>{
+
+  this.setState({
+    visible: false
+  });
+}
 // handleSubmit(e) {
 //   console.log(`checked = ${e.target.checked}`);
 // }
 handleSubmit = async (e) => {
-  console.log('weqeqeqeqeqeq');
-  console.log(this.props);
-  // const fieldsValue = await this.props.form.validateFields();
-  // //fieldsValue即为表单内的值
-  // console.log("okHandle -> fieldsValue", fieldsValue)
-  
-};
+  const fieldsValue = await this.formRef.current.validateFields();
+  console.log(fieldsValue);
+  // return
+  message.loading('Loading...', 20, () => {
+    message.destroy();
+  });
+  const options = {
+    subject: fieldsValue.subject,
+    content: fieldsValue.content,
+    brief_introduction: fieldsValue.brief_introduction,
+    pid: 0,
+    type: "message",
+    tag_ids:[],
+  }
+  if(fieldsValue.tag1) {
+    options.tag_ids.push(Number(fieldsValue.tag1));
+  }
+  if(fieldsValue.tag2) {
+    options.tag_ids.push(Number(fieldsValue.tag2));
+  }
+  if(fieldsValue.tag3) {
+    options.tag_ids.push(Number(fieldsValue.tag3));
+  }
+  const addRes = await addContentApi(options);
+  message.destroy();
+  this.formRef.current.resetFields();
+  if (addRes) {
+    this.onCancel()
+    notification.success({
+      message: '发布成功',
+      description: null,
+      duration: 2,
+    });
+  }
+}
 
+
+onCancel=() => {
+  
+  this.formRef.current.resetFields();
+  this.props.onCancel();
+}
+formRef = React.createRef();
   render() {
     const { visible, type, onOk, onCancel, message, options } = this.props;
     
-    // const { getFieldDecorator, getFieldValue } = this.props.form;
     return (
       <Modal
         visible={visible}
@@ -44,73 +90,74 @@ handleSubmit = async (e) => {
           okText="提交"
           title="投稿"
           style={{ minWidth: 483 }}
-        onOk={this.handleSubmit}
-        
+          onOk={this.handleSubmit}
+          onCancel={this.onCancel}
           >
-      <Form className="mb-16"  className="margin-1" hideRequiredMark>
+      <Form className="mb-16"  
+        ref={this.formRef} className="margin-1" hideRequiredMark>
         <h4>文章标题</h4>
         <FormItem
-          name="title"
-        >
+          name="subject"
+          rules={[{ required: true, message: ' ' }]}>
         <Input placeholder="适当标题可增加阅读意向（16字内）" />
         </FormItem>
         <h4>文章简介</h4>
         <FormItem
-          name="content"
-        >
+          name="brief_introduction"
+          rules={[{ required: true, message: ' ' }]}>
         <Input placeholder="简介文章内容（32字内）" />
         </FormItem>
         <br />
         <br />
         <h4>正文</h4>
         <FormItem
-          name="content1"
-        >
+          name="content"
+          rules={[{ required: true, message: ' ' }]}>
         <TextArea rows={8} />
         </FormItem>
         <h4>内容限制</h4>
         
         <FormItem
-          name="content2"
-        >
+          name="tag1"
+          initialValue="1">
         <Select
-          initialValue="all"
+          defaultValue="1"
           style={{ width: 120 }}
           onChange={this.handleChange}
         >
-          <Option value="all">全年龄</Option>
-          <Option value="limit">限制内容</Option>
+          <Option value="1">全年龄</Option>
+          <Option value="2">限制内容</Option>
         </Select>
         </FormItem>
   
-        <h4>版权</h4>
+        <h4>创作属性</h4>
         <FormItem
-          name="content3"
-        >
+          name="tag2"
+          initialValue="3">
         <Select
-          initialValue="first"
+        defaultValue="3"
           style={{ width: 120 }}
           onChange={this.handleChange}
         >
-          <Option value="first">原创</Option>
-          <Option value="second">二创</Option>
+          <Option value="3">原创</Option>
+          <Option value="4">二创</Option>
         </Select>
         </FormItem>
   
-        <h4>类型</h4>
+        <h4>取向类型</h4>
         
         <FormItem
-          name="content4"
-        >
+          name="tag3"
+          initialValue="8">
         <Select
-          initialValue="none"
+        defaultValue="8"
           style={{ width: 120 }}
           onChange={this.handleChange}
         >
-          <Option value="bl">BL</Option>
-          <Option value="bg">BG</Option>
-          <Option value="gl">GL</Option>
-          <Option value="none">无取向</Option>
+          <Option value="5">BL</Option>
+          <Option value="6">BG</Option>
+          <Option value="7">GL</Option>
+          <Option value="8">无取向</Option>
         </Select>
         </FormItem>
   
