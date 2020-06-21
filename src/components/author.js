@@ -15,7 +15,7 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-export default function Author() {
+export default function Author(props) {
   const content = (
     <div className="author-popover">
       {" "}
@@ -53,6 +53,9 @@ export default function Author() {
       </Link>
     </div>
   );
+  const { contentData } = props;
+  console.log(contentData,
+    'contentData ...')
   return (
     <Card className="margin-1">
       <Row>
@@ -65,7 +68,7 @@ export default function Author() {
               icon={<UserOutlined />}
             />
           </Popover>
-          <br /> 作者昵称
+          <br /> {contentData && contentData.avl_user && contentData.avl_user.nick_name}
           <div className="icons-list">
             <HeartOutlined className="margin-sm" />
             <HeartOutlined className="margin-sm" />
@@ -76,14 +79,23 @@ export default function Author() {
           </Button>
         </Col>
         <Col span={20} className="align-left">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-          euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan
-          et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis
-          natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-          mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus
-          mollis orci, sed rhoncus pronin sapien nunc accuan eget.
+          {contentData && contentData.subject}
           <br />
-          <Avatar
+          {contentData && contentData.avl_attachments &&
+            contentData.avl_attachments.map((val) => {
+              console.log(val, 'val.path')
+              return (
+                <Avatar
+                  key={val.document_id}
+                  className="margin-author-img"
+                  shape="square"
+                  size={64}
+                  src={val.path}
+                />
+              );
+            })
+          }
+          {/* <Avatar
             className="margin-author-img"
             shape="square"
             size={64}
@@ -94,7 +106,7 @@ export default function Author() {
             shape="square"
             size={64}
             src="../img/photp8.jpg"
-          />
+          /> */}
           <br />
           <Row>
             <Tag>

@@ -10,6 +10,154 @@ import InfiniteScroll from "react-infinite-scroller";
 const fakeDataUrl =
   "https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo";
 
+const contentListData = [
+  {
+    "content_id": 6,
+    "subject": "de",
+    "content": "dew",
+    "tag_ids": null,
+    "pid": 0,
+    "type": "message",
+    "create_user": 2,
+    "like_number": null,
+    "collect_number": null,
+    "createdAt": "2020-06-13T15:18:55.000Z",
+    "updatedAt": "2020-06-13T15:18:55.000Z",
+    "deletedAt": null,
+    "avl_user": {
+      "user_id": 2,
+      "area": 86,
+      "mobile": "15618875452",
+      "email": "",
+      "nick_name": "Hou",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "status": true,
+      "avatar": "11223344",
+      "verify": false,
+      "is_18plus": true,
+      "coupon": 0,
+      "integral": 0,
+      "is_member": false,
+      "createdAt": "2020-06-04T14:23:40.000Z",
+      "updatedAt": "2020-06-10T05:49:55.000Z",
+      "deletedAt": null
+    },
+    "avl_attachments": [
+      {
+        "document_id": 1,
+        "content_id": "6",
+        "path": "123",
+        "createdAt": "2020-06-13T15:20:06.000Z",
+        "updatedAt": "2020-06-13T15:20:06.000Z",
+        "deletedAt": null
+      }
+    ]
+  },
+  {
+    "content_id": 7,
+    "subject": "rfr",
+    "content": "f",
+    "tag_ids": null,
+    "pid": 0,
+    "type": "message",
+    "create_user": 2,
+    "like_number": null,
+    "collect_number": null,
+    "createdAt": "2020-06-13T15:20:06.000Z",
+    "updatedAt": "2020-06-13T15:20:06.000Z",
+    "deletedAt": null,
+    "avl_user": {
+      "user_id": 2,
+      "area": 86,
+      "mobile": "15618875452",
+      "email": "",
+      "nick_name": "Hou",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "status": true,
+      "avatar": "11223344",
+      "verify": false,
+      "is_18plus": true,
+      "coupon": 0,
+      "integral": 0,
+      "is_member": false,
+      "createdAt": "2020-06-04T14:23:40.000Z",
+      "updatedAt": "2020-06-10T05:49:55.000Z",
+      "deletedAt": null
+    },
+    "avl_attachments": []
+  },
+  {
+    "content_id": 8,
+    "subject": "fyj",
+    "content": "jhk",
+    "tag_ids": [],
+    "pid": 0,
+    "type": "message",
+    "create_user": 2,
+    "like_number": null,
+    "collect_number": null,
+    "createdAt": "2020-06-13T15:22:13.000Z",
+    "updatedAt": "2020-06-13T15:22:13.000Z",
+    "deletedAt": null,
+    "avl_user": {
+      "user_id": 2,
+      "area": 86,
+      "mobile": "15618875452",
+      "email": "",
+      "nick_name": "Hou",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "status": true,
+      "avatar": "11223344",
+      "verify": false,
+      "is_18plus": true,
+      "coupon": 0,
+      "integral": 0,
+      "is_member": false,
+      "createdAt": "2020-06-04T14:23:40.000Z",
+      "updatedAt": "2020-06-10T05:49:55.000Z",
+      "deletedAt": null
+    },
+    "avl_attachments": []
+  },
+  {
+    "content_id": 9,
+    "subject": "123",
+    "content": "1234er",
+    "tag_ids": [
+      1,
+      3,
+      8
+    ],
+    "pid": 0,
+    "type": "message",
+    "create_user": 2,
+    "like_number": null,
+    "collect_number": null,
+    "createdAt": "2020-06-13T19:26:57.000Z",
+    "updatedAt": "2020-06-13T19:26:57.000Z",
+    "deletedAt": null,
+    "avl_user": {
+      "user_id": 2,
+      "area": 86,
+      "mobile": "15618875452",
+      "email": "",
+      "nick_name": "Hou",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "status": true,
+      "avatar": "11223344",
+      "verify": false,
+      "is_18plus": true,
+      "coupon": 0,
+      "integral": 0,
+      "is_member": false,
+      "createdAt": "2020-06-04T14:23:40.000Z",
+      "updatedAt": "2020-06-10T05:49:55.000Z",
+      "deletedAt": null
+    },
+    "avl_attachments": []
+  }
+];
+
 class InfiniteList extends React.Component {
   state = {
     data: [],
@@ -70,12 +218,16 @@ class InfiniteList extends React.Component {
           useWindow={false}
         >
           <List
-            dataSource={this.state.data}
-            renderItem={item => (
-              <List.Item key={item.id}>
-                <Author />
-              </List.Item>
-            )}
+            // dataSource={this.state.data}
+            dataSource={contentListData}
+            renderItem={item => {
+              // console.log(item, 'items');
+              return (
+                <List.Item key={item.id}>
+                  <Author contentData={item} />
+                </List.Item>
+              )
+            }}
           >
             {this.state.loading && this.state.hasMore && (
               <div className="demo-loading-container">
