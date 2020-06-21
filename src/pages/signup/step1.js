@@ -17,6 +17,9 @@ class Step1 extends React.PureComponent {
     const fieldsValue = await this.formRef.current.validateFields();
     console.log(fieldsValue);
     console.log(11111111);
+    const options = fieldsValue;
+    
+    sessionStorage.setItem('options', options);
     this.props.next()
   }
 formRef = React.createRef();
@@ -75,7 +78,16 @@ formRef = React.createRef();
           <Input placeholder="请输入6-16位密码" />
         </Form.Item>
   
-        <Form.Item name="agree">
+        <Form.Item
+        name="agree"
+                  valuePropName="checked"
+        rules={[
+                    {
+                      validator: (_, value) =>
+                        value ? Promise.resolve() : Promise.reject('Please consent to the agreement.'),
+                    },
+                  ]}
+          >
           <Checkbox>勾选表示我已同意平台合作协议</Checkbox>
         </Form.Item>
 
