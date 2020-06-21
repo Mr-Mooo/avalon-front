@@ -17,13 +17,14 @@ class Step1 extends React.PureComponent {
     const fieldsValue = await this.formRef.current.validateFields();
     console.log(fieldsValue);
     console.log(11111111);
+    this.props.next()
   }
 formRef = React.createRef();
   render(){
     console.log(this.props)
     return (
       <Card title="注册账号">
-      <Form {...layout} ref={this.formRef} onFinish={this.onSubmit}>
+      <Form {...layout} ref={this.formRef} onFinish={this.onSubmit} className="step1-wrap">
         <Form.Item
           name="mobile"
           label="手机号码"
@@ -47,7 +48,6 @@ formRef = React.createRef();
         >
           <Input placeholder="请输入图片中的数字" />
         </Form.Item> */}
-        <Form.Item>
         <Form.Item
           name="otp"
           label="短信验证码"
@@ -62,7 +62,6 @@ formRef = React.createRef();
         </Form.Item>
         
         <Button type="primary">获取验证码</Button>
-        </Form.Item>
         <Form.Item
           name="password"
           label="密码"
@@ -79,6 +78,13 @@ formRef = React.createRef();
         <Form.Item name="agree">
           <Checkbox>勾选表示我已同意平台合作协议</Checkbox>
         </Form.Item>
+
+        <Button type="primary" onClick={() => {
+          this.onSubmit()
+          
+        }}>
+          下一步
+        </Button>
       </Form>
       </Card>
     );

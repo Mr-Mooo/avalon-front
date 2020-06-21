@@ -1,6 +1,7 @@
 import React from "react";
 
 import "antd/dist/antd.css";
+import "./index.css";
 import { Steps, Button, message, Card } from "antd";
 import Step1 from "./step1";
 import Step2 from "./step2";
@@ -32,20 +33,14 @@ class Signup extends React.Component {
     const { location } = this.props;
     console.log(location)
   }
-  next() {
-    const current = this.state.current + 1;
-    console.log(current);
-    console.log(this.state);
-    console.log(this.props);
-    this.setState({ current });
+  next = () => {
+    const { current } = this.state;
+    this.setState({ current: current + 1 });
   }
 
-  prev() {
-    const current = this.state.current - 1;
-    console.log(current);
-    console.log(this.state);
-    console.log(this.props);
-    this.setState({ current });
+  prev = () => {
+    const { current } = this.state;
+    this.setState({ current: current - 1 });
   }
 
   render() {
@@ -59,9 +54,20 @@ class Signup extends React.Component {
           ))}
         </Steps>
         
-        <div className="steps-content">{steps[current].content}</div>
+        {/* <div className="steps-content">{steps[current].content}</div> */}
+        <div className="steps-content">
+          {
+            current === 0 && <Step1 next={this.next} />
+          }
+          {
+            current === 1 && <Step2 next={this.next} prev={this.prev} />
+          }
+          {
+            current === 2 && <Step3 />
+          }
+        </div>
         
-        <div className="steps-action">
+        {/* <div className="steps-action">
           
           {current === 1 && (
             <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
@@ -81,7 +87,7 @@ class Signup extends React.Component {
               完成
             </Button>
           )}
-        </div>
+        </div> */}
       </div>
     </Card>
     );

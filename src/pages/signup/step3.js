@@ -1,7 +1,7 @@
 import React from "react";
 
 import "antd/dist/antd.css";
-import { Button, Card } from "antd";
+import { Button, Card, message } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -13,6 +13,14 @@ export default function Step3() {
       <Link to="/">
         <Button type="primary">确定并登陆</Button>
       </Link>
+      <br />
+      <Button
+        type="primary"
+        style={{ marginTop: 40 }}
+        onClick={() => message.success("Processing complete!")}
+      >
+        完成
+      </Button>
     </Card>
   );
 }
