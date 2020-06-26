@@ -29,7 +29,7 @@ class Signup extends React.Component {
     current: 0,
   };
   componentDidMount() {
-    
+
     const { location } = this.props;
     console.log(location)
   }
@@ -47,27 +47,27 @@ class Signup extends React.Component {
     const { current } = this.state;
     return (
       <Card className="mainwidth">
-      <div>
-        <Steps current={current}>
-          {steps.map(item => (
-            <Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        
-        {/* <div className="steps-content">{steps[current].content}</div> */}
-        <div className="steps-content">
-          {
-            current === 0 && <Step1 next={this.next} />
-          }
-          {
-            current === 1 && <Step2 next={this.next} prev={this.prev} />
-          }
-          {
-            current === 2 && <Step3 />
-          }
-        </div>
-        
-        {/* <div className="steps-action">
+        <div>
+          <Steps current={current}>
+            {steps.map(item => (
+              <Step key={item.title} title={item.title} />
+            ))}
+          </Steps>
+
+          {/* <div className="steps-content">{steps[current].content}</div> */}
+          <div className="steps-content">
+            {
+              current === 0 && <Step1 next={this.next} />
+            }
+            {
+              current === 1 && <Step2 next={this.next} prev={this.prev} />
+            }
+            {
+              current === 2 && <Step3 />
+            }
+          </div>
+
+          {/* <div className="steps-action">
           
           {current === 1 && (
             <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
@@ -88,8 +88,8 @@ class Signup extends React.Component {
             </Button>
           )}
         </div> */}
-      </div>
-    </Card>
+        </div>
+      </Card>
     );
   }
 }

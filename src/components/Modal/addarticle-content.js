@@ -95,19 +95,18 @@ formRef = React.createRef();
           >
       <Form className="mb-16"  
         ref={this.formRef} className="margin-1" hideRequiredMark>
-        <h4>文章标题</h4>
+        <h4>文章简介</h4>
         <FormItem
           name="subject"
           rules={[{ required: true, message: ' ' }]}>
         <Input placeholder="适当标题可增加阅读意向（16字内）" />
         </FormItem>
-        <h4>文章简介</h4>
+        {/* <h4>文章简介</h4>
         <FormItem
           name="brief_introduction"
           rules={[{ required: true, message: ' ' }]}>
         <Input placeholder="简介文章内容（32字内）" />
-        </FormItem>
-        <br />
+        </FormItem> */}
         <br />
         <h4>正文</h4>
         <FormItem
@@ -170,5 +169,4 @@ formRef = React.createRef();
   }
 }
 export default AddArticleContent;
-// export default Form.create()(AddArticleContent);
 

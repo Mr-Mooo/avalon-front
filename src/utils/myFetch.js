@@ -144,7 +144,7 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
           sessionStorage.clear();
           // this.props.history.push('/login'); 
           
-          window.location.replace('http://localhost:3000/login');
+          window.location.replace('http://localhost:3000/');
           // const urlParams = new URL(window.location.href);
           // console.log(urlParams, 'urlParams')
         }
@@ -152,7 +152,7 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
       if (res.statusCode === 4001) {
         sessionStorage.clear();
         // this.props.history.push('/dashboard');
-        window.location.replace('http://localhost:3000/dashboard');
+        window.location.replace('http://localhost:3000/');
       }
       return false;
     }
@@ -168,7 +168,7 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
         // new LightTip().error(e.response.body.msg, 2);
       }
       // this.props.history.push('/dashboard');
-      window.location.replace('http://localhost:3000/dashboard');
+      window.location.replace('http://localhost:3000/');
     } else {
       // console.log(e.response.body, 'e.response.body.msg')
       errTip(e, url);

@@ -12,24 +12,32 @@ import SearchNav from "../search";
 export default function TopMenu() {
 
   return (
- <Menu  mode="horizontal">
-        
-  
-    <Menu.Item >
-                  <ProfileHeader />
+    <Menu mode="horizontal">
 
-        </Menu.Item>
-{/* 
-          <Menu.Item >
-                    <TaskHeader />
 
-        </Menu.Item> */}
+      {/* <Menu.Item >
+        <TaskHeader />
 
-          <Menu.Item >
-<AddNewArticle />
-        </Menu.Item>
+      </Menu.Item> */}
+      <Menu.Item >
+        <span>商城</span>
 
-   
-      </Menu>
+      </Menu.Item>
+      <Menu.Item >
+        <span>充值中心</span>
+
+      </Menu.Item>
+      <Menu.Item >
+        <ProfileHeader />
+
+      </Menu.Item>
+
+
+      <Menu.Item >
+        <AddNewArticle />
+      </Menu.Item>
+
+
+    </Menu>
   );
 }

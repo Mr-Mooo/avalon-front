@@ -12,14 +12,14 @@ let i = 1
 class Login extends React.PureComponent {
 
   componentWillMount() {
-    if(i === 1){
+    if (i === 1) {
       console.log(this.props)
       // window.location.reload();
       i++;
     }
     console.log('App-页面即将加载')
   }
-// const Loginform = () => {
+  // const Loginform = () => {
   // const login = async options => {
   //   console.log(options);
   //   message.loading('Loading...', 20, () => {
@@ -45,7 +45,7 @@ class Login extends React.PureComponent {
   //     //   type: 'global/getBankData',
   //     // });
   //     // this.getLoanSimpleDetailApi();
-      // this.props.history.push('/ho');
+  // this.props.history.push('/ho');
   //   }
   // };
 
@@ -76,7 +76,7 @@ class Login extends React.PureComponent {
       // });
       // this.getLoanSimpleDetailApi();
       // this.props.history.push('/dashboard');
-      
+
       window.location.replace('http://localhost:3000/dashboard');
     }
   };
@@ -93,78 +93,78 @@ class Login extends React.PureComponent {
     // window.location.reload();
     // location.reload()
     return (
-      
-    <div className="login-card">
-      <Row>
-        <Col span={15} className="login-panel-bg" />
-        <Col span={9} className="padding-1">
-        <Form
-        name="basic"
-        initialValues={{
-          remember: true
-        }}
-        onFinish={this.onFinish}
-        onFinishFailed={this.onFinishFailed}
-      >
-        <Form.Item
-          label="手机号码"
-          name="mobile"
-          rules={[
-            {
-              required: true,
-              message: "请输入手机号"
-            }
-          ]}
-        >
-          <Input />
-        </Form.Item>
-  
-        <Form.Item
-          label="登陆密码"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "请输入密码"
-            }
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-  
-        <Form.Item name="remember" valuePropName="checked">
-          <Checkbox>记住密码</Checkbox>
-        </Form.Item>
-        <Router>
-          <Form.Item>
-              <Button type="primary" htmlType="submit" block>
-                登陆
+
+      <div className="login-card">
+        <Row>
+          <Col span={15} className="login-panel-bg" />
+          <Col span={9} className="padding-1">
+            <Form
+              name="basic"
+              initialValues={{
+                remember: true
+              }}
+              onFinish={this.onFinish}
+              onFinishFailed={this.onFinishFailed}
+            >
+              <Form.Item
+                label="手机号码"
+                name="mobile"
+                rules={[
+                  {
+                    required: true,
+                    message: "请输入手机号"
+                  }
+                ]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="登陆密码"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "请输入密码"
+                  }
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+
+              <Form.Item name="remember" valuePropName="checked">
+                <Checkbox>记住密码</Checkbox>
+              </Form.Item>
+              <Router>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit" block>
+                    <span>登陆</span>
               </Button>
-              <Button onClick={() => {
-                {/* this.props.history.push('/sign-up'); */}
-                
-                  window.location.replace('http://localhost:3000/sign-up');
+                  <Button onClick={() => {
+                    {/* this.props.history.push('/sign-up'); */ }
+
+                    window.location.replace('http://localhost:3000/sign-up');
                   }}
-                  className="margin-t" block>
-                注册
+                    className="margin-t" block>
+                    注册
               </Button>
-            <br />
-            <br />
-              <a href={"/forgot-password"} className="margin-t">
-                忘记密码？
+                  <br />
+                  <br />
+                  <a href={"/forgot-password"} className="margin-t">
+                    忘记密码？
                 {/* <Route path="/forgot-password" component={ForgotPassword} replace /> */}
-              </a>
-              
-          </Form.Item>
-        </Router>
-      </Form>
-        </Col>
-      </Row>
-    </div>
-      
+                  </a>
+
+                </Form.Item>
+              </Router>
+            </Form>
+          </Col>
+        </Row>
+      </div>
+
     );
   }
-  
+
 
 }
 export default withRouter(Login);

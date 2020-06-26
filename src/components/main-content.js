@@ -18,8 +18,7 @@ export default function MainContent() {
   return (
     <Layout>
       <Content className="mainwidth">
-       
- <Imgslider />
+        <Imgslider />
         <Row>
           <Col xs={24} sm={24} md={18} lg={18}>
             <HomeTab />

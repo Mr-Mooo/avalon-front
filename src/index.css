@@ -210,7 +210,7 @@ div#root {
 }
 
 .ant-layout-header {
-  background: url("./img/photo2.jpeg");
+  background: url("./img/WechatIMG1209.jpeg");
   height: 100%;
   margin-bottom: 20px;
 }
@@ -235,4 +235,10 @@ div#root {
   font-size: 1.5rem;
   padding: 0 10px;
   background: #1890ff;
+}
+.buttom-click {
+  padding-left: 60%
+}
+.icon-down{
+  padding-left: 93%;
 }

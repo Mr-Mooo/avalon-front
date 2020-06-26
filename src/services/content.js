@@ -20,7 +20,6 @@ export const addContentApi = async options => {
 export const contentListApi = async options => {
   const res = await myFetch(
     `${config.base_url}/content/list`,
-    // `https://goant-dev.rootant.org/ucenter/api/sme/login`,
     options,
     'GET',
   );
