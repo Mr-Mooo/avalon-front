@@ -27,9 +27,12 @@ class HomeTab extends React.PureComponent {
   componentDidMount() {
     const options = {};
     this.getContentData(options);
-
-    // window.addEventListener('scroll', this.handleInfiniteOnLoad);
   }
+  refush=()=>{
+    const options = {};
+    this.getContentData(options);
+  }
+
 
   getContentData = async (options = {}) => {
     const { data } = this.state
@@ -97,10 +100,11 @@ class HomeTab extends React.PureComponent {
               >
                 <List
                   dataSource={data}
+                  
                   renderItem={item => {
                     return (
                       <List.Item key={item.id}>
-                        <Author contentData={item} />
+                        <Author contentData={item} refush={this.refush}/>
                       </List.Item>
                     )
                   }}
@@ -123,8 +127,33 @@ class HomeTab extends React.PureComponent {
             }
             key="2"
           >
-            <Author />
-            <Author />
+            <div className="demo-infinite-container" overflow="auto">
+              <InfiniteScroll
+                initialLoad={false}
+                pageStart={0}
+                loadMore={this.handleInfiniteOnLoad}
+                hasMore={!this.state.loading && this.state.hasMore}
+                useWindow={false}
+              >
+                <List
+                  dataSource={data}
+                 
+                  renderItem={item => {
+                    return (
+                      <List.Item key={item.id}>
+                        <Author contentData={item}  refush={this.refush}/>
+                      </List.Item>
+                    )
+                  }}
+                >
+                  {this.state.loading && this.state.hasMore && (
+                    <div className="demo-loading-container">
+                      <Spin />
+                    </div>
+                  )}
+                </List>
+              </InfiniteScroll>
+            </div>
           </TabPane>
           <TabPane
             tab={
@@ -135,8 +164,33 @@ class HomeTab extends React.PureComponent {
             }
             key="3"
           >
-            <Author />
-            <Author />
+            <div className="demo-infinite-container" overflow="auto">
+              <InfiniteScroll
+                initialLoad={false}
+                pageStart={0}
+                loadMore={this.handleInfiniteOnLoad}
+                hasMore={!this.state.loading && this.state.hasMore}
+                useWindow={false}
+              >
+                <List
+                  dataSource={data}
+                 
+                  renderItem={item => {
+                    return (
+                      <List.Item key={item.id}>
+                        <Author contentData={item}  refush={this.refush}/>
+                      </List.Item>
+                    )
+                  }}
+                >
+                  {this.state.loading && this.state.hasMore && (
+                    <div className="demo-loading-container">
+                      <Spin />
+                    </div>
+                  )}
+                </List>
+              </InfiniteScroll>
+            </div>
           </TabPane>
         </Tabs>
       </Card>

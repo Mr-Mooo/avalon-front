@@ -4,10 +4,10 @@ import "antd/dist/antd.css";
 import { Button, Card, message } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-
+import "./index1.css";
 export default function Step3() {
   return (
-    <Card className="align-center">
+    <Card className="align-center cardXX">
       <CheckCircleOutlined style={{ fontSize: 30 }} />
       <h1>注册成功</h1>
       <Link to="/">

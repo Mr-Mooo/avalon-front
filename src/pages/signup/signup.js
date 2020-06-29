@@ -26,7 +26,7 @@ const steps = [
 
 class Signup extends React.Component {
   state = {
-    current: 0,
+    current:1,
   };
   componentDidMount() {
 
@@ -48,14 +48,14 @@ class Signup extends React.Component {
     return (
       <Card className="mainwidth">
         <div>
-          <Steps current={current}>
+          <Steps current={current} className="stylesSteps">
             {steps.map(item => (
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
 
           {/* <div className="steps-content">{steps[current].content}</div> */}
-          <div className="steps-content">
+          <div className="steps-content" style={{height:'700px'}}>
             {
               current === 0 && <Step1 next={this.next} />
             }

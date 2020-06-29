@@ -26,13 +26,8 @@ import "antd/dist/antd.css";
 import "./index.css";
 import TopMenu from "./components/topmenu/topmenu";
 
-
-
 const { Header, Footer, Content } = Layout;
 // const { SubMenu } = Menu;
-
-
-
 export default function Home() {
   const pathName = window.location.pathname;
   const bottom = 5;

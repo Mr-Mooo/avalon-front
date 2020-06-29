@@ -4,6 +4,7 @@ import { Form, Input, Button, Card, Checkbox, Statistic, notification } from "an
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import FormItem from "antd/lib/form/FormItem";
 import { sendOtpApi } from '../../services/user';
+import "./index1.css";
 
 const layout = {
   labelCol: {
@@ -74,7 +75,7 @@ class Step1 extends React.PureComponent {
     const { loginAvailable, countdownAvailable } = this.state;
     console.log(this.props)
     return (
-      <Card title="注册账号" className="step1-card">
+      <Card title="注册账号" className="step1-card cardXX">
         <Form {...layout} ref={this.formRef} onFinish={this.onSubmit} className="step1-wrap" className="padding-1">
           <Form.Item
             name="mobile"
@@ -97,18 +98,15 @@ class Step1 extends React.PureComponent {
           >
             <Input className="input-width" placeholder="请输入11位手机号码" />
           </Form.Item>
-          <Form.Item>
             <Form.Item
               name="otp"
               label="短信验证码"
               rules={[
                 {
-                  type: "string",
                   required: true
                 }
               ]}>
               <Input className="input-width" placeholder="请输入短信验证码" />
-            </Form.Item>
             {
                 countdownAvailable
                   ?
@@ -169,26 +167,29 @@ class Step1 extends React.PureComponent {
           >
             <Input.Password className="input-width" placeholder="请确认密码密码" />
           </Form.Item>
-
-          <Form.Item
-            name="agree"
-            valuePropName="checked"
-            rules={[
-              {
-                validator: (_, value) =>
-                  value ? Promise.resolve() : Promise.reject('Please consent to the agreement.'),
-              },
-            ]}
-          >
-            <Checkbox>勾选表示我已同意平台合作协议</Checkbox>
+          <div style={{marginLeft:"350px"}}>
+            <Form.Item
+              name="agree"
+              label=""
+              valuePropName="checked"
+              rules={[
+                {  required: true,
+                  validator: (_, value) =>
+                    value ? Promise.resolve() : Promise.reject('Please consent to the agreement.'),
+                },
+              ]}
+            >
+              <Checkbox>勾选表示我已同意平台合作协议</Checkbox>
+            </Form.Item>
+            <Form.Item
+              label="">
+            <Button type="primary" onClick={() => {
+              this.onSubmit()
+            }}>
+              下一步
+          </Button>
           </Form.Item>
-
-          <Button type="primary" onClick={() => {
-            this.onSubmit()
-
-          }}>
-            下一步
-        </Button>
+        </div>
         </Form>
       </Card>
     );

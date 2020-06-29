@@ -12,6 +12,7 @@ export default function Imgslider() {
 <Col xs={24} sm={24} md={12} lg={12}>
 <img
           className="carousel-image"
+          style={{height:'454px'}}
           alt="img1"
           /* src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80" */
           src= {photo1}

@@ -14,6 +14,10 @@ function onChange(e) {
   console.log(`radio checked:${e.target.value}`);
 }
 
+
+
+
+
 export default function Recharge() {
   return (
     <div className="mainwidth">
@@ -102,8 +106,8 @@ export default function Recharge() {
             </Row>
 
             <Row className="recharge-gap">
-              <span className="gap ">短信验证</span>
-              <span className="gap">
+              <span className="gap">短信验证</span>
+              <span className="gap yanzheng">
                 <Input placeholder="请输入验证码" />
                 <Button type="primary">获取验证码</Button>
               </span>

@@ -1,0 +1,10 @@
+.ant-menu-horizontal > .ant-menu-item:hover,.ant-menu-horizontal > .ant-menu-item:visited, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open,
+ .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected{
+    border-bottom: none!important;
+}
+.box li:link,.box li:visited ,.box li:hover{
+    border-bottom: none!important;  
+}
+.box .ant-menu-item-only-child,.box .ant-menu-item-active{
+    border-bottom: none!important;
+}

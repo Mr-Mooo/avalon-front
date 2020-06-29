@@ -3,6 +3,7 @@ import React from "react";
 import "antd/dist/antd.css";
 import { Form, Card, Radio, Row, Button, Input, message } from "antd";
 import { signUpApi } from '../../services/user';
+import "./index1.css";
 const layout = {
   labelCol: {
     span: 8
@@ -50,7 +51,7 @@ class Step2 extends React.PureComponent {
     console.log(this.props)
     return (
 
-      <Card title="答题验证">
+      <Card title="答题验证" className="cardXX">
         <Form {...layout} name="nest-messages" ref={this.formRef}>
 
           <Form.Item

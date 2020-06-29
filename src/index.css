@@ -124,6 +124,7 @@ div#root {
 
 .carousel-image {
   width: 100%;
+  height:222px;
 }
 
 .ant-carousel .slick-list {
@@ -153,6 +154,10 @@ div#root {
   margin-left: 10px;
   margin-right: 10px;
 }
+.yanzheng{
+  display: flex;
+}
+
 
 .comment {
   padding: 1rem;
@@ -241,4 +246,18 @@ div#root {
 }
 .icon-down{
   padding-left: 93%;
+}
+.iconShow{
+  margin-right:10px;
+}
+
+.listAuthor{
+  width: 100%;
+}
+
+.showThree{
+  display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 3;
+overflow: hidden;
 }
