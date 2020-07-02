@@ -59,3 +59,12 @@ export const signUpApi = async options => {
   return false;
 };
 
+
+export const userApi = async options => {
+  const res = await myFetch(
+    `${config.base_url}/user/info`,
+    options,
+    'GET',
+  );
+  return res.data;
+};

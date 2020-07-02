@@ -26,7 +26,7 @@ const steps = [
 
 class Signup extends React.Component {
   state = {
-    current:1,
+    current:0,
   };
   componentDidMount() {
 
@@ -46,7 +46,7 @@ class Signup extends React.Component {
   render() {
     const { current } = this.state;
     return (
-      <Card className="mainwidth">
+      <Card className="mainwidth" style={{width:'1200px',margin:"0 auto"}}>
         <div>
           <Steps current={current} className="stylesSteps">
             {steps.map(item => (

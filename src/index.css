@@ -63,7 +63,7 @@ div#root {
 }
 
 .mainwidth {
-  max-width: 1360px;
+  width:1200px;
   margin: auto;
 }
 

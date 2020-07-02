@@ -79,7 +79,7 @@ goDianzan=async (id)=>{
 
 gocollect=async (id)=>{
   let options={
-    content_id:id,
+    follow_id:id,
    	is_delete:0
   }
   const addRes = await guanzhu(options);
@@ -201,7 +201,8 @@ handleSubmit = () => {
     const addRes = await goComment(options);
       if(addRes&&addRes.success){
         message.success("评论成功");
-       this.gogetComment(options.content_id)
+       this.gogetComment(options.content_id);
+       this.props.refush()
       }
   }
 
@@ -246,7 +247,7 @@ handleSubmit = () => {
                     size={64}
                     icon={<UserOutlined />}
                   />
-                  <p>作者昵称</p>
+                  <p>作者昵称:{contentData.avl_user.nick_name}</p>
                   <p>
                     {contentData.content}
                   </p>
@@ -352,7 +353,7 @@ handleSubmit = () => {
               </div>
               <div className="iconShow">
                 {/* 点赞 */}
-                <LikeOutlined className="margin-sm" onClick={()=>this.goDianzan(contentData.content_id)}/>   
+                {contentData.is_like?<img src={require("../img/zan.png")} />:<LikeOutlined className="margin-sm" onClick={()=>this.goDianzan(contentData.content_id)}/>}    
                {contentData.like_number}
               </div>
                {/* 收藏 */}
@@ -374,6 +375,7 @@ handleSubmit = () => {
           onCancel={this.handleCancel}
           cancelText="取消"
           okText="确定"
+          footer={null}
         >
      <div>
         <List
@@ -407,6 +409,7 @@ handleSubmit = () => {
             />
           }
         />
+        <Button type="primary" onClick={this.handleOk}>确定</Button>
       </div>
         </Modal>
 

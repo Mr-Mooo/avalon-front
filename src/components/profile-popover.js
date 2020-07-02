@@ -4,15 +4,33 @@ import { Button, Col, Row, Avatar, Popover, Divider, Progress, notification } fr
 import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "../index.css";
-import { logoutApi } from '../services/user';
-
+import { logoutApi,userApi } from '../services/user';
+import { contentListApi } from '../services/content';
 import { Link, withRouter } from "react-router-dom";
 
 // export default function ProfileHeader() {
 
   class ProfileHeader extends React.PureComponent {
-    onClick = async () => {
-      
+    state = {
+      data: [],
+    };
+    componentDidMount() {
+      const options = {};
+      this.getContentData(options);
+    }
+    getContentData = async (options = {}) => {
+      const { data } = this.state;
+      let user_id= JSON.parse(localStorage.getItem('userInfo')).user.user_id
+      const userRes = await userApi({user_id:user_id});
+      localStorage.setItem('userInfo',JSON.stringify(userRes))
+      if (userRes) {
+        this.setState({
+          data: userRes
+        });
+      }
+    }
+
+    onClick = async () => {     
       // this.props.history.push('/');
       const logoutRes = await logoutApi({});
       if (logoutRes) {
@@ -26,12 +44,14 @@ import { Link, withRouter } from "react-router-dom";
       window.location.replace('http://localhost:3000/');
     }
 render(){
+  const {data}=this.state;
+  console.log("11111",data)
   return (
     <Popover content={(
     <div className="author-popover">
       {" "}
       <Avatar className="margin-bt-sm" size={64} icon={<UserOutlined />} />
-      <p>昵称Emily</p>
+    <p>{data.user&&data.user.nick_name}</p>
       <Divider />
       <p>等级5</p>
       <p>
@@ -42,14 +62,14 @@ render(){
       <Row className="align-center">
         <Col span={8}>
           {" "}
-          <h3>关注 102</h3>
+          <h3>关注 {data.user&&data.user.follow_count}</h3>
         </Col>
 
         <Col span={8}>
-          <h3>粉丝 326</h3>
+          <h3>粉丝 {data.user&&data.user.be_follow_count}</h3>
         </Col>
         <Col span={8}>
-          <h3>投稿 35</h3>
+          <h3>投稿 {data.user&&data.user.content_count}</h3>
         </Col>
       </Row>
       <Link to="/profile" replace>
