@@ -127,7 +127,7 @@ class HomeTab extends React.PureComponent {
             }
             key="2"
           >
-            <div className="demo-infinite-container" overflow="auto">
+            <div className="demo-infinite-container">
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}

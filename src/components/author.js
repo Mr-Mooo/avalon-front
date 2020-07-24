@@ -1,6 +1,8 @@
 import React from "react";
 
 import {
+  Dropdown,
+  Menu,
   List,
   Card,
   Col,
@@ -14,13 +16,13 @@ import {
   message,
   Modal,
   Comment,
-  Form,Select ,
+  Form, Select,
   Input
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "../index.css";
-import { Dianzan,guanzhu,gotuijian,gogetComment,goComment,gopinbi,gotousu } from '../services/content';
+import { Dianzan, guanzhu, gotuijian, gogetComment, goComment, gopinbi, gotousu } from '../services/content';
 import {
   CrownOutlined,
   HeartOutlined,
@@ -42,171 +44,172 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     </Form.Item>
     <Form.Item>
       <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-       新增评论
+        新增评论
       </Button>
     </Form.Item>
   </div>
 );
-
 class Author extends React.PureComponent {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       visible: false,
-      commentList:[],
+      commentList: [],
       comments: [],
       submitting: false,
       value: '',
-      optionss:{},
-      visible1:false,
-      type:1,
-      value1:'',
-      content_id:''
+      optionss: {},
+      visible1: false,
+      type: 1,
+      value1: '',
+      content_id: ''
     }
-}
-
-goDianzan=async (id)=>{
-  let options={
-    content_id:id,
-   	is_delete:0
   }
-  const addRes = await Dianzan(options);
-    if(addRes&&addRes.success){
+
+  goDianzan = async (id) => {
+    let options = {
+      content_id: id,
+      is_delete: 0
+    }
+    const addRes = await Dianzan(options);
+    if (addRes && addRes.success) {
       message.success("点赞成功");
       this.props.refush()
     }
-}
-
-gocollect=async (id)=>{
-  let options={
-    content_id:id,
-   	is_delete:0
   }
-  const addRes = await guanzhu(options);
-    if(addRes&&addRes.success){
+
+  gocollect = async (id) => {
+    let options = {
+      content_id: id,
+      is_delete: 0
+    }
+    const addRes = await guanzhu(options);
+    if (addRes && addRes.success) {
       message.success("关注成功");
       this.props.refush()
     }
-}
-
-gogetComment=async (id)=>{
-  let options={
-    pid:1,
-    content_id:id
   }
 
-   this.setState({
-    optionss:options
-   })
+  gogetComment = async (id) => {
+    let options = {
+      pid: 1,
+      content_id: id
+    }
 
-   const addRes =await gogetComment(options);
-  
-   if(addRes&&addRes.success){
-      this.setState({commentList:[]},()=>{
-         this.setState({commentList:addRes.data})
+    this.setState({
+      optionss: options
+    })
+
+    const addRes = await gogetComment(options);
+
+    if (addRes && addRes.success) {
+      this.setState({ commentList: [] }, () => {
+        this.setState({ commentList: addRes.data })
       })
+    }
+    this.setState({ visible: true })
   }
-  this.setState({visible:true})
-}
 
-gotuijian=async (id)=>{
-  let options={
-    content_id:id,
-   	is_delete:0
-  }
-  const addRes = await gotuijian(options);
-    if(addRes&&addRes.success){
+  gotuijian = async (id) => {
+    let options = {
+      content_id: id,
+      is_delete: 0
+    }
+    const addRes = await gotuijian(options);
+    if (addRes && addRes.success) {
       message.success("推荐成功");
       this.props.refush()
     }
-}
+  }
 
-handleOk = e => {
-  this.setState({
-    visible: false,
-  });
-};
+  handleOk = e => {
+    this.setState({
+      visible: false,
+    });
+  };
 
-handleCancel = e => {
-  this.setState({
-    visible: false,
-  });
-};
+  handleCancel = e => {
+    this.setState({
+      visible: false,
+    });
+  };
 
-handleOk1 =async e => {
-  // 屏蔽动态
-  const {content_id,type,value1}=this.state;
-    if(type==1){
-      let options={
-        content_id:content_id
+  handleOk1 = async (content_id, type) => {
+    // 屏蔽动态
+    const { value1 } = this.state;
+    if (type == 1) {
+      let options = {
+        content_id: content_id
       }
+      if (!options.content_id)
+        return
       const addRes = await gopinbi(options);
-      if(addRes.success){
+      if (addRes.success) {
         message.success("您已成功屏蔽该动态");
         this.props.refush()
       }
-    }else{
-      if(!value1){
+    } else {
+      if (!value1) {
         message.error("文本框不能为空")
         return;
       }
 
-      let options={
-        content_id:content_id,
-        reason:value1
+      let options = {
+        content_id: content_id,
+        reason: value1
       }
       const addRes = await gotousu(options);
-      if(addRes.success){
+      if (addRes.success) {
         message.success("您已成功投诉该动态");
         this.props.refush()
       }
 
     }
-   this.setState({
-    visible1: false,
-    value1:''
-  });
-};
-
-handleCancel1 = e => {
-  this.setState({
-    visible1: false,
-  });
-};
-
-
-
-handleSubmit = () => {
-  const {optionss}=this.state;
-  if (!this.state.value) {
-    return;
-  }
-  this.setState({
-    submitting: true,
-  });
-
-  setTimeout(() => {
     this.setState({
-      submitting: false,
-      value: ''
+      visible1: false,
+      value1: ''
     });
-  }, 1000);
-  optionss.content=this.state.value;
-  delete optionss.pid;
-  this.goComment(optionss)
-};
+  };
 
-  goComment=async (optionss)=>{
-    let options={...optionss}
+  handleCancel1 = e => {
+    this.setState({
+      visible1: false,
+    });
+  };
+
+
+
+  handleSubmit = () => {
+    const { optionss } = this.state;
+    if (!this.state.value) {
+      return;
+    }
+    this.setState({
+      submitting: true,
+    });
+
+    setTimeout(() => {
+      this.setState({
+        submitting: false,
+        value: ''
+      });
+    }, 1000);
+    optionss.content = this.state.value;
+    delete optionss.pid;
+    this.goComment(optionss)
+  };
+
+  goComment = async (optionss) => {
+    let options = { ...optionss }
     const addRes = await goComment(options);
-      if(addRes&&addRes.success){
-        message.success("评论成功");
-       this.gogetComment(options.content_id)
-      }
+    if (addRes && addRes.success) {
+      message.success("评论成功");
+      this.gogetComment(options.content_id)
+    }
   }
 
-  setComment=(pid,ref_id)=>{
-    
+  setComment = (pid, ref_id) => {
+
   }
 
   handleChange = e => {
@@ -215,38 +218,55 @@ handleSubmit = () => {
     });
   };
 
-  onChange1=e=>{
+  onChange1 = e => {
     this.setState({
       value1: e.target.value,
     });
   }
 
-  handleChange1=(value)=>{
-    this.setState({type:value})
-  }
+  handleChange1 = async (content_id, e) => {
+    console.log(e)
+    console.log(content_id);
 
-  goModal=(id)=>{
-    this.setState({visible1:true,content_id:id})
+    console.log('>>>>>>>');
+    this.setState({ type: e })
+    if (Number(e) === 2) {
+      this.setState({ visible1: true })
+    }
+    // else {
+    //   // this.handleOk1()
+    // }
+  }
+  goModal = (id) => {
+    this.setState({ visible1: true, content_id: id })
   }
 
   render() {
     const { contentData } = this.props;
-    const { comments, submitting, value,commentList,type,value1,visible1 } = this.state;
+    const { comments, submitting, value, commentList, type, value1, visible1 } = this.state;
 
+    // const menu = (
+    //   <Menu onClick={this.handleChange1()}>
+    //     <Menu.Item key="1">屏蔽动态</Menu.Item>
+    //     <Menu.Item key="2">投诉动态</Menu.Item>
+    //   </Menu>
+    // );
     return (
-      <List className="margin listAuthor">
+      <List className="listAuthor">
         <Row>
-          <Col className="align-center" xs={12} sm={12} md={4} lg={4} span={60}>
+          <Col className="list-user" xs={12} sm={12} md={4} lg={4} span={60}>
             <Popover
+              className="div-left"
               content={
                 <div className="author-popover">
                   {" "}
                   <Avatar
                     className="margin-bt-sm"
-                    size={64}
+                    size={50}
                     icon={<UserOutlined />}
                   />
-                  <p>作者昵称</p>
+                  <p>
+                    {contentData.nick_name}</p>
                   <p>
                     {contentData.content}
                   </p>
@@ -264,7 +284,7 @@ handleSubmit = () => {
                       <h3>投稿   {contentData.avl_user.content_number}</h3>
                     </Col>
                   </Row>
-                  <Button type="primary" size="small" className="margin-sm"    onClick={()=>this.gocollect(contentData.avl_user.user_id)}>
+                  <Button type="primary" size="small" className="margin-sm" onClick={() => this.gocollect(contentData.avl_user.user_id)}>
                     <SmileOutlined />
                     关注
                   </Button>
@@ -282,16 +302,16 @@ handleSubmit = () => {
               {" "}
               <Avatar
                 className="margin-bt-sm"
-                size={64}
+                size={50}
                 icon={<UserOutlined />}
               />
             </Popover>
             {/* <span>{contentData['avl_user.nick_name']}</span> */}
 
             <br />
-            <span>
+            {/* <span>
               <h3>估计会被看见你来</h3>
-            </span>
+            </span> */}
             {contentData &&
               contentData.avl_user &&
               contentData.avl_user.nick_name}
@@ -306,10 +326,18 @@ handleSubmit = () => {
           </Col>
           <Col span={20} className="align-left">
             <Row>
-              <h3>标题</h3>
-              <DownOutlined className="icon-down" onClick={()=>this.goModal(contentData.content_id)}></DownOutlined>
+              <h3>{contentData.subject}</h3>
+              {/* <DownOutlined className="icon-down" onClick={()=>this.goModal(contentData.content_id)}></DownOutlined> */}
+              <Dropdown overlay={(
+                <Menu>
+                  <Menu.Item key="1"><a onClick={() => this.handleChange1(contentData.content_id, 1)}>屏蔽动态</a></Menu.Item>
+                  <Menu.Item key="2"><a onClick={() => this.handleChange1(contentData.content_id, 2)}>投诉动态</a></Menu.Item>
+                </Menu>
+              )} trigger={['click']}>
+                <DownOutlined className="icon-down" />
+              </Dropdown>
             </Row>
-            
+
             <div className="showThree"><Tooltip placement="topLeft" title={contentData && contentData.subject} arrowPointAtCenter>{contentData && contentData.subject} </Tooltip></div>
             {contentData &&
               contentData.avl_attachments &&
@@ -339,32 +367,37 @@ handleSubmit = () => {
           /> */}
             <br />
             <br />
-            <Row className="buttom-click">
-              <div className="iconShow">
-                {/* 推荐 */}
-                <RotateRightOutlined className="margin-sm" onClick={()=>this.gotuijian(contentData.content_id)}/>
-                {contentData.recommend_number}
-              </div>
-              <div className="iconShow"  onClick={()=>this.gogetComment(contentData.content_id)}>
-                {/* 评论 */}
-                <MessageOutlined className="margin-sm" />
-                {contentData.comment_number}
-              </div>
-              <div className="iconShow">
-                {/* 点赞 */}
-                <LikeOutlined className="margin-sm" onClick={()=>this.goDianzan(contentData.content_id)}/>   
-               {contentData.like_number}
-              </div>
-               {/* 收藏 */}
-              {/* <div className="iconShow">
-                <CrownOutlined className="margin-sm"/>
-                {contentData.collect_number}
-              </div> */}
+            {/* <Row className="buttom-click"> */}
+              <Row>
+                <Col span={6}>
+                  <div className="iconShow">
+                    {/* 推荐 */}
+                    <RotateRightOutlined className="margin-sm" onClick={() => this.gotuijian(contentData.content_id)} />
+                    {contentData.recommend_number}
+                  </div></Col>
+                <Col span={6}><div className="iconShow" onClick={() => this.gogetComment(contentData.content_id)}>
+                  {/* 评论 */}
+                  <MessageOutlined className="margin-sm" />
+                  {contentData.comment_number}
+                </div></Col>
+                <Col span={6}><div className="iconShow">
+                  {/* 点赞 */}
+                  <LikeOutlined className="margin-sm" onClick={() => this.goDianzan(contentData.content_id)} />
+                  {contentData.like_number}
+                </div></Col>
+                <Col span={6}><div className="iconShow">
+                  <CrownOutlined className="margin-sm" />
+                  {contentData.collect_number}
+                </div></Col>
+              </Row>
+
+
+              {/* 收藏 */}
+
               {/* <Tag>
                 <HeartOutlined className="margin-sm" />
               收藏
             </Tag> */}
-            </Row>
           </Col>
         </Row>
         <Modal
@@ -375,39 +408,39 @@ handleSubmit = () => {
           cancelText="取消"
           okText="确定"
         >
-     <div>
-        <List
-          itemLayout="horizontal"
-          dataSource={commentList}
-          renderItem={item => (
-            <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                title={<a href="https://ant.design">{item.nick_name}</a>}
-                description={item.content}
-                onClick={()=>this.setComment(item.pid,item.ref_id)}
-              />
-            </List.Item>
-          )}
-        />
-
-        <Comment
-          // avatar={
-          //   <Avatar
-          //     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          //     alt="Han Solo"
-          //   />
-          // }
-          content={
-            <Editor
-              onChange={this.handleChange}
-              onSubmit={this.handleSubmit}
-              submitting={submitting}
-              value={value}
+          <div>
+            <List
+              itemLayout="horizontal"
+              dataSource={commentList}
+              renderItem={item => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                    title={<a href="https://ant.design">{item.nick_name}</a>}
+                    description={item.content}
+                    onClick={() => this.setComment(item.pid, item.ref_id)}
+                  />
+                </List.Item>
+              )}
             />
-          }
-        />
-      </div>
+
+            <Comment
+              // avatar={
+              //   <Avatar
+              //     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              //     alt="Han Solo"
+              //   />
+              // }
+              content={
+                <Editor
+                  onChange={this.handleChange}
+                  onSubmit={this.handleSubmit}
+                  submitting={submitting}
+                  value={value}
+                />
+              }
+            />
+          </div>
         </Modal>
 
         <Modal
@@ -418,13 +451,9 @@ handleSubmit = () => {
           onOk={this.handleOk1}
           onCancel={this.handleCancel1}
         >
-           <Select defaultValue="1" style={{ width: 120 }} onChange={this.handleChange1}>
-            <Option value="1">屏蔽动态</Option>
-            <Option value="2">投诉动态</Option>
-          </Select>
-           {type==1?null:<div>           
-            <TextArea rows={4} onChange={this.onChange1} value={value1} style={{marginTop:"20px"}}/>          
-             </div>}
+          {type == 1 ? null : <div>
+            <TextArea rows={4} onChange={this.onChange1} value={value1} style={{ marginTop: "20px" }} />
+          </div>}
         </Modal>
 
 
