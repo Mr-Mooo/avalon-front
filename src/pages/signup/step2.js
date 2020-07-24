@@ -120,13 +120,14 @@ class Step2 extends React.PureComponent {
               </Radio.Group>
             </Form.Item>
           </Form.Item>
-
+<div style={{textAlign:'center'}}>
           <Button style={{ marginLeft: 8 }} onClick={() => this.props.prev()}>
             上一步
         </Button>
           <Button type="primary" onClick={this.onFinish}>
             下一步
         </Button>
+        </div>
         </Form>
       </Card>
     );

@@ -25,10 +25,7 @@ class Addarticle extends React.Component {
   };
 
   handleOk = async (content, checked) => {
-    console.log(content, checked);
-    // this.setState({
-    //   visible: false
-    // });
+    window.location.reload();
   };
 
   handleCancel = e => {
@@ -80,6 +77,7 @@ class Addpic extends React.Component {
 
   handleOk = e => {
     console.log(e);
+    window.location.reload();
     this.setState({
       visible: false
     });

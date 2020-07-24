@@ -19,8 +19,9 @@ class HomeTab extends React.PureComponent {
     count: 0,
     page: 1,
   };
-  callback(key) {
-    console.log(key);
+  callback=(key)=>{
+    const options = {};
+    this.getContentData(options);
   }
 
 
@@ -38,15 +39,12 @@ class HomeTab extends React.PureComponent {
     const { data } = this.state
     // this.setState({ loading: true })
     const res = await contentListApi(options);
-    console.log(res)
-    console.log(777777777654345678909876543456789765434567)
     if (res) {
-      console.log(options)
+    localStorage.setItem("list",JSON.stringify(res))
       this.setState({
         data: data.concat(res.rows),
         count: res.count,
         page: options.page ? options.page : 1,
-        // loading: false
       });
     }
   }
@@ -57,7 +55,7 @@ class HomeTab extends React.PureComponent {
       loading: true
     });
     if (page * 5 >= count) {
-      message.warning("Infinite List loaded all");
+     // message.warning("Infinite List loaded all");
       this.setState({
         hasMore: false,
         loading: false

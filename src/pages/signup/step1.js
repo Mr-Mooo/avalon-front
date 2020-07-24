@@ -88,10 +88,10 @@ class Step1 extends React.PureComponent {
               },
               ({ getFieldValue }) => ({
                 validator(rule, value) {
-                  if (!value || getFieldValue('mobile') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject('phone numbers do not match.');
+                  if(!(/^1[3456789]\d{9}$/.test(value))){ 
+                    return Promise.reject("手机号码有误，请重填");             
+                } 
+                return Promise.resolve();
                 },
               })
             ]}
@@ -103,10 +103,19 @@ class Step1 extends React.PureComponent {
               label="短信验证码"
               rules={[
                 {
+                  type: "string",
                   required: true
-                }
+                },
+                ({ getFieldValue }) => ({
+                  validator(rule, value) {
+                    if(value.length!==4){ 
+                      return Promise.reject("验证码应为4位，请重填");             
+                    } 
+                    return Promise.resolve();
+                  },
+                })
               ]}>
-              <Input className="input-width" placeholder="请输入短信验证码" />
+              <Input className="input-width" placeholder="请输入短信验证码" style={{width:"182px"}}/>
             {
                 countdownAvailable
                   ?
@@ -133,10 +142,10 @@ class Step1 extends React.PureComponent {
               },
               ({ getFieldValue }) => ({
                 validator(rule, value) {
-                  if (!value || getFieldValue('nick_name') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject('用户名不可用');
+                  if(value.length>8){ 
+                    return Promise.reject("用户名不能大于8位");             
+                  } 
+                  return Promise.resolve();
                 },
               })
             ]}
@@ -162,7 +171,18 @@ class Step1 extends React.PureComponent {
               {
                 type: "string",
                 required: true
-              }
+              },
+              ({ getFieldValue }) => ({
+                validator(rule, value) {
+                  if (getFieldValue('password') !== value) {
+                    return Promise.reject('密码不一致');
+                   
+                  }else{
+                    return Promise.resolve();
+                  }
+                 
+                },
+              })
             ]}
           >
             <Input.Password className="input-width" placeholder="请确认密码密码" />
@@ -175,7 +195,7 @@ class Step1 extends React.PureComponent {
               rules={[
                 {  required: true,
                   validator: (_, value) =>
-                    value ? Promise.resolve() : Promise.reject('Please consent to the agreement.'),
+                    value===this.props.form.getFieldValue('') ? Promise.resolve() : Promise.reject('Please consent to the agreement.'),
                 },
               ]}
             >

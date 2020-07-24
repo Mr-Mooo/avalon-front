@@ -202,10 +202,11 @@ class Author extends React.PureComponent {
   goComment = async (optionss) => {
     let options = { ...optionss }
     const addRes = await goComment(options);
-    if (addRes && addRes.success) {
-      message.success("评论成功");
-      this.gogetComment(options.content_id)
-    }
+      if(addRes&&addRes.success){
+        message.success("评论成功");
+       this.gogetComment(options.content_id);
+       this.props.refush()
+      }
   }
 
   setComment = (pid, ref_id) => {
@@ -407,6 +408,7 @@ class Author extends React.PureComponent {
           onCancel={this.handleCancel}
           cancelText="取消"
           okText="确定"
+          footer={null}
         >
           <div>
             <List
@@ -440,7 +442,10 @@ class Author extends React.PureComponent {
                 />
               }
             />
-          </div>
+          }
+        />
+        <Button type="primary" onClick={this.handleOk}>确定</Button>
+      </div>
         </Modal>
 
         <Modal

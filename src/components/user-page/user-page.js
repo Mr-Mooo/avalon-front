@@ -29,13 +29,14 @@ import ArticleBrief from "./article-brief";
 const { Option } = Select;
 
 export default function UserPage() {
+  let userInfo=JSON.parse(localStorage.getItem('userInfo'));
   return (
     <div className="mainwidth">
       <Card className="margin-1 align-center">
         <div className="">
           {" "}
           <Avatar className="margin-bt-sm" size={64} icon={<UserOutlined />} />
-          <p>作者昵称</p>
+     <p>作者昵称：{userInfo.user.nick_name}</p>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
             euismod bibendum laoreet.
@@ -57,7 +58,7 @@ export default function UserPage() {
               <Col span={8}>
                 {" "}
                 <h3>
-                  102
+                {userInfo.user.follow_count}
                   <br />
                   关注
                 </h3>
@@ -65,14 +66,14 @@ export default function UserPage() {
 
               <Col span={8}>
                 <h3>
-                  326
+                {userInfo.user.be_follow_count}
                   <br />
                   粉丝
                 </h3>
               </Col>
               <Col span={8}>
                 <h3>
-                  35
+                {userInfo.user.content_count}
                   <br />
                   投稿
                 </h3>
@@ -122,9 +123,8 @@ export default function UserPage() {
               <SearchNav />
             </div>
           </Card>
-          <ArticleBrief />
-          <ArticleBrief />
-          <Pagination className="margin-1" defaultCurrent={1} total={50} />
+           <ArticleBrief />
+          <Pagination className="margin-1" defaultCurrent={1} total={JSON.parse(localStorage.getItem('list')).count} />
         </Col>
       </Row>
     </div>

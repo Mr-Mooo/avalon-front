@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 import "./login.css";
 import { BrowserRouter as Router, withRouter, Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
-import { loginApi } from '../services/user';
+import { loginApi,userApi } from '../services/user';
 import ForgotPassword from "../components/forgot-password";
 let i = 1
 class Login extends React.PureComponent {
@@ -77,6 +77,8 @@ class Login extends React.PureComponent {
       // this.getLoanSimpleDetailApi();
       // this.props.history.push('/dashboard');
 
+      const userRes = await userApi({user_id:loginRes.user_id});
+       localStorage.setItem('userInfo',JSON.stringify(userRes))
       window.location.replace('http://localhost:3000/dashboard');
     }
   };
