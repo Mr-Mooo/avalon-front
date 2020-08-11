@@ -20,6 +20,7 @@ import TopicCenter from "./components/topic-center/topic-center";
 import UserPage from "./components/user-page/user-page";
 import Recharge from "./components/recharge/recharge";
 import ForgotPassword from "./components/forgot-password";
+import u2 from "./img/u2.png"
 // import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 
 import "antd/dist/antd.css";
@@ -40,7 +41,12 @@ export default function Home() {
             <Header>
             <div className="mainwidth header-nav">
             <Row>
-            <Col xs={4} sm={4} md={4} lg={4} className="logo">LOGO</Col>
+            <Col xs={4} sm={4} md={4} lg={4} className="logo">
+            {/* <img
+          src={u2} style={{width: 44 }}
+        /> */}
+        <a>主页</a>
+        </Col>
               <Col xs={20} sm={20} md={12} lg={12} className="logo"> <SearchNav /></Col>
             <Col xs={24} sm={24} md={8} lg={8}>  <TopMenu /></Col>
 

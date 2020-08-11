@@ -1,9 +1,9 @@
 import React from "react";
-import { Menu, Row, Col } from "antd";
+import { Menu } from "antd";
 import ProfileHeader from "../profile-popover";
-import TaskHeader from "../taskheader";
+// import TaskHeader from "../taskheader";
 import AddNewArticle from "../add-article";
-import SearchNav from "../search";
+// import SearchNav from "../search";
 import photo from "../../img/package.png";
 import  "./index.css";
 export default function TopMenu() {

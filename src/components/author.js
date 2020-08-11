@@ -92,7 +92,7 @@ class Author extends React.PureComponent {
 
   gogetComment = async (id) => {
     let options = {
-      pid: 1,
+      pid: 0,
       content_id: id
     }
 
@@ -317,9 +317,9 @@ class Author extends React.PureComponent {
               contentData.avl_user &&
               contentData.avl_user.nick_name}
             <div className="icons-list">
+              {/* <HeartOutlined className="margin-sm" />
               <HeartOutlined className="margin-sm" />
-              <HeartOutlined className="margin-sm" />
-              <HeartOutlined className="margin-sm" />
+              <HeartOutlined className="margin-sm" /> */}
             </div>
             {/* <Button type="primary" size="small">
               <SmileOutlined /> 关注
@@ -339,7 +339,7 @@ class Author extends React.PureComponent {
               </Dropdown>
             </Row>
 
-            <div className="showThree"><Tooltip placement="topLeft" title={contentData && contentData.subject} arrowPointAtCenter>{contentData && contentData.subject} </Tooltip></div>
+            <div className="showThree"><Tooltip placement="topLeft" title={contentData && contentData.content} arrowPointAtCenter>{contentData && contentData.content} </Tooltip></div>
             {contentData &&
               contentData.avl_attachments &&
               contentData.avl_attachments.map((val) => {
@@ -372,21 +372,22 @@ class Author extends React.PureComponent {
               <Row>
                 <Col span={6}>
                   <div className="iconShow">
-                    {/* 推荐 */}
+                    推荐
                     <RotateRightOutlined className="margin-sm" onClick={() => this.gotuijian(contentData.content_id)} />
                     {contentData.recommend_number}
                   </div></Col>
                 <Col span={6}><div className="iconShow" onClick={() => this.gogetComment(contentData.content_id)}>
-                  {/* 评论 */}
+                  评论
                   <MessageOutlined className="margin-sm" />
                   {contentData.comment_number}
                 </div></Col>
                 <Col span={6}><div className="iconShow">
-                  {/* 点赞 */}
+                  点赞
                   <LikeOutlined className="margin-sm" onClick={() => this.goDianzan(contentData.content_id)} />
                   {contentData.like_number}
                 </div></Col>
                 <Col span={6}><div className="iconShow">
+                  超赞
                   <CrownOutlined className="margin-sm" />
                   {contentData.collect_number}
                 </div></Col>

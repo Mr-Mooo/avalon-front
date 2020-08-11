@@ -95,18 +95,18 @@ formRef = React.createRef();
           >
       <Form className="mb-16"  
         ref={this.formRef} className="margin-1" hideRequiredMark>
-        <h4>文章简介</h4>
+        <h4>标题</h4>
         <FormItem
           name="subject"
           rules={[{ required: true, message: ' ' }]}>
         <Input placeholder="适当标题可增加阅读意向（16字内）" />
         </FormItem>
-        {/* <h4>文章简介</h4>
+        <h4>文章简介</h4>
         <FormItem
           name="brief_introduction"
           rules={[{ required: true, message: ' ' }]}>
         <Input placeholder="简介文章内容（32字内）" />
-        </FormItem> */}
+        </FormItem>
         <br />
         <h4>正文</h4>
         <FormItem
@@ -159,10 +159,10 @@ formRef = React.createRef();
           <Option value="8">无取向</Option>
         </Select>
         </FormItem>
-  
+{/*   
         <h4>类型</h4>
         <Checkbox onChange={this.onChange}>CP</Checkbox>
-        <Input placeholder="请输入原作名" />
+        <Input placeholder="请输入原作名" /> */}
       </Form>
       </Modal>
     ); 
