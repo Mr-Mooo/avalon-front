@@ -7,8 +7,9 @@ import { CrownOutlined, HeartOutlined, TagsOutlined } from "@ant-design/icons";
 import Author from "./author";
 import reqwest from "reqwest";
 import { withRouter } from "react-router-dom";
-import { contentListApi } from '../services/content';
+import { contentListApi } from "../services/content";
 import InfiniteScroll from "react-infinite-scroller";
+import emitter from "../utils/events.js";
 const { TabPane } = Tabs;
 
 class HomeTab extends React.PureComponent {
@@ -18,47 +19,76 @@ class HomeTab extends React.PureComponent {
     hasMore: true,
     count: 0,
     page: 1,
+    key: "",
+    options: {
+      type: "recommend",
+      limit: 10,
+      page: 1,
+      key: "",
+    },
   };
-  callback=(key)=>{
-    const options = {};
+  callback = (key) => {
+    console.log(key, "12");
+    const options = {
+      type: key === "1" ? "recommend" : key === "2" ? "follow" : "subscribe",
+      limit: 10,
+      page: 1,
+    };
     this.getContentData(options);
-  }
-
+  };
 
   componentDidMount() {
-    const options = {};
+    const { options } = this.state;
+    this.eventEmitter = emitter.addListener("changeMessage", (message) => {
+      let option = {
+        key: message,
+        type: "recommend",
+        limit: 10,
+        page: 1,
+      };
+      this.getContentData(option);
+    });
     this.getContentData(options);
   }
-  refush=()=>{
-    const options = {};
-    this.getContentData(options);
-  }
-
+  // componentWillUnmount() {
+  //   // 卸载时移除事件
+  //   emitter.removeListener(this.eventEmitter);
+  // }
+  refush = async () => {
+    const { options } = this.state;
+    const res = await contentListApi(options);
+    this.setState({
+      data: res.rows,
+      count: res.count,
+      page: options.page ? options.page : 1,
+    });
+  };
 
   getContentData = async (options = {}) => {
-    const { data } = this.state
+    const { data } = this.state;
+
     // this.setState({ loading: true })
     const res = await contentListApi(options);
     if (res) {
-    localStorage.setItem("list",JSON.stringify(res))
+      localStorage.setItem("list", JSON.stringify(res));
       this.setState({
         data: data.concat(res.rows),
         count: res.count,
         page: options.page ? options.page : 1,
       });
     }
-  }
+  };
 
   handleInfiniteOnLoad = () => {
     let { data, count, page, hasMore } = this.state;
     this.setState({
-      loading: true
+      loading: true,
     });
     if (page * 5 >= count) {
-     // message.warning("Infinite List loaded all");
+      // message.warning("Infinite List loaded all");
       this.setState({
         hasMore: false,
-        loading: false
+        loading: false,
       });
       return false;
     }
@@ -70,15 +100,19 @@ class HomeTab extends React.PureComponent {
     this.getContentData(options);
 
     this.setState({
-      loading: false
+      loading: false,
     });
     return;
   };
   render() {
-    const { data } = this.state
+    const { data } = this.state;
     return (
       <Card className="margin-1">
-        <Tabs defaultActiveKey="1" onChange={this.callback} className="home-tab">
+        <Tabs
+          defaultActiveKey="1"
+          onChange={this.callback}
+          className="home-tab"
+        >
           <TabPane
             tab={
               <span>
@@ -98,13 +132,12 @@ class HomeTab extends React.PureComponent {
               >
                 <List
                   dataSource={data}
-                  
-                  renderItem={item => {
+                  renderItem={(item) => {
                     return (
                       <List.Item key={item.id}>
-                        <Author contentData={item} refush={this.refush}/>
+                        <Author contentData={item} refush={this.refush} />
                       </List.Item>
-                    )
+                    );
                   }}
                 >
                   {this.state.loading && this.state.hasMore && (
@@ -135,13 +168,12 @@ class HomeTab extends React.PureComponent {
               >
                 <List
                   dataSource={data}
-                 
-                  renderItem={item => {
+                  renderItem={(item) => {
                     return (
                       <List.Item key={item.id}>
-                        <Author contentData={item}  refush={this.refush}/>
+                        <Author contentData={item} refush={this.refush} />
                       </List.Item>
-                    )
+                    );
                   }}
                 >
                   {this.state.loading && this.state.hasMore && (
@@ -172,13 +204,12 @@ class HomeTab extends React.PureComponent {
               >
                 <List
                   dataSource={data}
-                 
-                  renderItem={item => {
+                  renderItem={(item) => {
                     return (
                       <List.Item key={item.id}>
-                        <Author contentData={item}  refush={this.refush}/>
+                        <Author contentData={item} refush={this.refush} />
                       </List.Item>
-                    )
+                    );
                   }}
                 >
                   {this.state.loading && this.state.hasMore && (
@@ -196,6 +227,3 @@ class HomeTab extends React.PureComponent {
   }
 }
 export default withRouter(HomeTab);
-
-
-

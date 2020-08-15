@@ -1,23 +1,31 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Row, Col, notification, message } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Row,
+  Col,
+  notification,
+  message,
+} from "antd";
 // import { connect } from 'react-redux';
 
 import "antd/dist/antd.css";
 import "./login.css";
 import { BrowserRouter as Router, withRouter, Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
-import { loginApi,userApi } from '../services/user';
+import { loginApi, userApi } from "../services/user";
 import ForgotPassword from "../components/forgot-password";
-let i = 1
+let i = 1;
 class Login extends React.PureComponent {
-
   componentWillMount() {
     if (i === 1) {
-      console.log(this.props)
+      console.log(this.props);
       // window.location.reload();
       i++;
     }
-    console.log('App-页面即将加载')
+    console.log("App-页面即将加载");
   }
   // const Loginform = () => {
   // const login = async options => {
@@ -52,24 +60,24 @@ class Login extends React.PureComponent {
   onFinish = async (values) => {
     console.log("Success:", values);
     // login(values);
-    message.loading('Loading...', 20, () => {
+    message.loading("Loading...", 20, () => {
       message.destroy();
     });
     const loginRes = await loginApi(values);
     message.destroy();
     if (loginRes) {
       notification.success({
-        message: 'Login successful!',
+        message: "Login successful!",
         description: null,
         duration: 2,
       });
       // sessionStorage.setItem('token', loginRes.access_token);
-      sessionStorage.setItem('mobile', loginRes.mobile);
-      sessionStorage.setItem('email', loginRes.email);
-      sessionStorage.setItem('nick_name', loginRes.nick_name);
+      sessionStorage.setItem("mobile", loginRes.mobile);
+      sessionStorage.setItem("email", loginRes.email);
+      sessionStorage.setItem("nick_name", loginRes.nick_name);
       // sessionStorage.setItem('phone', loginRes.phone);
       // sessionStorage.setItem('type', loginRes.type);
-      sessionStorage.setItem('user_id', loginRes.user_id);
+      sessionStorage.setItem("user_id", loginRes.user_id);
       // const { dispatch } = this.props;
       // dispatch({
       //   type: 'global/getBankData',
@@ -77,14 +85,14 @@ class Login extends React.PureComponent {
       // this.getLoanSimpleDetailApi();
       // this.props.history.push('/dashboard');
 
-      const userRes = await userApi({user_id:loginRes.user_id});
-       localStorage.setItem('userInfo',JSON.stringify(userRes))
-      window.location.replace('http://localhost:3000/dashboard');
+      const userRes = await userApi({ user_id: loginRes.user_id });
+      localStorage.setItem("userInfo", JSON.stringify(userRes));
+      window.location.replace("http://localhost:3000/dashboard");
     }
   };
 
-  onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+  onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
   render() {
     const {
@@ -95,7 +103,6 @@ class Login extends React.PureComponent {
     // window.location.reload();
     // location.reload()
     return (
-
       <div className="login-card">
         <Row>
           <Col span={15} className="login-panel-bg" />
@@ -103,7 +110,7 @@ class Login extends React.PureComponent {
             <Form
               name="basic"
               initialValues={{
-                remember: true
+                remember: true,
               }}
               onFinish={this.onFinish}
               onFinishFailed={this.onFinishFailed}
@@ -114,8 +121,12 @@ class Login extends React.PureComponent {
                 rules={[
                   {
                     required: true,
-                    message: "请输入手机号"
-                  }
+                    message: "请输入手机号",
+                  },
+                  {
+                    pattern: /^1[3456789]\d{9}$/,
+                    message: "请输入正确的手机号",
+                  },
                 ]}
               >
                 <Input />
@@ -127,8 +138,9 @@ class Login extends React.PureComponent {
                 rules={[
                   {
                     required: true,
-                    message: "请输入密码"
-                  }
+                    message: "请输入密码",
+                  },
+                  // { min: 6, message: "密码最少要6个字符" },
                 ]}
               >
                 <Input.Password />
@@ -141,32 +153,33 @@ class Login extends React.PureComponent {
                 <Form.Item>
                   <Button type="primary" htmlType="submit" block>
                     <span>登陆</span>
-              </Button>
-                  <Button onClick={() => {
-                    {/* this.props.history.push('/sign-up'); */ }
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      {
+                        /* this.props.history.push('/sign-up'); */
+                      }
 
-                    window.location.replace('http://localhost:3000/sign-up');
-                  }}
-                    className="margin-t" block>
+                      window.location.replace("http://localhost:3000/sign-up");
+                    }}
+                    className="margin-t"
+                    block
+                  >
                     注册
-              </Button>
+                  </Button>
                   <br />
                   <br />
                   <a href={"/forgot-password"} className="margin-t">
                     忘记密码？
-                {/* <Route path="/forgot-password" component={ForgotPassword} replace /> */}
+                    {/* <Route path="/forgot-password" component={ForgotPassword} replace /> */}
                   </a>
-
                 </Form.Item>
               </Router>
             </Form>
           </Col>
         </Row>
       </div>
-
     );
   }
-
-
 }
 export default withRouter(Login);

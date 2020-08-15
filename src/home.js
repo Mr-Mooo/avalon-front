@@ -20,7 +20,7 @@ import TopicCenter from "./components/topic-center/topic-center";
 import UserPage from "./components/user-page/user-page";
 import Recharge from "./components/recharge/recharge";
 import ForgotPassword from "./components/forgot-password";
-import u2 from "./img/u2.png"
+import u2 from "./img/u2.png";
 // import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 
 import "antd/dist/antd.css";
@@ -28,35 +28,40 @@ import "./index.css";
 import TopMenu from "./components/topmenu/topmenu";
 
 const { Header, Footer, Content } = Layout;
+function goLink() {
+  window.location.replace("http://localhost:3000/dashboard");
+}
 // const { SubMenu } = Menu;
 export default function Home() {
   const pathName = window.location.pathname;
   const bottom = 5;
-  console.log(1234567);
   return (
     <Router>
       <Layout>
-        {
-          (pathName !== '/' && pathName !== '/sign-up' && pathName !== '/forgot-password') && (
+        {pathName !== "/" &&
+          pathName !== "/sign-up" &&
+          pathName !== "/forgot-password" && (
             <Header>
-            <div className="mainwidth header-nav">
-            <Row>
-            <Col xs={4} sm={4} md={4} lg={4} className="logo">
-            {/* <img
+              <div className="mainwidth header-nav">
+                <Row>
+                  <Col xs={4} sm={4} md={4} lg={4} className="logo">
+                    {/* <img
           src={u2} style={{width: 44 }}
         /> */}
-        <a>主页</a>
-        </Col>
-              <Col xs={20} sm={20} md={12} lg={12} className="logo"> <SearchNav /></Col>
-            <Col xs={24} sm={24} md={8} lg={8}>  <TopMenu /></Col>
-
-            </Row>
-
-            </div>
-              
+                    <a onClick={() => goLink()}>主页</a>
+                  </Col>
+                  <Col xs={20} sm={20} md={12} lg={12} className="logo">
+                    {" "}
+                    <SearchNav />
+                  </Col>
+                  <Col xs={24} sm={24} md={8} lg={8}>
+                    {" "}
+                    <TopMenu />
+                  </Col>
+                </Row>
+              </div>
             </Header>
-          )
-        }
+          )}
 
         <Content>
           <Route path="/" component={Login} exact />
@@ -72,10 +77,10 @@ export default function Home() {
           <Route path="/forgot-password" component={ForgotPassword} exact />
         </Content>
         <Affix offsetBottom={bottom}>
-        <Footer className="align-center">
-          Footer content goes here...
-          <BackTop />
-        </Footer>
+          <Footer className="align-center">
+            Footer content goes here...
+            <BackTop />
+          </Footer>
         </Affix>
       </Layout>
     </Router>
