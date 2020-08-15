@@ -82,6 +82,7 @@ class Author extends React.PureComponent {
       openId: "",
       maskId: "",
       tousu_id: "",
+      id: "",
       contentData: this.props.contentData,
     };
   }
@@ -171,6 +172,7 @@ class Author extends React.PureComponent {
   };
 
   handleOk1 = async (content_id, type) => {
+    const { contentData } = this.state;
     // 屏蔽动态
     const { value1 } = this.state;
     if (type == 1) {
@@ -181,7 +183,10 @@ class Author extends React.PureComponent {
       const addRes = await gopinbi(options);
       if (addRes.success) {
         message.success("您已成功屏蔽该动态");
-        this.props.refush();
+        // this.props.refush();
+        this.setState({
+          id: content_id,
+        });
       }
     } else {
       if (!value1) {
@@ -293,6 +298,7 @@ class Author extends React.PureComponent {
       openId,
       maskId,
       contentData,
+      id,
     } = this.state;
     console.log(contentData, "daad");
     // const menu = (
@@ -302,156 +308,167 @@ class Author extends React.PureComponent {
     //   </Menu>
     // );
     return (
-      <List className="listAuthor">
-        <Row>
-          <Col className="list-user" xs={12} sm={12} md={4} lg={4} span={60}>
-            <Popover
-              className="div-left"
-              content={
-                <div className="author-popover">
+      <div style={{ width: "100%" }}>
+        {!(id === contentData.content_id) && (
+          <List className="listAuthor">
+            <Row>
+              <Col
+                className="list-user"
+                xs={12}
+                sm={12}
+                md={4}
+                lg={4}
+                span={60}
+              >
+                <Popover
+                  className="div-left"
+                  content={
+                    <div className="author-popover">
+                      {" "}
+                      <Avatar
+                        className="margin-bt-sm"
+                        size={50}
+                        icon={<UserOutlined />}
+                      />
+                      <p>{contentData.avl_user.nick_name}</p>
+                      <p>
+                        {contentData.avl_user.introduce
+                          ? contentData.avl_user.introduce
+                          : "暂无数据"}
+                      </p>
+                      <Divider />
+                      <Row className="align-center">
+                        <Col span={8}>
+                          {" "}
+                          <h3>关注 {contentData.avl_user.follolw_number}</h3>
+                        </Col>
+
+                        <Col span={8}>
+                          <h3>粉丝 {contentData.avl_user.fans_number}</h3>
+                        </Col>
+                        <Col span={8}>
+                          <h3>投稿 {contentData.avl_user.content_number}</h3>
+                        </Col>
+                      </Row>
+                      <Button
+                        type="primary"
+                        size="small"
+                        className="margin-sm"
+                        onClick={() =>
+                          this.gocollect(
+                            contentData.avl_user.user_id,
+                            contentData.is_follow
+                          )
+                        }
+                      >
+                        <SmileOutlined />
+                        {contentData.is_follow ? "已关注" : "关注"}
+                      </Button>
+                      {/* <Button size="small" className="margin-sm">
+                    <MailOutlined /> 私信
+                  </Button> */}
+                      <Link to="/user">
+                        <Button size="small" className="margin-sm">
+                          <MailOutlined /> 查看主页
+                        </Button>
+                      </Link>
+                    </div>
+                  }
+                >
                   {" "}
                   <Avatar
                     className="margin-bt-sm"
                     size={50}
                     icon={<UserOutlined />}
                   />
-                  <p>{contentData.avl_user.nick_name}</p>
-                  <p>
-                    {contentData.avl_user.introduce
-                      ? contentData.avl_user.introduce
-                      : "暂无数据"}
-                  </p>
-                  <Divider />
-                  <Row className="align-center">
-                    <Col span={8}>
-                      {" "}
-                      <h3>关注 {contentData.avl_user.follolw_number}</h3>
-                    </Col>
+                </Popover>
+                {/* <span>{contentData['avl_user.nick_name']}</span> */}
 
-                    <Col span={8}>
-                      <h3>粉丝 {contentData.avl_user.fans_number}</h3>
-                    </Col>
-                    <Col span={8}>
-                      <h3>投稿 {contentData.avl_user.content_number}</h3>
-                    </Col>
-                  </Row>
-                  <Button
-                    type="primary"
-                    size="small"
-                    className="margin-sm"
-                    onClick={() =>
-                      this.gocollect(
-                        contentData.avl_user.user_id,
-                        contentData.is_follow
-                      )
-                    }
-                  >
-                    <SmileOutlined />
-                    {contentData.is_follow ? "已关注" : "关注"}
-                  </Button>
-                  {/* <Button size="small" className="margin-sm">
-                    <MailOutlined /> 私信
-                  </Button> */}
-                  <Link to="/user">
-                    <Button size="small" className="margin-sm">
-                      <MailOutlined /> 查看主页
-                    </Button>
-                  </Link>
-                </div>
-              }
-            >
-              {" "}
-              <Avatar
-                className="margin-bt-sm"
-                size={50}
-                icon={<UserOutlined />}
-              />
-            </Popover>
-            {/* <span>{contentData['avl_user.nick_name']}</span> */}
-
-            <br />
-            {/* <span>
+                <br />
+                {/* <span>
               <h3>估计会被看见你来</h3>
             </span> */}
-            {contentData &&
-              contentData.avl_user &&
-              contentData.avl_user.nick_name}
-            <div className="icons-list">
-              {/* <HeartOutlined className="margin-sm" />
+                {contentData &&
+                  contentData.avl_user &&
+                  contentData.avl_user.nick_name}
+                <div className="icons-list">
+                  {/* <HeartOutlined className="margin-sm" />
               <HeartOutlined className="margin-sm" />
               <HeartOutlined className="margin-sm" /> */}
-            </div>
-            {/* <Button type="primary" size="small">
+                </div>
+                {/* <Button type="primary" size="small">
               <SmileOutlined /> 关注
             </Button> */}
-          </Col>
-          <Col span={20} className="align-left">
-            <Row>
-              <h3>{contentData.subject}</h3>
-              {/* <DownOutlined className="icon-down" onClick={()=>this.goModal(contentData.content_id)}></DownOutlined> */}
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="1">
-                      <a
-                        onClick={() =>
-                          this.handleChange1(contentData.content_id, 1)
-                        }
-                      >
-                        屏蔽动态
-                      </a>
-                    </Menu.Item>
-                    <Menu.Item key="2">
-                      <a
-                        onClick={() =>
-                          this.handleChange1(contentData.content_id, 2)
-                        }
-                      >
-                        投诉动态
-                      </a>
-                    </Menu.Item>
-                  </Menu>
-                }
-                trigger={["click"]}
-              >
-                <DownOutlined className="icon-down" />
-              </Dropdown>
-            </Row>
+              </Col>
+              <Col span={20} className="align-left">
+                <Row>
+                  <h3>{contentData.subject}</h3>
+                  {/* <DownOutlined className="icon-down" onClick={()=>this.goModal(contentData.content_id)}></DownOutlined> */}
+                  <Dropdown
+                    overlay={
+                      <Menu>
+                        <Menu.Item key="1">
+                          <a
+                            onClick={() =>
+                              this.handleChange1(contentData.content_id, 1)
+                            }
+                          >
+                            屏蔽动态
+                          </a>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                          <a
+                            onClick={() =>
+                              this.handleChange1(contentData.content_id, 2)
+                            }
+                          >
+                            投诉动态
+                          </a>
+                        </Menu.Item>
+                      </Menu>
+                    }
+                    trigger={["click"]}
+                  >
+                    <DownOutlined className="icon-down" />
+                  </Dropdown>
+                </Row>
 
-            <div
-              className={maskId === contentData.content_id ? "" : "showThree"}
-            >
-              {contentData && contentData.content}
-            </div>
-            {!(maskId === contentData.content_id) &&
-              contentData &&
-              contentData.content.length > 130 && (
                 <div
-                  className="more"
-                  onClick={() =>
-                    this.openMask(
-                      contentData.brief_introduction,
-                      contentData.content_id
-                    )
+                  className={
+                    maskId === contentData.content_id ? "" : "showThree"
                   }
                 >
-                  查看更多
+                  {contentData && contentData.content}
                 </div>
-              )}
-            {contentData &&
-              contentData.avl_attachments &&
-              contentData.avl_attachments.map((val) => {
-                return (
-                  <Avatar
-                    key={val.document_id}
-                    className="margin-author-img"
-                    shape="square"
-                    size={64}
-                    src={val.path}
-                  />
-                );
-              })}
-            {/* <Avatar
+                {!(maskId === contentData.content_id) &&
+                  contentData &&
+                  contentData.content.length > 130 && (
+                    <div
+                      className="more"
+                      onClick={() =>
+                        this.openMask(
+                          contentData.brief_introduction,
+                          contentData.content_id
+                        )
+                      }
+                    >
+                      查看更多
+                    </div>
+                  )}
+                {contentData &&
+                  contentData.avl_attachments &&
+                  contentData.avl_attachments.map((val) => {
+                    return (
+                      <Avatar
+                        key={val.document_id}
+                        className="margin-author-img"
+                        shape="square"
+                        size={64}
+                        src={val.path}
+                      />
+                    );
+                  })}
+                {/* <Avatar
             className="margin-author-img"
             shape="square"
             size={64}
@@ -463,140 +480,144 @@ class Author extends React.PureComponent {
             size={64}
             src="../img/photp8.jpg"
           /> */}
-            <br />
-            <br />
-            {/* <Row className="buttom-click"> */}
-            <Row>
-              <Col span={6}>
-                <div className="iconShow">
-                  推荐
-                  <RotateRightOutlined
-                    className="margin-sm"
-                    style={{ color: contentData.is_recommend ? "#1890ff" : "" }}
-                    onClick={() => this.gotuijian(contentData.content_id)}
-                  />
-                  {contentData.recommend_number}
-                </div>
-              </Col>
-              <Col span={6}>
-                <div
-                  className="iconShow"
-                  onClick={() => this.gogetComment(contentData.content_id)}
-                >
-                  评论
-                  <MessageOutlined className="margin-sm" />
-                  {contentData.comment_number}
-                </div>
-              </Col>
-              <Col span={6}>
-                <div className="iconShow">
-                  点赞
-                  <LikeOutlined
-                    className="margin-sm"
-                    style={{ color: contentData.is_like ? "#1890ff" : "" }}
-                    onClick={() =>
-                      this.goDianzan(
-                        contentData.content_id,
-                        contentData.is_like
-                      )
-                    }
-                  />
-                  {contentData.like_number}
-                </div>
-              </Col>
-              <Col span={6}>
-                <div className="iconShow">
-                  超赞
-                  <CrownOutlined className="margin-sm" />
-                  {contentData.collect_number}
-                </div>
-              </Col>
-            </Row>
+                <br />
+                <br />
+                {/* <Row className="buttom-click"> */}
+                <Row>
+                  <Col span={6}>
+                    <div className="iconShow">
+                      推荐
+                      <RotateRightOutlined
+                        className="margin-sm"
+                        style={{
+                          color: contentData.is_recommend ? "#1890ff" : "",
+                        }}
+                        onClick={() => this.gotuijian(contentData.content_id)}
+                      />
+                      {contentData.recommend_number}
+                    </div>
+                  </Col>
+                  <Col span={6}>
+                    <div
+                      className="iconShow"
+                      onClick={() => this.gogetComment(contentData.content_id)}
+                    >
+                      评论
+                      <MessageOutlined className="margin-sm" />
+                      {contentData.comment_number}
+                    </div>
+                  </Col>
+                  <Col span={6}>
+                    <div className="iconShow">
+                      点赞
+                      <LikeOutlined
+                        className="margin-sm"
+                        style={{ color: contentData.is_like ? "#1890ff" : "" }}
+                        onClick={() =>
+                          this.goDianzan(
+                            contentData.content_id,
+                            contentData.is_like
+                          )
+                        }
+                      />
+                      {contentData.like_number}
+                    </div>
+                  </Col>
+                  <Col span={6}>
+                    <div className="iconShow">
+                      超赞
+                      <CrownOutlined className="margin-sm" />
+                      {contentData.collect_number}
+                    </div>
+                  </Col>
+                </Row>
 
-            {/* 收藏 */}
+                {/* 收藏 */}
 
-            {/* <Tag>
+                {/* <Tag>
                 <HeartOutlined className="margin-sm" />
               收藏
             </Tag> */}
-          </Col>
-        </Row>
-        <Modal
-          title="评论列表"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          cancelText="取消"
-          okText="确定"
-          footer={null}
-        >
-          <div>
-            <List
-              itemLayout="horizontal"
-              dataSource={commentList}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                    }
-                    title={<a href="https://ant.design">{item.nick_name}</a>}
-                    description={item.content}
-                    onClick={() => this.setComment(item.pid, item.ref_id)}
-                  />
-                  {/* <div>回复</div> */}
-                </List.Item>
-              )}
-            />
-            <Comment
-              // avatar={
-              //   <Avatar
-              //     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              //     alt="Han Solo"
-              //   />
-              // }
-              content={
-                <Editor
-                  onChange={this.handleChange}
-                  onSubmit={this.handleSubmit}
-                  submitting={submitting}
-                  value={value}
+              </Col>
+            </Row>
+            <Modal
+              title="评论列表"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              cancelText="取消"
+              okText="确定"
+              footer={null}
+            >
+              <div>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={commentList}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar icon={<UserOutlined />} />}
+                        title={item.nick_name}
+                        description={item.content}
+                        onClick={() => this.setComment(item.pid, item.ref_id)}
+                      />
+                      <div style={{ float: "right", cursor: "pointer" }}>
+                        回复
+                      </div>
+                    </List.Item>
+                  )}
                 />
-              }
-            />
-          </div>
-        </Modal>
+                <Comment
+                  // avatar={
+                  //   <Avatar
+                  //     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  //     alt="Han Solo"
+                  //   />
+                  // }
+                  content={
+                    <Editor
+                      onChange={this.handleChange}
+                      onSubmit={this.handleSubmit}
+                      submitting={submitting}
+                      value={value}
+                    />
+                  }
+                />
+              </div>
+            </Modal>
 
-        <Modal
-          title="动态处理"
-          visible={this.state.visible1}
-          cancelText="取消"
-          okText="确定"
-          onOk={this.handleOk1}
-          onCancel={this.handleCancel1}
-        >
-          {type == 1 ? null : (
-            <div>
-              <TextArea
-                rows={4}
-                onChange={this.onChange1}
-                value={value1}
-                style={{ marginTop: "20px" }}
-              />
-            </div>
-          )}
-        </Modal>
-        <Modal
-          title="内容详情"
-          visible={this.state.visible2}
-          cancelText="取消"
-          okText="确定"
-          onOk={this.handleOk2}
-          onCancel={this.cancel2}
-        >
-          <div className="detail">{value2}</div>
-        </Modal>
-      </List>
+            <Modal
+              title="动态处理"
+              visible={this.state.visible1}
+              cancelText="取消"
+              okText="确定"
+              onOk={this.handleOk1}
+              onCancel={this.handleCancel1}
+            >
+              {type == 1 ? null : (
+                <div>
+                  <TextArea
+                    rows={4}
+                    onChange={this.onChange1}
+                    value={value1}
+                    style={{ marginTop: "20px" }}
+                  />
+                </div>
+              )}
+            </Modal>
+            <Modal
+              title="内容详情"
+              visible={this.state.visible2}
+              cancelText="取消"
+              okText="确定"
+              onOk={this.handleOk2}
+              onCancel={this.cancel2}
+            >
+              <div className="detail">{value2}</div>
+            </Modal>
+          </List>
+        )}
+      </div>
     );
   }
 }

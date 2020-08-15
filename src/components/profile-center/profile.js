@@ -11,7 +11,7 @@ import {
   Input,
   DatePicker,
   Form,
-  Select
+  Select,
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
@@ -36,20 +36,20 @@ function beforeUpload(file) {
 
 class AvatarUpload extends React.Component {
   state = {
-    loading: false
+    loading: false,
   };
 
-  handleChange = info => {
+  handleChange = (info) => {
     if (info.file.status === "uploading") {
       this.setState({ loading: true });
       return;
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
+      getBase64(info.file.originFileObj, (imageUrl) =>
         this.setState({
           imageUrl,
-          loading: false
+          loading: false,
         })
       );
     }
@@ -88,38 +88,38 @@ const { Option } = Select;
 const formItemLayout = {
   labelCol: {
     xs: {
-      span: 24
+      span: 24,
     },
     sm: {
-      span: 8
-    }
+      span: 8,
+    },
   },
   wrapperCol: {
     xs: {
-      span: 24
+      span: 24,
     },
     sm: {
-      span: 16
-    }
-  }
+      span: 16,
+    },
+  },
 };
 const tailFormItemLayout = {
   wrapperCol: {
     xs: {
       span: 24,
-      offset: 0
+      offset: 0,
     },
     sm: {
       span: 16,
-      offset: 8
-    }
-  }
+      offset: 8,
+    },
+  },
 };
 
 const PersonalProfile = () => {
   const [form] = Form.useForm();
 
-  const onFinish = values => {
+  const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
 
@@ -127,7 +127,7 @@ const PersonalProfile = () => {
     <Form.Item name="prefix" noStyle>
       <Select
         style={{
-          width: 70
+          width: 70,
         }}
       >
         <Option value="86">+86</Option>
@@ -143,7 +143,7 @@ const PersonalProfile = () => {
       name="personalprofile"
       onFinish={onFinish}
       initialValues={{
-        prefix: "86"
+        prefix: "86",
       }}
       scrollToFirstError
     >
@@ -154,8 +154,8 @@ const PersonalProfile = () => {
           {
             required: true,
             message: "请输入昵称",
-            whitespace: true
-          }
+            whitespace: true,
+          },
         ]}
       >
         <Input />
@@ -169,7 +169,7 @@ const PersonalProfile = () => {
         <Input
           addonBefore={prefixSelector}
           style={{
-            width: "100%"
+            width: "100%",
           }}
         />
       </Form.Item>
@@ -180,8 +180,8 @@ const PersonalProfile = () => {
         rules={[
           {
             type: "email",
-            message: "请输入正确的邮箱"
-          }
+            message: "请输入正确的邮箱",
+          },
         ]}
       >
         <Input />
@@ -310,9 +310,9 @@ export default function Profile() {
               </Row>
             </Card>
           </TabPane>
-          <TabPane tab="xxxxxxx" key="2">
+          {/* <TabPane tab="xxxxxxx" key="2">
             Content of Tab 2
-          </TabPane>
+          </TabPane> */}
         </Tabs>
       </div>
     </Row>

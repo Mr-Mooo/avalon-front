@@ -20,6 +20,8 @@ class HomeTab extends React.PureComponent {
     count: 0,
     page: 1,
     key: "",
+    keyMesage: "",
+    keyValue: "",
     options: {
       type: "recommend",
       limit: 10,
@@ -27,28 +29,44 @@ class HomeTab extends React.PureComponent {
       key: "",
     },
   };
-  callback = (key) => {
+  callback = async (key) => {
     console.log(key, "12");
     const options = {
       type: key === "1" ? "recommend" : key === "2" ? "follow" : "subscribe",
       limit: 10,
       page: 1,
     };
-    this.getContentData(options);
+    const res = await contentListApi(options);
+    this.setState({
+      data: res.rows,
+      keyValue: key,
+    });
   };
 
   componentDidMount() {
     const { options } = this.state;
-    this.eventEmitter = emitter.addListener("changeMessage", (message) => {
-      let option = {
-        key: message,
-        type: "recommend",
-        limit: 10,
-        page: 1,
-      };
-      this.getContentData(option);
-    });
     this.getContentData(options);
+    this.eventEmitter = emitter.addListener(
+      "changeMessage",
+      async (message) => {
+        let option = {
+          key: message,
+          type: "recommend",
+          limit: 10,
+          page: 1,
+        };
+        this.setState({
+          keyMesage: message,
+          data: [],
+        });
+        const res = await contentListApi(options);
+        this.setState({
+          data: res.rows,
+          count: res.count,
+          page: options.page ? options.page : 1,
+        });
+      }
+    );
   }
   // componentWillUnmount() {
   //   // 卸载时移除事件
@@ -80,7 +98,7 @@ class HomeTab extends React.PureComponent {
   };
 
   handleInfiniteOnLoad = () => {
-    let { data, count, page, hasMore } = this.state;
+    let { data, count, page, hasMore, keyMesage, keyValue } = this.state;
     this.setState({
       loading: true,
     });
@@ -95,6 +113,13 @@ class HomeTab extends React.PureComponent {
     const options = {
       page: page + 1,
       limit: 5,
+      key: keyMesage,
+      type:
+        keyValue === "1"
+          ? "recommend"
+          : keyValue === "2"
+          ? "follow"
+          : "subscribe",
     };
     // const options = {};
     this.getContentData(options);
@@ -158,7 +183,7 @@ class HomeTab extends React.PureComponent {
             }
             key="2"
           >
-            <div className="demo-infinite-container">
+            <div className="demo-infinite-container" overflow="auto">
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}

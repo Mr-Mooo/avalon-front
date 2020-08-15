@@ -24,6 +24,7 @@ class PicturesWall extends React.Component {
     previewTitle: "",
     uploadOptions: {},
     needOption: {},
+    imgUrl: [],
     fileList: [
       // {
       //   uid: "-1",
@@ -83,16 +84,13 @@ class PicturesWall extends React.Component {
     }
   };
   handleChange = async ({ file, fileList }) => {
-    console.log(file, fileList, "12");
+    const { imgUrl } = this.state;
     const query = {
       file_name: file.name,
       category: "content",
       suffix: this.getFileSuffix(file.name),
     };
     const res = await uploadImg(query);
-    const formData = new FormData();
-    const imgFile = file;
-    formData.append("image", imgFile);
     if (res) {
       const needOption = {
         url: res.data.request_url,
@@ -105,6 +103,7 @@ class PicturesWall extends React.Component {
       };
       this.setState({
         needOption: needOption,
+        imgUrl: [...imgUrl, res.data.key],
       });
       // const res2 = await myFetch(
       //   `${res.data.request_url}`,
