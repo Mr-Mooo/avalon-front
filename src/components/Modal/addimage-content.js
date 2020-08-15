@@ -23,6 +23,7 @@ class PicturesWall extends React.Component {
     previewImage: "",
     previewTitle: "",
     uploadOptions: {},
+    needOption: {},
     fileList: [
       // {
       //   uid: "-1",
@@ -89,23 +90,47 @@ class PicturesWall extends React.Component {
       suffix: this.getFileSuffix(file.name),
     };
     const res = await uploadImg(query);
+    const formData = new FormData();
+    const imgFile = file;
+    formData.append("image", imgFile);
     if (res) {
       const needOption = {
+        url: res.data.request_url,
         key: res.data.key,
         contentType: res.data["content-type"],
         policy: res.data.policy,
         signature: res.data.signature,
         accessKeyId: res.data.accessKeyId,
-        file: file,
+        file: fileList,
       };
-      const res2 = await myFetch(`${res.data.request_url}`, needOption, "POST");
-      console.log(res2, "1212");
+      this.setState({
+        needOption: needOption,
+      });
+      // const res2 = await myFetch(
+      //   `${res.data.request_url}`,
+      //   {
+      //     key: res.data.key,
+      //     contentType: res.data["content-type"],
+      //     policy: res.data.policy,
+      //     signature: res.data.signature,
+      //     accessKeyId: res.data.accessKeyId,
+      //     file: file.thumbUrl,
+      //   },
+      //   "POST"
+      // );
+      // console.log(res2, "1212");
     }
     this.setState({ fileList });
   };
 
   render() {
-    const { previewVisible, previewImage, fileList, previewTitle } = this.state;
+    const {
+      previewVisible,
+      previewImage,
+      fileList,
+      previewTitle,
+      needOption,
+    } = this.state;
     const uploadButton = (
       <div>
         <PlusOutlined />
@@ -115,8 +140,16 @@ class PicturesWall extends React.Component {
     return (
       <div className="clearfix">
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action={needOption.url}
           listType="picture-card"
+          method="POST"
+          data={{
+            key: needOption.key,
+            "content-type": needOption.contentType,
+            policy: needOption.policy,
+            signature: needOption.signature,
+            accessKeyId: needOption.accessKeyId,
+          }}
           fileList={fileList}
           onPreview={this.handlePreview}
           onChange={this.handleChange}

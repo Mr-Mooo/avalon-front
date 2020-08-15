@@ -564,9 +564,6 @@ class Author extends React.PureComponent {
                 />
               }
             />
-            <Button type="primary" onClick={this.handleOk}>
-              确定
-            </Button>
           </div>
         </Modal>
 
