@@ -59,7 +59,7 @@ class HomeTab extends React.PureComponent {
           keyMesage: message,
           data: [],
         });
-        const res = await contentListApi(options);
+        const res = await contentListApi(option);
         this.setState({
           data: res.rows,
           count: res.count,
