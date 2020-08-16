@@ -2,12 +2,12 @@ import React from "react";
 
 import "antd/dist/antd.css";
 import "../../index.css";
-import { Upload, Modal, Input, Tag, Radio } from "antd";
+import { Upload, Modal, Input, Tag, Radio, notification } from "antd";
 import { TweenOneGroup } from "rc-tween-one";
 import { PlusOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
-import { uploadImg } from "../../services/content.js";
-import { config, myFetch } from "../../utils";
+import { uploadImg, addContentApi } from "../../services/content.js";
+import emitter from "../../utils/events.js";
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -15,157 +15,6 @@ function getBase64(file) {
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-}
-
-class PicturesWall extends React.Component {
-  state = {
-    previewVisible: false,
-    previewImage: "",
-    previewTitle: "",
-    uploadOptions: {},
-    needOption: {},
-    imgUrl: [],
-    fileList: [
-      // {
-      //   uid: "-1",
-      //   name: "image.png",
-      //   status: "done",
-      //   url:
-      //     "../img/photo3.jpg"
-      // },
-      // {
-      //   uid: "-2",
-      //   name: "image.png",
-      //   status: "done",
-      //   url:
-      //     "../img/photo4.jpg"
-      // },
-      // {
-      //   uid: "-3",
-      //   name: "image.png",
-      //   status: "done",
-      //   url:
-      //     "../img/photo5.jpg"
-      // },
-      // {
-      //   uid: "-4",
-      //   name: "image.png",
-      //   status: "done",
-      //   path:
-      //     "../img/photo6.jpg"
-      // },
-      // {
-      //   uid: "-5",
-      //   name: "image.png",
-      //   status: "error"
-      // }
-    ],
-  };
-
-  handleCancel = () => this.setState({ previewVisible: false });
-
-  handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    this.setState({
-      previewImage: file.url || file.preview,
-      previewVisible: true,
-      previewTitle:
-        file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
-    });
-  };
-  getFileSuffix = (name) => {
-    if (name) {
-      const lastIndex = name.lastIndexOf(".");
-      const suffix = name.slice(lastIndex + 1);
-      return suffix;
-    }
-  };
-  handleChange = async ({ file, fileList }) => {
-    const { imgUrl } = this.state;
-    const query = {
-      file_name: file.name,
-      category: "content",
-      suffix: this.getFileSuffix(file.name),
-    };
-    const res = await uploadImg(query);
-    if (res) {
-      const needOption = {
-        url: res.data.request_url,
-        key: res.data.key,
-        contentType: res.data["content-type"],
-        policy: res.data.policy,
-        signature: res.data.signature,
-        accessKeyId: res.data.accessKeyId,
-        file: fileList,
-      };
-      this.setState({
-        needOption: needOption,
-        imgUrl: [...imgUrl, res.data.key],
-      });
-      // const res2 = await myFetch(
-      //   `${res.data.request_url}`,
-      //   {
-      //     key: res.data.key,
-      //     contentType: res.data["content-type"],
-      //     policy: res.data.policy,
-      //     signature: res.data.signature,
-      //     accessKeyId: res.data.accessKeyId,
-      //     file: file.thumbUrl,
-      //   },
-      //   "POST"
-      // );
-      // console.log(res2, "1212");
-    }
-    this.setState({ fileList });
-  };
-
-  render() {
-    const {
-      previewVisible,
-      previewImage,
-      fileList,
-      previewTitle,
-      needOption,
-    } = this.state;
-    const uploadButton = (
-      <div>
-        <PlusOutlined />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-    return (
-      <div className="clearfix">
-        <Upload
-          action={needOption.url}
-          listType="picture-card"
-          method="POST"
-          data={{
-            key: needOption.key,
-            "content-type": needOption.contentType,
-            policy: needOption.policy,
-            signature: needOption.signature,
-            accessKeyId: needOption.accessKeyId,
-          }}
-          fileList={fileList}
-          onPreview={this.handlePreview}
-          onChange={this.handleChange}
-        >
-          {fileList.length >= 9 ? null : uploadButton}
-        </Upload>
-        <Modal
-          visible={previewVisible}
-          title={previewTitle}
-          footer={null}
-          onCancel={this.handleCancel}
-        >
-          <img alt="example" style={{ width: "100%" }} src={previewImage} />
-        </Modal>
-      </div>
-    );
-  }
 }
 
 const { CheckableTag } = Tag;
@@ -336,12 +185,81 @@ class Permission extends React.Component {
 }
 
 class AddImageContent extends React.Component {
-  state = {
-    tags: [],
-    inputVisible: false,
-    inputValue: "",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      tags: [],
+      inputVisible: false,
+      inputValue: "",
+      message: "",
+      previewVisible: false,
+      previewImage: "",
+      previewTitle: "",
+      uploadOptions: {},
+      needOption: {},
+      imgUrl: [],
+      fileList: [],
+    };
+  }
+  handleCancel = () => this.setState({ previewVisible: false });
 
+  handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+      previewTitle:
+        file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
+    });
+  };
+  getFileSuffix = (name) => {
+    if (name) {
+      const lastIndex = name.lastIndexOf(".");
+      const suffix = name.slice(lastIndex + 1);
+      return suffix;
+    }
+  };
+  handleChange = async ({ file, fileList }) => {
+    const { imgUrl } = this.state;
+    const query = {
+      file_name: file.name,
+      category: "content",
+      suffix: this.getFileSuffix(file.name),
+    };
+    const res = await uploadImg(query);
+    if (res) {
+      const needOption = {
+        url: res.data.request_url,
+        key: res.data.key,
+        contentType: res.data["content-type"],
+        policy: res.data.policy,
+        signature: res.data.signature,
+        accessKeyId: res.data.accessKeyId,
+        file: fileList,
+      };
+      this.setState({
+        needOption: needOption,
+        imgUrl: [...imgUrl, res.data.key],
+      });
+      // const res2 = await myFetch(
+      //   `${res.data.request_url}`,
+      //   {
+      //     key: res.data.key,
+      //     contentType: res.data["content-type"],
+      //     policy: res.data.policy,
+      //     signature: res.data.signature,
+      //     accessKeyId: res.data.accessKeyId,
+      //     file: file.thumbUrl,
+      //   },
+      //   "POST"
+      // );
+      // console.log(res2, "1212");
+    }
+    this.setState({ fileList });
+  };
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter((tag) => tag !== removedTag);
     console.log(tags);
@@ -373,7 +291,36 @@ class AddImageContent extends React.Component {
   saveInputRef = (input) => {
     this.input = input;
   };
-
+  getMessage = (e) => {
+    this.setState({
+      message: e.target.value,
+    });
+  };
+  //关闭弹框
+  onCancel = () => {
+    this.props.onCancel();
+  };
+  handleSubmit = async () => {
+    const { imgUrl, tags, message } = this.state;
+    const options = {
+      subject: "测试",
+      brief_introduction: "测试",
+      type: "pictrue",
+      attachment: imgUrl,
+      tag: tags,
+      content: message,
+    };
+    const addRes = await addContentApi(options);
+    if (addRes) {
+      this.onCancel();
+      notification.success({
+        message: "发布成功",
+        description: null,
+        duration: 2,
+      });
+      emitter.emit("changeMessage", "");
+    }
+  };
   forMap = (tag) => {
     const tagElem = (
       <Tag
@@ -394,57 +341,115 @@ class AddImageContent extends React.Component {
   };
 
   render() {
-    const { tags, inputVisible, inputValue } = this.state;
+    const {
+      tags,
+      inputVisible,
+      inputValue,
+      previewVisible,
+      previewImage,
+      fileList,
+      previewTitle,
+      needOption,
+    } = this.state;
+    const { visible } = this.props;
     const tagChild = tags.map(this.forMap);
+    const uploadButton = (
+      <div>
+        <PlusOutlined />
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
     return (
-      <div className="margin-1">
-        <h4>图片配文</h4>
-        <TextArea rows={4} />
-        <br />
-        <br />
-        <h4>上传图片</h4>
-        <p>
-          *图片上传格式为png、jpg、jpeg格式，单张图片不超过20M，最多可上传9张图片
-        </p>
-        <PicturesWall />
-        <h4>添加标签</h4>
-        <div>
-          <div style={{ marginBottom: 16 }}>
-            <TweenOneGroup
-              enter={{
-                scale: 0.8,
-                opacity: 0,
-                type: "from",
-                duration: 100,
-                onComplete: (e) => {
-                  e.target.style = "";
-                },
-              }}
-              leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
-              appear={false}
-            >
-              {tagChild}
-            </TweenOneGroup>
+      <Modal
+        visible={visible}
+        cancelText="取消"
+        okText="提交"
+        title="投稿"
+        style={{ minWidth: 483 }}
+        onOk={this.handleSubmit}
+        onCancel={this.onCancel}
+      >
+        <div className="margin-1">
+          <h4>图片配文</h4>
+          <TextArea rows={4} onChange={(e) => this.getMessage(e)} />
+          <br />
+          <br />
+          <h4>上传图片</h4>
+          <p>
+            *图片上传格式为png、jpg、jpeg格式，单张图片不超过20M，最多可上传9张图片
+          </p>
+          <div>
+            <div className="clearfix">
+              <Upload
+                action={needOption.url}
+                listType="picture-card"
+                method="POST"
+                data={{
+                  key: needOption.key,
+                  "content-type": needOption.contentType,
+                  policy: needOption.policy,
+                  signature: needOption.signature,
+                  accessKeyId: needOption.accessKeyId,
+                }}
+                fileList={fileList}
+                onPreview={this.handlePreview}
+                onChange={this.handleChange}
+              >
+                {fileList.length >= 9 ? null : uploadButton}
+              </Upload>
+              <Modal
+                visible={previewVisible}
+                title={previewTitle}
+                footer={null}
+                onCancel={this.handleCancel}
+              >
+                <img
+                  alt="example"
+                  style={{ width: "100%" }}
+                  src={previewImage}
+                />
+              </Modal>
+            </div>
           </div>
-          {inputVisible && (
-            <Input
-              ref={this.saveInputRef}
-              type="text"
-              size="small"
-              style={{ width: 78 }}
-              value={inputValue}
-              onChange={this.handleInputChange}
-              onBlur={this.handleInputConfirm}
-              onPressEnter={this.handleInputConfirm}
-            />
-          )}
-          {!inputVisible && (
-            <Tag onClick={this.showInput} className="site-tag-plus">
-              <PlusOutlined /> 添加标签
-            </Tag>
-          )}
-        </div>
-        {/* <HotTagsAge /> <br />
+          {/* <PicturesWall /> */}
+          <h4>添加标签</h4>
+          <div>
+            <div style={{ marginBottom: 16 }}>
+              <TweenOneGroup
+                enter={{
+                  scale: 0.8,
+                  opacity: 0,
+                  type: "from",
+                  duration: 100,
+                  onComplete: (e) => {
+                    e.target.style = "";
+                  },
+                }}
+                leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                appear={false}
+              >
+                {tagChild}
+              </TweenOneGroup>
+            </div>
+            {inputVisible && (
+              <Input
+                ref={this.saveInputRef}
+                type="text"
+                size="small"
+                style={{ width: 78 }}
+                value={inputValue}
+                onChange={this.handleInputChange}
+                onBlur={this.handleInputConfirm}
+                onPressEnter={this.handleInputConfirm}
+              />
+            )}
+            {!inputVisible && (
+              <Tag onClick={this.showInput} className="site-tag-plus">
+                <PlusOutlined /> 添加标签
+              </Tag>
+            )}
+          </div>
+          {/* <HotTagsAge /> <br />
       <br />
       <HotTagsLegal />
       <br />
@@ -456,7 +461,8 @@ class AddImageContent extends React.Component {
       <HotTagsNonMandatory />
       <h4>权限设置</h4>
       <Permission /> */}
-      </div>
+        </div>
+      </Modal>
     );
   }
 }

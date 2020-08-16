@@ -300,7 +300,6 @@ class Author extends React.PureComponent {
       contentData,
       id,
     } = this.state;
-    console.log(contentData, "daad");
     // const menu = (
     //   <Menu onClick={this.handleChange1()}>
     //     <Menu.Item key="1">屏蔽动态</Menu.Item>
@@ -464,10 +463,24 @@ class Author extends React.PureComponent {
                         className="margin-author-img"
                         shape="square"
                         size={64}
-                        src={val.path}
+                        src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
                       />
                     );
                   })}
+                <br />
+                <div>
+                  {contentData.tag &&
+                    contentData.tag.map((item, index) => {
+                      return (
+                        <Tag
+                          key={index}
+                          style={{ border: "1px solid #2db7f5" }}
+                        >
+                          {item}
+                        </Tag>
+                      );
+                    })}
+                </div>
                 {/* <Avatar
             className="margin-author-img"
             shape="square"
@@ -480,7 +493,6 @@ class Author extends React.PureComponent {
             size={64}
             src="../img/photp8.jpg"
           /> */}
-                <br />
                 <br />
                 {/* <Row className="buttom-click"> */}
                 <Row>

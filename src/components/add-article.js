@@ -18,9 +18,9 @@ class Addarticle extends React.Component {
   };
 
   showModal = () => {
-    console.log(11111111)
+    console.log(11111111);
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
@@ -28,23 +28,25 @@ class Addarticle extends React.Component {
     window.location.reload();
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     console.log(e);
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
   render() {
-    const { modifyVisible} = this.state;
+    const { modifyVisible } = this.state;
     return (
       <div>
-        <Button type="link"
-        onClick={() => {
-                this.setState({
-                  modifyVisible: true,
-                });
-              }}>
+        <Button
+          type="link"
+          onClick={() => {
+            this.setState({
+              modifyVisible: true,
+            });
+          }}
+        >
           <FileOutlined /> 文章投稿
         </Button>
         <AddArticleContent
@@ -71,39 +73,51 @@ class Addpic extends React.Component {
 
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
-  handleOk = e => {
+  handleOk = (e) => {
     console.log(e);
     window.location.reload();
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     console.log(e);
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
   render() {
+    const { visible } = this.state;
     return (
       <div>
         <Button type="link" onClick={this.showModal}>
           <FileOutlined /> 图片投稿
         </Button>
-        <Modal
+        <AddImageContent
+          title="文章投稿"
+          visible={visible}
+          onCancel={() => {
+            this.setState({
+              visible: false,
+            });
+          }}
+        >
+          {/* <AddArticleContent /> */}
+        </AddImageContent>
+        {/* <Modal
           title="图片投稿"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
           <AddImageContent />
-        </Modal>
+        </Modal> */}
       </div>
     );
   }

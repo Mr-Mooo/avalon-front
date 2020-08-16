@@ -16,23 +16,26 @@ import FormItem from "antd/lib/form/FormItem";
 import { addContentApi } from "../../services/content";
 import { TweenOneGroup } from "rc-tween-one";
 import { PlusOutlined } from "@ant-design/icons";
-
+import emitter from "../../utils/events.js";
 const { Option } = Select;
 
 const { TextArea } = Input;
 
 // const dataForm = form.getFieldsValue();
 class AddArticleContent extends PureComponent {
-  state = {
-    // warranteeTable: [],
-    // bankActive: 'ccb',
-    // bankList: [], //银行列表
-    visible: true,
-    // modalVisble: false,
-    tags: [],
-    inputVisible: false,
-    inputValue: "",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      // warranteeTable: [],
+      // bankActive: 'ccb',
+      // bankList: [], //银行列表
+      visible: true,
+      // modalVisble: false,
+      tags: [],
+      inputVisible: false,
+      inputValue: "",
+    };
+  }
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter((tag) => tag !== removedTag);
     console.log(tags);
@@ -101,7 +104,7 @@ class AddArticleContent extends PureComponent {
   // }
   handleSubmit = async (e) => {
     const fieldsValue = await this.formRef.current.validateFields();
-    console.log(fieldsValue);
+    console.log(this.props, "12");
     // return
     message.loading("Loading...", 20, () => {
       message.destroy();
@@ -136,6 +139,7 @@ class AddArticleContent extends PureComponent {
         description: null,
         duration: 2,
       });
+      emitter.emit("changeMessage", "");
     }
   };
 
