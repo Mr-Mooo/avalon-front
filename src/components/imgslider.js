@@ -16,6 +16,7 @@ class Imgslider extends React.PureComponent {
   openOne = () => {
     Modal.info({
       title: "阿瓦隆平台内容规范",
+      maskClosable: true,
       content: (
         <div style={{ overflowY: "auto", maxHeight: 600 }}>
           <h3>一．平台内容审核标准</h3>
@@ -444,11 +445,13 @@ class Imgslider extends React.PureComponent {
         </div>
       ),
       onOk() {},
+      maskClosable: true,
     });
   };
   openThree = () => {
     Modal.info({
       title: "平台禁言/封号须知",
+      maskClosable: true,
       content: (
         <div style={{ overflowY: "auto", maxHeight: 600 }}>
           <p>
@@ -513,6 +516,7 @@ class Imgslider extends React.PureComponent {
   openFour = () => {
     Modal.info({
       title: "平台功能简介",
+      maskClosable: true,
       width: 500,
       content: (
         <div style={{ overflowY: "auto", maxHeight: 600 }}>

@@ -55,9 +55,9 @@ class UserPage extends React.PureComponent {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
               euismod bibendum laoreet.
             </p>
-            <Divider />
             {!isShow && (
               <div>
+                <Divider />
                 <Button type="primary" size="small" className="margin-sm">
                   <SmileOutlined />
                   关注
@@ -69,8 +69,7 @@ class UserPage extends React.PureComponent {
             )}
           </div>
         </Card>
-        <Row>
-          {/* <Col span={8}>
+        {/* <Col span={8}>
           <Card className="margin-1">
             <Row className="align-center">
               <Col span={8}>
@@ -124,31 +123,28 @@ class UserPage extends React.PureComponent {
             </Row>
           </Card>
         </Col> */}
-          <Col span={32}>
-            <Card className="margin-1">
-              <Select
-                style={{
-                  width: 120,
-                  margin: "0 8px",
-                }}
-                defaultValue="all-portfolios"
-              >
-                <Option value="all-portfolios">全部作品</Option>
-                <Option value="pic-portfolios">图片作品</Option>
-                <Option value="pic-portfolios">文章作品</Option>
-              </Select>
-              <div className="align-right">
-                <SearchNav />
-              </div>
-            </Card>
-            <ArticleBrief />
-            <Pagination
+        <Card className="margin-1">
+          <Select
+            style={{
+              width: 120,
+              margin: "0 8px",
+            }}
+            defaultValue="all-portfolios"
+          >
+            <Option value="all-portfolios">全部作品</Option>
+            <Option value="pic-portfolios">图片作品</Option>
+            <Option value="pic-portfolios">文章作品</Option>
+          </Select>
+          <div className="align-right">
+            <SearchNav />
+          </div>
+        </Card>
+        <ArticleBrief />
+        {/* <Pagination
               className="margin-1"
               defaultCurrent={1}
               total={JSON.parse(localStorage.getItem("list")).count}
-            />
-          </Col>
-        </Row>
+            /> */}
       </div>
     );
   }

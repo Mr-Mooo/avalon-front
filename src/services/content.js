@@ -29,6 +29,11 @@ export const Dianzan = async (options) => {
   const res = await myFetch(`${config.base_url}/content/like`, options, "POST");
   return res;
 };
+// 去超赞
+export const chaozan = async (options) => {
+  const res = await myFetch(`${config.base_url}/content/add/superlike`, options, "POST");
+  return res;
+};
 // 关注
 export const guanzhu = async (options) => {
   const res = await myFetch(`${config.base_url}/user/follow`, options, "POST");

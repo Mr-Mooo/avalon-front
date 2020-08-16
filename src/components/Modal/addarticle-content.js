@@ -103,12 +103,17 @@ class AddArticleContent extends PureComponent {
   //   console.log(`checked = ${e.target.checked}`);
   // }
   handleSubmit = async (e) => {
-    const fieldsValue = await this.formRef.current.validateFields();
+    const fieldsValue = "";
+    try {
+      fieldsValue = await this.formRef.current.validateFields();
+    } catch (err) {
+      console.log(err);
+      return;
+    }
     console.log(this.props, "12");
-    // return
-    message.loading("Loading...", 20, () => {
-      message.destroy();
-    });
+    // message.loading("Loading...", 20, () => {
+    //   message.destroy();
+    // });
     const { tags } = this.state;
     const tag_id = [];
     if (fieldsValue.tag1) {
@@ -139,12 +144,18 @@ class AddArticleContent extends PureComponent {
         description: null,
         duration: 2,
       });
+      this.setState({
+        tags: [],
+      });
       emitter.emit("changeMessage", "");
     }
   };
 
   onCancel = () => {
     this.formRef.current.resetFields();
+    this.setState({
+      tags: [],
+    });
     this.props.onCancel();
   };
   formRef = React.createRef();
@@ -166,23 +177,32 @@ class AddArticleContent extends PureComponent {
         <Form
           className="mb-16"
           ref={this.formRef}
+          initialValues={{
+            remember: true,
+          }}
           className="margin-1"
-          hideRequiredMark
+          // hideRequiredMark
         >
           <h4>标题</h4>
-          <FormItem name="subject" rules={[{ required: false, message: " " }]}>
+          <FormItem
+            name="subject"
+            rules={[{ required: true, message: "内容不能为空" }]}
+          >
             <Input placeholder="适当标题可增加阅读意向（16字内）" />
           </FormItem>
           <h4>文章简介</h4>
           <FormItem
             name="brief_introduction"
-            rules={[{ required: false, message: " " }]}
+            rules={[{ required: true, message: " 内容不能为空" }]}
           >
             <Input placeholder="简介文章内容（32字内）" />
           </FormItem>
           <br />
           <h4>正文</h4>
-          <FormItem name="content" rules={[{ required: false, message: " " }]}>
+          <FormItem
+            name="content"
+            rules={[{ required: true, message: "内容不能为空" }]}
+          >
             <TextArea rows={8} />
           </FormItem>
           <h4>内容限制</h4>

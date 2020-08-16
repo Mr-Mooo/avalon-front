@@ -2,10 +2,20 @@ import React from "react";
 
 import "antd/dist/antd.css";
 import "../../index.css";
-import { Upload, Modal, Input, Tag, Radio, notification } from "antd";
+import {
+  Upload,
+  Modal,
+  Input,
+  Tag,
+  Radio,
+  notification,
+  message,
+  Form,
+} from "antd";
 import { TweenOneGroup } from "rc-tween-one";
 import { PlusOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
+import FormItem from "antd/lib/form/FormItem";
 import { uploadImg, addContentApi } from "../../services/content.js";
 import emitter from "../../utils/events.js";
 function getBase64(file) {
@@ -222,13 +232,14 @@ class AddImageContent extends React.Component {
       return suffix;
     }
   };
-  handleChange = async ({ file, fileList }) => {
+  beforeUpload = async (file, fileList) => {
     const { imgUrl } = this.state;
     const query = {
       file_name: file.name,
       category: "content",
       suffix: this.getFileSuffix(file.name),
     };
+    // if(file)
     const res = await uploadImg(query);
     if (res) {
       const needOption = {
@@ -244,20 +255,9 @@ class AddImageContent extends React.Component {
         needOption: needOption,
         imgUrl: [...imgUrl, res.data.key],
       });
-      // const res2 = await myFetch(
-      //   `${res.data.request_url}`,
-      //   {
-      //     key: res.data.key,
-      //     contentType: res.data["content-type"],
-      //     policy: res.data.policy,
-      //     signature: res.data.signature,
-      //     accessKeyId: res.data.accessKeyId,
-      //     file: file.thumbUrl,
-      //   },
-      //   "POST"
-      // );
-      // console.log(res2, "1212");
     }
+  };
+  handleChange = async ({ file, fileList }) => {
     this.setState({ fileList });
   };
   handleClose = (removedTag) => {
@@ -298,10 +298,28 @@ class AddImageContent extends React.Component {
   };
   //关闭弹框
   onCancel = () => {
+    this.setState({
+      tags: [],
+      imgUrl: [],
+      fileList: [],
+      message: "",
+    });
+    this.formRef.current.resetFields();
     this.props.onCancel();
   };
   handleSubmit = async () => {
     const { imgUrl, tags, message } = this.state;
+    try {
+      await this.formRef.current.validateFields();
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+    // if (message === "") {
+    //   // message.error("请填写图文配文内容");
+    //   return;
+    // }
+    console.log(11111);
     const options = {
       subject: "测试",
       brief_introduction: "测试",
@@ -317,6 +335,12 @@ class AddImageContent extends React.Component {
         message: "发布成功",
         description: null,
         duration: 2,
+      });
+      this.setState({
+        tags: [],
+        imgUrl: [],
+        fileList: [],
+        message: "",
       });
       emitter.emit("changeMessage", "");
     }
@@ -339,7 +363,7 @@ class AddImageContent extends React.Component {
       </span>
     );
   };
-
+  formRef = React.createRef();
   render() {
     const {
       tags,
@@ -371,7 +395,23 @@ class AddImageContent extends React.Component {
       >
         <div className="margin-1">
           <h4>图片配文</h4>
-          <TextArea rows={4} onChange={(e) => this.getMessage(e)} />
+          <Form
+            className="mb-16"
+            ref={this.formRef}
+            initialValues={{
+              remember: true,
+            }}
+            className="margin-1"
+            // hideRequiredMark
+          >
+            {" "}
+            <FormItem
+              name="subject"
+              rules={[{ required: true, message: "内容不能为空" }]}
+            >
+              <TextArea rows={4} onChange={(e) => this.getMessage(e)} />
+            </FormItem>
+          </Form>
           <br />
           <br />
           <h4>上传图片</h4>
@@ -393,6 +433,7 @@ class AddImageContent extends React.Component {
                 }}
                 fileList={fileList}
                 onPreview={this.handlePreview}
+                beforeUpload={this.beforeUpload}
                 onChange={this.handleChange}
               >
                 {fileList.length >= 9 ? null : uploadButton}

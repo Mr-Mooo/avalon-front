@@ -31,6 +31,7 @@ import {
   goComment,
   gopinbi,
   gotousu,
+  chaozan,
 } from "../services/content";
 import {
   CrownOutlined,
@@ -109,7 +110,16 @@ class Author extends React.PureComponent {
       }
     }
   };
-
+  chaozan = async (id, isLike) => {
+    let options = {
+      content_id: id,
+    };
+    const addRes = await chaozan(options);
+    if (addRes && addRes.success) {
+      message.success("点赞成功");
+      this.props.refush();
+    }
+  };
   gocollect = async (id, is_recommend) => {
     let options = {
       follow_id: id,
@@ -356,12 +366,12 @@ class Author extends React.PureComponent {
                         onClick={() =>
                           this.gocollect(
                             contentData.avl_user.user_id,
-                            contentData.is_follow
+                            contentData.avl_user.is_follow
                           )
                         }
                       >
                         <SmileOutlined />
-                        {contentData.is_follow ? "已关注" : "关注"}
+                        {contentData.avl_user.is_follow ? "已关注" : "关注"}
                       </Button>
                       {/* <Button size="small" className="margin-sm">
                     <MailOutlined /> 私信
@@ -538,7 +548,10 @@ class Author extends React.PureComponent {
                   <Col span={6}>
                     <div className="iconShow">
                       超赞
-                      <CrownOutlined className="margin-sm" />
+                      <CrownOutlined
+                        className="margin-sm"
+                        onClick={() => this.chaozan(contentData.content_id)}
+                      />
                       {contentData.collect_number}
                     </div>
                   </Col>
@@ -635,10 +648,4 @@ class Author extends React.PureComponent {
 }
 
 export default withRouter(Author);
-// export default function Author(props) {
-//   const content = (
-//   );
-//   const { contentData } = props;
-//   console.log(contentData,
-//     'contentData ...')
-// }
+
