@@ -87,7 +87,7 @@ export default function Hotcontent() {
             <Col span={3}>32.5w</Col>
           </Row>{" "}
         </TabPane>
-        <TabPane tab="Cos榜" key="3">
+        <TabPane tab="Cos榜" key="4">
           <Row>
             <Col span={11}>1. XXXXXX</Col>
             <Col span={3}>

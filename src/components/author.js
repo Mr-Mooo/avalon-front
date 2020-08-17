@@ -43,10 +43,10 @@ import {
   SmileOutlined,
   DownOutlined,
 } from "@ant-design/icons";
+import Zmage from "react-zmage";
 import { Link, withRouter } from "react-router-dom";
 const { Option } = Select;
-const { TextArea } = Input;
-
+const { TextArea, Search } = Input;
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <div>
     <Form.Item>
@@ -83,6 +83,7 @@ class Author extends React.PureComponent {
       openId: "",
       maskId: "",
       tousu_id: "",
+      replyId: "",
       id: "",
       contentData: this.props.contentData,
     };
@@ -172,12 +173,14 @@ class Author extends React.PureComponent {
   handleOk = (e) => {
     this.setState({
       visible: false,
+      replyId: "",
     });
   };
 
   handleCancel = (e) => {
     this.setState({
       visible: false,
+      replyId: "",
     });
   };
 
@@ -233,6 +236,7 @@ class Author extends React.PureComponent {
     }
     this.setState({
       submitting: true,
+      replyId: "",
     });
 
     setTimeout(() => {
@@ -294,7 +298,11 @@ class Author extends React.PureComponent {
   cancel2 = () => {
     this.setState({ visible2: false });
   };
-
+  reply = (value) => {
+    this.setState({
+      replyId: value,
+    });
+  };
   render() {
     const {
       comments,
@@ -309,13 +317,22 @@ class Author extends React.PureComponent {
       maskId,
       contentData,
       id,
+      replyId,
     } = this.state;
+    console.log(commentList, "112");
     // const menu = (
     //   <Menu onClick={this.handleChange1()}>
     //     <Menu.Item key="1">屏蔽动态</Menu.Item>
     //     <Menu.Item key="2">投诉动态</Menu.Item>
     //   </Menu>
     // );
+    const setData = JSON.parse(JSON.stringify(contentData.avl_attachments));
+    const srcData = setData.map((item) => {
+      return {
+        src: `https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${item.path}`,
+        alt: "图片",
+      };
+    });
     return (
       <div style={{ width: "100%" }}>
         {!(id === contentData.content_id) && (
@@ -468,12 +485,12 @@ class Author extends React.PureComponent {
                   contentData.avl_attachments &&
                   contentData.avl_attachments.map((val) => {
                     return (
-                      <Avatar
-                        key={val.document_id}
+                      <Zmage
                         className="margin-author-img"
-                        shape="square"
-                        size={64}
                         src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
+                        set={srcData}
+                        style={{ width: 100, height: 100 }}
+                        key={val.document_id}
                       />
                     );
                   })}
@@ -579,17 +596,30 @@ class Author extends React.PureComponent {
                   itemLayout="horizontal"
                   dataSource={commentList}
                   renderItem={(item) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar icon={<UserOutlined />} />}
-                        title={item.nick_name}
-                        description={item.content}
-                        onClick={() => this.setComment(item.pid, item.ref_id)}
-                      />
-                      <div style={{ float: "right", cursor: "pointer" }}>
+                    <div>
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={<Avatar icon={<UserOutlined />} />}
+                          title={item.nick_name}
+                          description={item.content}
+                          onClick={() => this.setComment(item.pid, item.ref_id)}
+                        />
+                      </List.Item>
+                      <div
+                        className="replay"
+                        onClick={() => this.reply(item.comment_id)}
+                      >
                         回复
                       </div>
-                    </List.Item>
+                      {replyId === item.comment_id && (
+                        <Search
+                          placeholder="请输入回复内容"
+                          enterButton="提交"
+                          size="small"
+                          onSearch={(value) => console.log(value)}
+                        />
+                      )}
+                    </div>
                   )}
                 />
                 <Comment
@@ -648,4 +678,3 @@ class Author extends React.PureComponent {
 }
 
 export default withRouter(Author);
-
