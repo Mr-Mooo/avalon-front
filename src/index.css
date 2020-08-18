@@ -254,6 +254,7 @@ div#root {
 }
 .iconShow {
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .listAuthor {

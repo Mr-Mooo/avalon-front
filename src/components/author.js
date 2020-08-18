@@ -80,6 +80,8 @@ class Author extends React.PureComponent {
       type: 1,
       value1: "",
       content_id: "",
+      contentId: "",
+      userId: "",
       openId: "",
       maskId: "",
       tousu_id: "",
@@ -298,10 +300,43 @@ class Author extends React.PureComponent {
   cancel2 = () => {
     this.setState({ visible2: false });
   };
-  reply = (value) => {
-    this.setState({
-      replyId: value,
-    });
+  reply = (item) => {
+    const { replyId } = this.state;
+    if (item.comment_id === replyId) {
+      this.setState({
+        replyId: "",
+        userId: "",
+        contentId: "",
+      });
+    } else {
+      const { comment_id, create_user, content_id } = item;
+      this.setState({
+        replyId: comment_id,
+        userId: create_user,
+        contentId: content_id,
+      });
+    }
+  };
+  // 获得回复评论内容
+  getSearch = async (value, item) => {
+    const { contentId, replyId, userId } = this.state;
+    const options = {
+      content: value,
+      pid: replyId,
+      ref_id: userId,
+      content_id: contentId,
+    };
+    const res = await goComment(options);
+    console.log(res, "123");
+  };
+  //获取二级评论
+  openReply = async (value) => {
+    const options = {
+      pid: 2,
+      content_id: value,
+    };
+    const res = await gogetComment(options);
+    console.log(res, "12");
   };
   render() {
     const {
@@ -588,10 +623,17 @@ class Author extends React.PureComponent {
               onOk={this.handleOk}
               onCancel={this.handleCancel}
               cancelText="取消"
+              width="550px"
               okText="确定"
               footer={null}
             >
-              <div>
+              <div
+                style={{
+                  maxHeight: 800,
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                }}
+              >
                 <List
                   itemLayout="horizontal"
                   dataSource={commentList}
@@ -605,20 +647,59 @@ class Author extends React.PureComponent {
                           onClick={() => this.setComment(item.pid, item.ref_id)}
                         />
                       </List.Item>
-                      <div
-                        className="replay"
-                        onClick={() => this.reply(item.comment_id)}
-                      >
+                      <div className="replay" onClick={() => this.reply(item)}>
                         回复
                       </div>
                       {replyId === item.comment_id && (
-                        <Search
-                          placeholder="请输入回复内容"
-                          enterButton="提交"
-                          size="small"
-                          onSearch={(value) => console.log(value)}
-                        />
+                        <div
+                          style={{
+                            width: 420,
+                            marginLeft: 50,
+                            marginBottom: 10,
+                          }}
+                        >
+                          <Search
+                            placeholder="请输入回复内容"
+                            enterButton="评论"
+                            size="small"
+                            onSearch={(value) => this.getSearch(value)}
+                          />
+                        </div>
                       )}
+                      <div style={{ marginLeft: 50 }}>
+                        <span
+                          style={{
+                            color: "#1890ff",
+                            marginRight: 5,
+                          }}
+                        >
+                          灿烂
+                        </span>
+                        <span>等人</span>
+                        <span
+                          style={{
+                            color: "#1890ff",
+                            cursor: "pointer",
+                            marginLeft: 5,
+                          }}
+                          onClick={() => this.openReply(item.content_id)}
+                        >
+                          共165条回复
+                        </span>
+                      </div>
+                      <div style={{ marginLeft: 50 }}>
+                        <span
+                          style={{
+                            color: "#1890ff",
+                            marginRight: 5,
+                          }}
+                        >
+                          这是一个人名字:
+                        </span>
+                        <span>
+                          这是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的
+                        </span>
+                      </div>
                     </div>
                   )}
                 />

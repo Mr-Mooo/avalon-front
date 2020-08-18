@@ -3,7 +3,12 @@ import React from "react";
 import { Card, Tabs, List, Spin, message } from "antd";
 import "antd/dist/antd.css";
 import "../index.css";
-import { CrownOutlined, HeartOutlined, TagsOutlined } from "@ant-design/icons";
+import {
+  CrownOutlined,
+  HeartOutlined,
+  TagsOutlined,
+  MessageOutlined,
+} from "@ant-design/icons";
 import Author from "./author";
 import reqwest from "reqwest";
 import { withRouter } from "react-router-dom";
@@ -22,6 +27,7 @@ class HomeTab extends React.PureComponent {
     key: "",
     keyMesage: "",
     keyValue: "",
+    isShow: false,
     options: {
       type: "recommend",
       limit: 10,
@@ -46,6 +52,11 @@ class HomeTab extends React.PureComponent {
   componentDidMount() {
     const { options } = this.state;
     this.getContentData(options);
+    const { pathname } = this.props.location;
+
+    this.setState({
+      isShow: pathname !== "/search",
+    });
     this.eventEmitter = emitter.addListener(
       "changeMessage",
       async (message) => {
@@ -130,7 +141,7 @@ class HomeTab extends React.PureComponent {
     return;
   };
   render() {
-    const { data } = this.state;
+    const { data, isShow } = this.state;
     return (
       <Card className="margin-1">
         <Tabs
@@ -246,6 +257,44 @@ class HomeTab extends React.PureComponent {
               </InfiniteScroll>
             </div>
           </TabPane>
+          {!isShow && (
+            <TabPane
+              tab={
+                <span>
+                  <MessageOutlined />
+                  话题
+                </span>
+              }
+              key="4"
+            >
+              <div className="demo-infinite-container" overflow="auto">
+                <InfiniteScroll
+                  initialLoad={false}
+                  pageStart={0}
+                  loadMore={this.handleInfiniteOnLoad}
+                  hasMore={!this.state.loading && this.state.hasMore}
+                  useWindow={false}
+                >
+                  <List
+                    dataSource={data}
+                    renderItem={(item) => {
+                      return (
+                        <List.Item key={item.id}>
+                          <Author contentData={item} refush={this.refush} />
+                        </List.Item>
+                      );
+                    }}
+                  >
+                    {this.state.loading && this.state.hasMore && (
+                      <div className="demo-loading-container">
+                        <Spin />
+                      </div>
+                    )}
+                  </List>
+                </InfiniteScroll>
+              </div>
+            </TabPane>
+          )}
         </Tabs>
       </Card>
     );

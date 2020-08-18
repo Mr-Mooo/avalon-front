@@ -66,6 +66,7 @@ export default function Home() {
         <Content>
           <Route path="/" component={Login} exact />
           <Route path="/dashboard" component={MainContent} exact />
+          <Route path="/search" component={MainContent} exact />
           <Route path="/all-hot-authors" component={AllHotAuthors} exact />
           <Route path="/all-top-topics" component={AllTopTopics} exact />
           <Route path="/profile" component={Profile} exact />
