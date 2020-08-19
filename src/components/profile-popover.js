@@ -28,15 +28,15 @@ class ProfileHeader extends React.PureComponent {
     this.getContentData(options);
   }
   getContentData = async (options = {}) => {
-    // const { data } = this.state;
-    // let user_id = JSON.parse(localStorage.getItem("userInfo")).user.user_id;
-    // const userRes = await userApi({ user_id: user_id });
-    // localStorage.setItem("userInfo", JSON.stringify(userRes));
-    // if (userRes) {
-    //   this.setState({
-    //     data: userRes,
-    //   });
-    // }
+    const { data } = this.state;
+    let user_id = JSON.parse(localStorage.getItem("userInfo")).user.user_id;
+    const userRes = await userApi({ user_id: user_id });
+    localStorage.setItem("userInfo", JSON.stringify(userRes));
+    if (userRes) {
+      this.setState({
+        data: userRes,
+      });
+    }
   };
 
   onClick = async () => {

@@ -15,6 +15,7 @@ import { withRouter } from "react-router-dom";
 import { contentListApi } from "../services/content";
 import InfiniteScroll from "react-infinite-scroller";
 import emitter from "../utils/events.js";
+import _ from "lodash";
 const { TabPane } = Tabs;
 
 class HomeTab extends React.PureComponent {
@@ -28,6 +29,7 @@ class HomeTab extends React.PureComponent {
     keyMesage: "",
     keyValue: "",
     isShow: false,
+    scrollData: 0,
     options: {
       type: "recommend",
       limit: 10,
@@ -36,16 +38,17 @@ class HomeTab extends React.PureComponent {
     },
   };
   callback = async (key) => {
-    console.log(key, "12");
     const options = {
       type: key === "1" ? "recommend" : key === "2" ? "follow" : "subscribe",
-      limit: 10,
+      limit: 5,
       page: 1,
     };
     const res = await contentListApi(options);
     this.setState({
       data: res.rows,
       keyValue: key,
+      scrollData: 0,
+      page: 1,
     });
   };
 
@@ -78,18 +81,59 @@ class HomeTab extends React.PureComponent {
         });
       }
     );
+    window.addEventListener("scroll", this.scrollHandler);
+  }
+  scrollHandler = _.debounce(() => {
+    let { page, keyMesage, keyValue, scrollData } = this.state;
+    const distance =
+      document.documentElement.scrollHeight -
+      document.body.clientHeight -
+      document.documentElement.scrollTop;
+    const top = document.documentElement.scrollTop;
+    if (distance < 200 && top > scrollData) {
+      this.setState({
+        scrollData: top,
+      });
+      const options = {
+        page: page + 1,
+        limit: 5,
+        key: keyMesage,
+        type:
+          keyValue === "1"
+            ? "recommend"
+            : keyValue === "2"
+            ? "follow"
+            : "subscribe",
+      };
+      this.getContentData(options);
+    }
+  }, 500);
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.scrollHandler);
   }
   // componentWillUnmount() {
   //   // 卸载时移除事件
   //   emitter.removeListener(this.eventEmitter);
   // }
   refush = async () => {
-    const { options } = this.state;
-    const res = await contentListApi(options);
+    const { options, keyValue, keyMesage } = this.state;
+    const option = {
+      page: 1,
+      limit: 5,
+      key: keyMesage,
+      type:
+        keyValue === "1"
+          ? "recommend"
+          : keyValue === "2"
+          ? "follow"
+          : "subscribe",
+    };
+    const res = await contentListApi(option);
     this.setState({
       data: res.rows,
       count: res.count,
-      page: options.page ? options.page : 1,
+      page: 1,
+      scrollData: 0,
     });
   };
 
@@ -158,7 +202,7 @@ class HomeTab extends React.PureComponent {
             }
             key="1"
           >
-            <div className="demo-infinite-container" overflow="auto">
+            <div>
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
@@ -194,7 +238,7 @@ class HomeTab extends React.PureComponent {
             }
             key="2"
           >
-            <div className="demo-infinite-container" overflow="auto">
+            <div>
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
@@ -230,7 +274,7 @@ class HomeTab extends React.PureComponent {
             }
             key="3"
           >
-            <div className="demo-infinite-container" overflow="auto">
+            <div>
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
@@ -267,7 +311,7 @@ class HomeTab extends React.PureComponent {
               }
               key="4"
             >
-              <div className="demo-infinite-container" overflow="auto">
+              <div>
                 <InfiniteScroll
                   initialLoad={false}
                   pageStart={0}
