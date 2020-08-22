@@ -16,7 +16,7 @@ import "../index.css";
 import { logoutApi, userApi } from "../services/user";
 import { contentListApi } from "../services/content";
 import { Link, withRouter } from "react-router-dom";
-
+import { defaultAvatar } from "../utils/util";
 // export default function ProfileHeader() {
 
 class ProfileHeader extends React.PureComponent {
@@ -29,6 +29,7 @@ class ProfileHeader extends React.PureComponent {
   }
   getContentData = async (options = {}) => {
     const { data } = this.state;
+    console.log(localStorage.getItem("userInfo"), "00000");
     let user_id = JSON.parse(localStorage.getItem("userInfo")).user.user_id;
     const userRes = await userApi({ user_id: user_id });
     localStorage.setItem("userInfo", JSON.stringify(userRes));
@@ -63,6 +64,9 @@ class ProfileHeader extends React.PureComponent {
             <Avatar
               className="margin-bt-sm"
               size={64}
+              src={
+                data.user && data.user.avatar ? data.user.avatar : defaultAvatar
+              }
               icon={<UserOutlined />}
             />
             <p>{data.user && data.user.nick_name}</p>
@@ -113,7 +117,12 @@ class ProfileHeader extends React.PureComponent {
         }
       >
         {" "}
-        <Avatar className="margin-bt-sm" size={32} icon={<UserOutlined />} />
+        <Avatar
+          className="margin-bt-sm"
+          src={data.user && data.user.avatar ? data.user.avatar : defaultAvatar}
+          size={32}
+          icon={<UserOutlined />}
+        />
       </Popover>
     );
   }

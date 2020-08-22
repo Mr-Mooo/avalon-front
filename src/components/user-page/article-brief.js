@@ -4,7 +4,7 @@ import { Card, Col, Row, Avatar, Tag, Spin, List } from "antd";
 
 import "antd/dist/antd.css";
 import { Link, withRouter } from "react-router-dom";
-import { contentListApi } from "../../services/content";
+import { followListApi, mySetApi } from "../../services/content";
 import InfiniteScroll from "react-infinite-scroller";
 import {
   CrownOutlined,
@@ -24,41 +24,67 @@ class ArticleBrief extends React.PureComponent {
       keyMesage: "",
       count: "",
       page: "",
+      routerName: "",
       options: {
-        type: "recommend",
-        limit: 5,
+        limit: 30,
         page: 1,
-        key: "",
       },
     };
   }
   componentDidMount() {
+    console.log("shuaxin");
+    const { state } = this.props.location;
     const { options } = this.state;
-    this.getData(options);
-    // this.eventEmitter = emitter.addListener(
-    //   "changeMessage",
-    //   async (message) => {
-    //     let option = {
-    //       key: message,
-    //       type: "recommend",
-    //       limit: 10,
-    //       page: 1,
-    //     };
-    //     this.setState({
-    //       keyMesage: message,
-    //       data: [],
-    //     });
-    //     const res = await contentListApi(option);
-    //     this.setState({
-    //       data: res.rows,
-    //       count: res.count,
-    //       page: options.page ? options.page : 1,
-    //     });
-    // }
-    // );
+    this.setState({
+      routerName: state.name,
+    });
+    if (state.name === "my") {
+      this.getFolleowData(options);
+    } else if (state.name === "person") {
+      this.getUserData(options);
+    }
   }
+  componentDidUpdate(prevProps) {
+    console.log(prevProps.location, "props");
+    const { name } = prevProps.location.state;
+    const { routerName, options } = this.state;
+    console.log(name, routerName);
+    console.log(name === routerName);
+    if (routerName) {
+      if (name !== routerName) {
+        if (name === "my") {
+          this.getFolleowData(options);
+        } else if (name === "person") {
+          this.getUserData(options);
+        }
+      }
+    }
+    if (name !== routerName) {
+      this.setState({
+        data: [],
+        routerName: name,
+      });
+    }
+  }
+
+  getUserData = async (options = {}) => {
+    const res = await mySetApi();
+    this.setState({
+      data: res.rows,
+      // count: res.count,
+      // page: options.page ? options.page : 1,
+    });
+  };
+  getFolleowData = async (options = {}) => {
+    const res = await followListApi();
+    this.setState({
+      data: res.rows,
+      count: res.count,
+      page: options.page ? options.page : 1,
+    });
+  };
   getData = async (options = {}) => {
-    const res = await contentListApi(options);
+    const res = await followListApi();
     this.setState({
       data: res.rows,
       count: res.count,
@@ -66,14 +92,14 @@ class ArticleBrief extends React.PureComponent {
     });
   };
   refush = async () => {
-    const { options } = this.state;
-    const res = await contentListApi(options);
-    this.setState({
-      data: res.rows,
-      count: res.count,
-      page: options.page ? options.page : 1,
-    });
+    const { state } = this.props.location;
+    if (state.name === "my") {
+      this.getFolleowData();
+    } else if (state.name === "person") {
+      this.getUserData();
+    }
   };
+
   handleInfiniteOnLoad = () => {
     let { data, count, page, hasMore, keyMesage, keyValue } = this.state;
     this.setState({
@@ -105,7 +131,7 @@ class ArticleBrief extends React.PureComponent {
     const { data } = this.state;
 
     // this.setState({ loading: true })
-    const res = await contentListApi(options);
+    const res = await followListApi(options);
     if (res) {
       this.setState({
         data: data.concat(res.rows),
@@ -116,10 +142,11 @@ class ArticleBrief extends React.PureComponent {
   };
   render() {
     const { data } = this.state;
+    const { state } = this.props.location;
     return (
       <div className="margin-1 ">
-        <Card>
-          <div className="demo-infinite-container" overflow="auto">
+        <Card style={{ minHeight: "calc(100vh - 450px)" }}>
+          <div>
             <InfiniteScroll
               initialLoad={false}
               pageStart={0}

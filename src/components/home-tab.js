@@ -12,7 +12,7 @@ import {
 import Author from "./author";
 import reqwest from "reqwest";
 import { withRouter } from "react-router-dom";
-import { contentListApi } from "../services/content";
+import { contentListApi, mySubApi } from "../services/content";
 import InfiniteScroll from "react-infinite-scroller";
 import emitter from "../utils/events.js";
 import _ from "lodash";
@@ -38,20 +38,36 @@ class HomeTab extends React.PureComponent {
     },
   };
   callback = async (key) => {
-    const options = {
-      type: key === "1" ? "recommend" : key === "2" ? "follow" : "subscribe",
-      limit: 5,
+    if (key === "3") {
+      this.getSub();
+    } else {
+      const options = {
+        type: key === "1" ? "recommend" : key === "2" ? "follow" : "subscribe",
+        limit: 5,
+        page: 1,
+      };
+      const res = await contentListApi(options);
+      this.setState({
+        data: res.rows,
+        keyValue: key,
+        scrollData: 0,
+        page: 1,
+      });
+    }
+  };
+  getSub = async () => {
+    const op = {
       page: 1,
+      limit: 50,
     };
-    const res = await contentListApi(options);
+    const data = await mySubApi(op);
     this.setState({
-      data: res.rows,
-      keyValue: key,
-      scrollData: 0,
-      page: 1,
+      data: data.rows,
+      // keyValue: key,
+      // scrollData: 0,
+      // page: 1,
     });
   };
-
   componentDidMount() {
     const { options } = this.state;
     this.getContentData(options);
@@ -94,18 +110,22 @@ class HomeTab extends React.PureComponent {
       this.setState({
         scrollData: top,
       });
-      const options = {
-        page: page + 1,
-        limit: 5,
-        key: keyMesage,
-        type:
-          keyValue === "1"
-            ? "recommend"
-            : keyValue === "2"
-            ? "follow"
-            : "subscribe",
-      };
-      this.getContentData(options);
+      if (keyValue === "3") {
+        this.getSub();
+      } else {
+        const options = {
+          page: page + 1,
+          limit: 5,
+          key: keyMesage,
+          type:
+            keyValue === "1"
+              ? "recommend"
+              : keyValue === "2"
+              ? "follow"
+              : "subscribe",
+        };
+        this.getContentData(options);
+      }
     }
   }, 500);
   componentWillUnmount() {

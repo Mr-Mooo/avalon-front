@@ -34,11 +34,12 @@ class UserPage extends React.PureComponent {
     super(props);
     this.state = {};
   }
-  // export default function UserPage() {
 
   render() {
     let isShow =
-      this.props.location.state && this.props.location.state.name === "my";
+      this.props.location.state &&
+      (this.props.location.state.name === "my" ||
+        this.props.location.state.name === "person");
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
     return (
       <div className="mainwidth">
@@ -123,22 +124,24 @@ class UserPage extends React.PureComponent {
             </Row>
           </Card>
         </Col> */}
-        <Card className="margin-1">
-          <Select
-            style={{
-              width: 120,
-              margin: "0 8px",
-            }}
-            defaultValue="all-portfolios"
-          >
-            <Option value="all-portfolios">全部作品</Option>
-            <Option value="pic-portfolios">图片作品</Option>
-            <Option value="pic-portfolios">文章作品</Option>
-          </Select>
-          <div className="align-right">
-            <SearchNav />
-          </div>
-        </Card>
+        {!isShow && (
+          <Card className="margin-1">
+            <Select
+              style={{
+                width: 120,
+                margin: "0 8px",
+              }}
+              defaultValue="all-portfolios"
+            >
+              <Option value="all-portfolios">全部作品</Option>
+              <Option value="pic-portfolios">图片作品</Option>
+              <Option value="pic-portfolios">文章作品</Option>
+            </Select>
+            <div className="align-right">
+              <SearchNav />
+            </div>
+          </Card>
+        )}
         <ArticleBrief />
         {/* <Pagination
               className="margin-1"

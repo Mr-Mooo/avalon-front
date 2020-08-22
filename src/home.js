@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Layout, Menu, BackTop, Row, Col, Affix } from "antd";
 // import { HomeOutlined } from "@ant-design/icons";
 import SearchNav from "./components/search";
@@ -20,6 +20,7 @@ import TopicCenter from "./components/topic-center/topic-center";
 import UserPage from "./components/user-page/user-page";
 import Recharge from "./components/recharge/recharge";
 import ForgotPassword from "./components/forgot-password";
+import Tag from "./components/tag";
 import u2 from "./img/u2.png";
 // import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 
@@ -28,9 +29,6 @@ import "./index.css";
 import TopMenu from "./components/topmenu/topmenu";
 
 const { Header, Footer, Content } = Layout;
-function goLink() {
-  window.location.replace("http://localhost:3000/dashboard");
-}
 // const { SubMenu } = Menu;
 export default function Home() {
   const pathName = window.location.pathname;
@@ -45,10 +43,13 @@ export default function Home() {
               <div className="mainwidth header-nav">
                 <Row>
                   <Col xs={4} sm={4} md={4} lg={4} className="logo">
-                    {/* <img
-          src={u2} style={{width: 44 }}
-        /> */}
-                    <a onClick={() => goLink()}>主页</a>
+                    <Link to="/dashboard">主页</Link>
+                    <Link
+                      to={{ pathname: "user", state: { name: "person" } }}
+                      style={{ marginLeft: 15 }}
+                    >
+                      个人主页
+                    </Link>
                   </Col>
                   <Col xs={20} sm={20} md={12} lg={12} className="logo">
                     {" "}
@@ -76,6 +77,7 @@ export default function Home() {
           <Route path="/user" component={UserPage} exact />
           <Route path="/recharge" component={Recharge} exact />
           <Route path="/forgot-password" component={ForgotPassword} exact />
+          <Route path="/tag" component={Tag} exact />
         </Content>
         <Affix offsetBottom={bottom}>
           <Footer className="align-center">
