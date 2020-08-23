@@ -38,11 +38,7 @@ class ArticleBrief extends React.PureComponent {
     this.setState({
       routerName: state.name,
     });
-    if (state.name === "my") {
-      this.getFolleowData(options);
-    } else if (state.name === "person") {
-      this.getUserData(options);
-    }
+    this.getFolleowData(options);
   }
   componentDidUpdate(prevProps) {
     console.log(prevProps.location, "props");
@@ -67,24 +63,8 @@ class ArticleBrief extends React.PureComponent {
     }
   }
 
-  getUserData = async (options = {}) => {
-    const res = await mySetApi();
-    this.setState({
-      data: res.rows,
-      // count: res.count,
-      // page: options.page ? options.page : 1,
-    });
-  };
   getFolleowData = async (options = {}) => {
-    const res = await followListApi();
-    this.setState({
-      data: res.rows,
-      count: res.count,
-      page: options.page ? options.page : 1,
-    });
-  };
-  getData = async (options = {}) => {
-    const res = await followListApi();
+    const res = await followListApi(options);
     this.setState({
       data: res.rows,
       count: res.count,
@@ -92,12 +72,11 @@ class ArticleBrief extends React.PureComponent {
     });
   };
   refush = async () => {
-    const { state } = this.props.location;
-    if (state.name === "my") {
-      this.getFolleowData();
-    } else if (state.name === "person") {
-      this.getUserData();
-    }
+    const options = {
+      page: 1,
+      limit: 10,
+    };
+    this.getFolleowData(options);
   };
 
   handleInfiniteOnLoad = () => {

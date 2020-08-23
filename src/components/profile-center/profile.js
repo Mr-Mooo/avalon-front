@@ -107,7 +107,6 @@ class AvatarUpload extends React.Component {
     if (data.code === 0) {
       message.success("上传成功");
     }
-    console.log(data, "123");
   };
   handleChange = async ({ file, fileList }) => {
     this.setState({ fileList });
@@ -266,7 +265,7 @@ const PersonalProfile = () => {
           },
         ]}
       >
-        <Input />
+        <Input disabled />
       </Form.Item>
 
       <Form.Item name="birthdate" label="出生日期" hasFeedback>
@@ -276,6 +275,7 @@ const PersonalProfile = () => {
       <Form.Item name="phone" label="绑定手机">
         <Input
           addonBefore={prefixSelector}
+          disabled
           style={{
             width: "100%",
           }}

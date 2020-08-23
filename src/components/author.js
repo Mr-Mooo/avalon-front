@@ -522,7 +522,10 @@ class Author extends React.PureComponent {
                       icon={<UserOutlined />}
                     />
                   </Popover>
-
+                  <br />
+                  {contentData &&
+                    contentData.avl_user &&
+                    contentData.avl_user.nick_name}
                   <br />
                 </Col>
               )}
