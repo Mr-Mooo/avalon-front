@@ -12,7 +12,12 @@ import {
 import Author from "./author";
 import reqwest from "reqwest";
 import { withRouter } from "react-router-dom";
-import { contentListApi, mySubApi } from "../services/content";
+import {
+  contentListApi,
+  mySubApi,
+  searchMessageApi,
+  searchTagApi,
+} from "../services/content";
 import InfiniteScroll from "react-infinite-scroller";
 import emitter from "../utils/events.js";
 import _ from "lodash";
@@ -40,6 +45,12 @@ class HomeTab extends React.PureComponent {
   callback = async (key) => {
     if (key === "3") {
       this.getSub();
+    } else if (key === "4") {
+      this.getTopic();
+    } else if (key === "6") {
+      this.getSearch(key);
+    } else if (key === "5") {
+      this.getSearch(key);
     } else {
       const options = {
         type: key === "1" ? "recommend" : key === "2" ? "follow" : "subscribe",
@@ -55,6 +66,36 @@ class HomeTab extends React.PureComponent {
       });
     }
   };
+  // 搜索话题
+  getTopic = async () => {
+    const { keyMesage } = this.state;
+    console.log(keyMesage, "ddd");
+    const mes = localStorage.getItem("message");
+    const options = {
+      page: 1,
+      limit: 50,
+      key: mes,
+    };
+    const res = await searchTagApi(options);
+    this.setState({
+      data: res.rows,
+    });
+  };
+  // 搜索图片文字
+  getSearch = async (value) => {
+    const { keyMesage } = this.state;
+    const mes = localStorage.getItem("message");
+    const options = {
+      page: 1,
+      limit: 50,
+      key: mes,
+      type: value === "5" ? "message" : "picture",
+    };
+    const res = await searchMessageApi(options);
+    this.setState({
+      data: res.rows,
+    });
+  };
   getSub = async () => {
     const op = {
       page: 1,
@@ -68,14 +109,21 @@ class HomeTab extends React.PureComponent {
       // page: 1,
     });
   };
+  get = (message) => {
+    console.log(message, "4564");
+    this.setState({
+      keyMesage: message,
+      data: [],
+    });
+  };
   componentDidMount() {
     const { options } = this.state;
     this.getContentData(options);
     const { pathname } = this.props.location;
-
     this.setState({
       isShow: pathname !== "/search",
     });
+    const that = this;
     this.eventEmitter = emitter.addListener(
       "changeMessage",
       async (message) => {
@@ -85,6 +133,9 @@ class HomeTab extends React.PureComponent {
           limit: 10,
           page: 1,
         };
+        this.get(message);
+        console.log(message, "message");
+        localStorage.setItem("message", message);
         this.setState({
           keyMesage: message,
           data: [],
@@ -206,130 +257,23 @@ class HomeTab extends React.PureComponent {
   };
   render() {
     const { data, isShow } = this.state;
+    console.log(isShow, "is");
     return (
       <Card className="margin-1">
-        <Tabs
-          defaultActiveKey="1"
-          onChange={this.callback}
-          className="home-tab"
-        >
-          <TabPane
-            tab={
-              <span>
-                <CrownOutlined />
-                推荐
-              </span>
-            }
-            key="1"
+        {isShow && (
+          <Tabs
+            defaultActiveKey="1"
+            onChange={this.callback}
+            className="home-tab"
           >
-            <div>
-              <InfiniteScroll
-                initialLoad={false}
-                pageStart={0}
-                loadMore={this.handleInfiniteOnLoad}
-                hasMore={!this.state.loading && this.state.hasMore}
-                useWindow={false}
-              >
-                <List
-                  dataSource={data}
-                  renderItem={(item) => {
-                    return (
-                      <List.Item key={item.id}>
-                        <Author contentData={item} refush={this.refush} />
-                      </List.Item>
-                    );
-                  }}
-                >
-                  {this.state.loading && this.state.hasMore && (
-                    <div className="demo-loading-container">
-                      <Spin />
-                    </div>
-                  )}
-                </List>
-              </InfiniteScroll>
-            </div>
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <HeartOutlined />
-                关注
-              </span>
-            }
-            key="2"
-          >
-            <div>
-              <InfiniteScroll
-                initialLoad={false}
-                pageStart={0}
-                loadMore={this.handleInfiniteOnLoad}
-                hasMore={!this.state.loading && this.state.hasMore}
-                useWindow={false}
-              >
-                <List
-                  dataSource={data}
-                  renderItem={(item) => {
-                    return (
-                      <List.Item key={item.id}>
-                        <Author contentData={item} refush={this.refush} />
-                      </List.Item>
-                    );
-                  }}
-                >
-                  {this.state.loading && this.state.hasMore && (
-                    <div className="demo-loading-container">
-                      <Spin />
-                    </div>
-                  )}
-                </List>
-              </InfiniteScroll>
-            </div>
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <TagsOutlined />
-                订阅
-              </span>
-            }
-            key="3"
-          >
-            <div>
-              <InfiniteScroll
-                initialLoad={false}
-                pageStart={0}
-                loadMore={this.handleInfiniteOnLoad}
-                hasMore={!this.state.loading && this.state.hasMore}
-                useWindow={false}
-              >
-                <List
-                  dataSource={data}
-                  renderItem={(item) => {
-                    return (
-                      <List.Item key={item.id}>
-                        <Author contentData={item} refush={this.refush} />
-                      </List.Item>
-                    );
-                  }}
-                >
-                  {this.state.loading && this.state.hasMore && (
-                    <div className="demo-loading-container">
-                      <Spin />
-                    </div>
-                  )}
-                </List>
-              </InfiniteScroll>
-            </div>
-          </TabPane>
-          {!isShow && (
             <TabPane
               tab={
                 <span>
-                  <MessageOutlined />
-                  话题
+                  <CrownOutlined />
+                  推荐
                 </span>
               }
-              key="4"
+              key="1"
             >
               <div>
                 <InfiniteScroll
@@ -358,8 +302,234 @@ class HomeTab extends React.PureComponent {
                 </InfiniteScroll>
               </div>
             </TabPane>
+            <TabPane
+              tab={
+                <span>
+                  <HeartOutlined />
+                  关注
+                </span>
+              }
+              key="2"
+            >
+              <div>
+                <InfiniteScroll
+                  initialLoad={false}
+                  pageStart={0}
+                  loadMore={this.handleInfiniteOnLoad}
+                  hasMore={!this.state.loading && this.state.hasMore}
+                  useWindow={false}
+                >
+                  <List
+                    dataSource={data}
+                    renderItem={(item) => {
+                      return (
+                        <List.Item key={item.id}>
+                          <Author contentData={item} refush={this.refush} />
+                        </List.Item>
+                      );
+                    }}
+                  >
+                    {this.state.loading && this.state.hasMore && (
+                      <div className="demo-loading-container">
+                        <Spin />
+                      </div>
+                    )}
+                  </List>
+                </InfiniteScroll>
+              </div>
+            </TabPane>
+            <TabPane
+              tab={
+                <span>
+                  <TagsOutlined />
+                  订阅
+                </span>
+              }
+              key="3"
+            >
+              <div>
+                <InfiniteScroll
+                  initialLoad={false}
+                  pageStart={0}
+                  loadMore={this.handleInfiniteOnLoad}
+                  hasMore={!this.state.loading && this.state.hasMore}
+                  useWindow={false}
+                >
+                  <List
+                    dataSource={data}
+                    renderItem={(item) => {
+                      return (
+                        <List.Item key={item.id}>
+                          <Author contentData={item} refush={this.refush} />
+                        </List.Item>
+                      );
+                    }}
+                  >
+                    {this.state.loading && this.state.hasMore && (
+                      <div className="demo-loading-container">
+                        <Spin />
+                      </div>
+                    )}
+                  </List>
+                </InfiniteScroll>
+              </div>
+            </TabPane>
+          </Tabs>
+        )}
+        <div>
+          {!isShow && (
+            <Tabs
+              defaultActiveKey="1"
+              onChange={this.callback}
+              className="home-tab"
+            >
+              <TabPane
+                tab={
+                  <span>
+                    <CrownOutlined />
+                    推荐
+                  </span>
+                }
+                key="1"
+              >
+                <div>
+                  <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={this.handleInfiniteOnLoad}
+                    hasMore={!this.state.loading && this.state.hasMore}
+                    useWindow={false}
+                  >
+                    <List
+                      dataSource={data}
+                      renderItem={(item) => {
+                        return (
+                          <List.Item key={item.id}>
+                            <Author contentData={item} refush={this.refush} />
+                          </List.Item>
+                        );
+                      }}
+                    >
+                      {this.state.loading && this.state.hasMore && (
+                        <div className="demo-loading-container">
+                          <Spin />
+                        </div>
+                      )}
+                    </List>
+                  </InfiniteScroll>
+                </div>
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <MessageOutlined />
+                    图片
+                  </span>
+                }
+                key="6"
+              >
+                <div>
+                  <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={this.handleInfiniteOnLoad}
+                    hasMore={!this.state.loading && this.state.hasMore}
+                    useWindow={false}
+                  >
+                    <List
+                      dataSource={data}
+                      renderItem={(item) => {
+                        return (
+                          <List.Item key={item.id}>
+                            <Author contentData={item} refush={this.refush} />
+                          </List.Item>
+                        );
+                      }}
+                    >
+                      {this.state.loading && this.state.hasMore && (
+                        <div className="demo-loading-container">
+                          <Spin />
+                        </div>
+                      )}
+                    </List>
+                  </InfiniteScroll>
+                </div>
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <MessageOutlined />
+                    文字
+                  </span>
+                }
+                key="5"
+              >
+                <div>
+                  <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={this.handleInfiniteOnLoad}
+                    hasMore={!this.state.loading && this.state.hasMore}
+                    useWindow={false}
+                  >
+                    <List
+                      dataSource={data}
+                      renderItem={(item) => {
+                        return (
+                          <List.Item key={item.id}>
+                            <Author contentData={item} refush={this.refush} />
+                          </List.Item>
+                        );
+                      }}
+                    >
+                      {this.state.loading && this.state.hasMore && (
+                        <div className="demo-loading-container">
+                          <Spin />
+                        </div>
+                      )}
+                    </List>
+                  </InfiniteScroll>
+                </div>
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <MessageOutlined />
+                    话题
+                  </span>
+                }
+                key="4"
+              >
+                <div>
+                  <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={this.handleInfiniteOnLoad}
+                    hasMore={!this.state.loading && this.state.hasMore}
+                    useWindow={false}
+                  >
+                    <List
+                      dataSource={data}
+                      renderItem={(item) => {
+                        return (
+                          <List.Item key={item.id}>
+                            <Author contentData={item} refush={this.refush} />
+                          </List.Item>
+                        );
+                      }}
+                    >
+                      {this.state.loading && this.state.hasMore && (
+                        <div className="demo-loading-container">
+                          <Spin />
+                        </div>
+                      )}
+                    </List>
+                  </InfiniteScroll>
+                </div>
+              </TabPane>
+            </Tabs>
           )}
-        </Tabs>
+        </div>
       </Card>
     );
   }

@@ -13,6 +13,15 @@ export const addContentApi = async (options) => {
   }
   return false;
 };
+//上传头像
+export const uploadavatartApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/user/avatar`, options, "PUT");
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 收藏
 export const collectionApi = async (options) => {
   const res = await myFetch(
@@ -32,7 +41,7 @@ export const subscriptApi = async (options) => {
   const res = await myFetch(`${config.base_url}/follow/tag`, options, "POST");
   // console.log(res, 'res');
   if (res && res.code === 0) {
-    return res.data;
+    return res;
   }
   return false;
 };

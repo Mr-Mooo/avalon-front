@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Layout, Card, Button, List } from "antd";
+import { Input, Layout, Card, Button, List, message } from "antd";
 import "antd/dist/antd.css";
 import "../index.css";
 import {
@@ -83,7 +83,16 @@ class Tag extends React.PureComponent {
       is_delete: isSubscribe ? 0 : 1,
     };
     const res = await subscriptApi(options);
-    console.log(res, "123");
+    if (res.code === 0) {
+      if (isSubscribe) {
+        message.success("订阅成功");
+      } else {
+        message.success("取消订阅");
+      }
+      this.setState({
+        isSubscribe: !isSubscribe,
+      });
+    }
   };
   render() {
     const { state } = this.props.location;

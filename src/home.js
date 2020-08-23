@@ -18,6 +18,7 @@ import SignUp from "./pages/signup/signup";
 import Messagetab from "./components/message/message";
 import TopicCenter from "./components/topic-center/topic-center";
 import UserPage from "./components/user-page/user-page";
+import PersonPage from "./components/person-page/user-page";
 import Recharge from "./components/recharge/recharge";
 import ForgotPassword from "./components/forgot-password";
 import Tag from "./components/tag";
@@ -45,7 +46,7 @@ export default function Home() {
                   <Col xs={4} sm={4} md={4} lg={4} className="logo">
                     <Link to="/dashboard">主页</Link>
                     <Link
-                      to={{ pathname: "user", state: { name: "person" } }}
+                      to={{ pathname: "person", state: { name: "person" } }}
                       style={{ marginLeft: 15 }}
                     >
                       个人主页
@@ -78,6 +79,7 @@ export default function Home() {
           <Route path="/recharge" component={Recharge} exact />
           <Route path="/forgot-password" component={ForgotPassword} exact />
           <Route path="/tag" component={Tag} exact />
+          <Route path="/person" component={PersonPage} exact />
         </Content>
         <Affix offsetBottom={bottom}>
           <Footer className="align-center">

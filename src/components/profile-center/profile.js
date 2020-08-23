@@ -12,14 +12,19 @@ import {
   DatePicker,
   Form,
   Select,
+  Modal,
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { uploadImg, uploadavatartApi } from "../../services/content.js";
 import "antd/dist/antd.css";
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 }
 
 function beforeUpload(file) {
@@ -37,48 +42,151 @@ function beforeUpload(file) {
 class AvatarUpload extends React.Component {
   state = {
     loading: false,
+    tags: [],
+    inputVisible: false,
+    inputValue: "",
+    message: "",
+    previewVisible: false,
+    previewImage: "",
+    previewTitle: "",
+    uploadOptions: {},
+    needOption: {},
+    imgUrl: [],
+    fileList: [],
   };
 
-  handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      this.setState({ loading: true });
-      return;
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
     }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl) =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        })
-      );
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+      previewTitle:
+        file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
+    });
+  };
+  getFileSuffix = (name) => {
+    if (name) {
+      const lastIndex = name.lastIndexOf(".");
+      const suffix = name.slice(lastIndex + 1);
+      return suffix;
     }
+  };
+  beforeUpload = async (file, fileList) => {
+    const { imgUrl } = this.state;
+    const query = {
+      file_name: file.name,
+      category: "content",
+      suffix: this.getFileSuffix(file.name),
+    };
+    // if(file)
+    const res = await uploadImg(query);
+    if (res) {
+      const needOption = {
+        url: res.data.request_url,
+        key: res.data.key,
+        contentType: res.data["content-type"],
+        policy: res.data.policy,
+        signature: res.data.signature,
+        accessKeyId: res.data.accessKeyId,
+        file: fileList,
+      };
+      this.setState({
+        needOption: needOption,
+        imgUrl: [...imgUrl, res.data.key],
+      });
+    }
+    const op = {
+      path: res.data.key,
+    };
+    const data = await uploadavatartApi(op);
+    if (data.code === 0) {
+      message.success("上传成功");
+    }
+    console.log(data, "123");
+  };
+  handleChange = async ({ file, fileList }) => {
+    this.setState({ fileList });
+  };
+  handleClose = (removedTag) => {
+    const tags = this.state.tags.filter((tag) => tag !== removedTag);
+    console.log(tags);
+    this.setState({ tags });
+  };
+
+  showInput = () => {
+    this.setState({ inputVisible: true }, () => this.input.focus());
+  };
+
+  handleInputChange = (e) => {
+    this.setState({ inputValue: e.target.value });
+  };
+
+  handleInputConfirm = () => {
+    const { inputValue } = this.state;
+    let { tags } = this.state;
+    if (inputValue && tags.indexOf(inputValue) === -1) {
+      tags = [...tags, inputValue];
+    }
+    console.log(tags);
+    this.setState({
+      tags,
+      inputVisible: false,
+      inputValue: "",
+    });
   };
 
   render() {
+    const {
+      tags,
+      inputVisible,
+      inputValue,
+      previewVisible,
+      previewImage,
+      fileList,
+      previewTitle,
+      needOption,
+    } = this.state;
     const uploadButton = (
       <div>
-        {this.state.loading ? <LoadingOutlined /> : <PlusOutlined />}
+        <PlusOutlined />
         <div className="ant-upload-text">Upload</div>
       </div>
     );
     const { imageUrl } = this.state;
     return (
-      <Upload
-        name="avatar"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        beforeUpload={beforeUpload}
-        onChange={this.handleChange}
-      >
-        {imageUrl ? (
-          <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
+      <div>
+        <Upload
+          action={needOption.url}
+          listType="picture-card"
+          method="POST"
+          data={{
+            key: needOption.key,
+            "content-type": needOption.contentType,
+            policy: needOption.policy,
+            signature: needOption.signature,
+            accessKeyId: needOption.accessKeyId,
+          }}
+          fileList={fileList}
+          onPreview={this.handlePreview}
+          beforeUpload={this.beforeUpload}
+          onChange={this.handleChange}
+        >
+          {fileList.length >= 1 ? null : uploadButton}
+        </Upload>
+        <Modal
+          visible={previewVisible}
+          title={previewTitle}
+          footer={null}
+          onCancel={this.handleCancel}
+        >
+          <img alt="example" style={{ width: "100%" }} src={previewImage} />
+        </Modal>
+      </div>
     );
   }
 }

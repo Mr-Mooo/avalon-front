@@ -72,6 +72,7 @@ class Author extends React.PureComponent {
     this.state = {
       visible: false,
       commentList: [],
+      replayData: [],
       comments: [],
       submitting: false,
       value: "",
@@ -89,6 +90,7 @@ class Author extends React.PureComponent {
       tousu_id: "",
       replyId: "",
       id: "",
+      isShowReplay: "",
       isShowAvatar: true,
       contentData: this.props.contentData,
     };
@@ -179,7 +181,7 @@ class Author extends React.PureComponent {
 
     if (addRes && addRes.success) {
       this.setState({ commentList: [] }, () => {
-        this.setState({ commentList: addRes.data });
+        this.setState({ commentList: addRes.data.rows });
       });
     }
     this.setState({ visible: true });
@@ -371,6 +373,10 @@ class Author extends React.PureComponent {
       content_id: value.content_id,
     };
     const res = await gogetComment(options);
+    this.setState({
+      replayData: res.data.rows,
+      isShowReplay: value,
+    });
     console.log(res, "12");
   };
   //跳转到tag页面
@@ -394,6 +400,8 @@ class Author extends React.PureComponent {
       id,
       replyId,
       isShowAvatar,
+      replayData,
+      isShowReplay,
     } = this.state;
     // const menu = (
     //   <Menu onClick={this.handleChange1()}>
@@ -692,71 +700,87 @@ class Author extends React.PureComponent {
                 <List
                   itemLayout="horizontal"
                   dataSource={commentList}
-                  renderItem={(item) => (
-                    <div>
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar icon={<UserOutlined />} />}
-                          title={item.nick_name}
-                          description={item.content}
-                          onClick={() => this.setComment(item.pid, item.ref_id)}
-                        />
-                      </List.Item>
-                      <div className="replay" onClick={() => this.reply(item)}>
-                        回复
-                      </div>
-                      {replyId === item.comment_id && (
-                        <div
-                          style={{
-                            width: 420,
-                            marginLeft: 50,
-                            marginBottom: 10,
-                          }}
-                        >
-                          <Search
-                            placeholder="请输入回复内容"
-                            enterButton="评论"
-                            size="small"
-                            onSearch={(value) => this.getSearch(value)}
+                  renderItem={(item) => {
+                    return (
+                      <div>
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar icon={<UserOutlined />} />}
+                            title={item.nick_name}
+                            description={item.content}
+                            onClick={() =>
+                              this.setComment(item.pid, item.ref_id)
+                            }
                           />
+                        </List.Item>
+                        <div
+                          className="replay"
+                          onClick={() => this.reply(item)}
+                        >
+                          回复
                         </div>
-                      )}
-                      <div style={{ marginLeft: 50 }}>
-                        <span
-                          style={{
-                            color: "#1890ff",
-                            marginRight: 5,
-                          }}
-                        >
-                          灿烂
-                        </span>
-                        <span>等人</span>
-                        <span
-                          style={{
-                            color: "#1890ff",
-                            cursor: "pointer",
-                            marginLeft: 5,
-                          }}
-                          onClick={() => this.openReply(item)}
-                        >
-                          共165条回复
-                        </span>
+                        {replyId === item.comment_id && (
+                          <div
+                            style={{
+                              width: 420,
+                              marginLeft: 50,
+                              marginBottom: 10,
+                            }}
+                          >
+                            <Search
+                              placeholder="请输入回复内容"
+                              enterButton="评论"
+                              size="small"
+                              onSearch={(value) => this.getSearch(value)}
+                            />
+                          </div>
+                        )}
+                        {item.count > 0 && (
+                          <div style={{ marginLeft: 50 }}>
+                            <span
+                              style={{
+                                color: "#1890ff",
+                                marginRight: 5,
+                              }}
+                            >
+                              {item.ref_user_name}
+                            </span>
+                            <span>等人</span>
+                            <span
+                              style={{
+                                color: "#1890ff",
+                                cursor: "pointer",
+                                marginLeft: 5,
+                              }}
+                              onClick={() => this.openReply(item)}
+                            >
+                              共{item.count}条回复
+                            </span>
+                          </div>
+                        )}
+                        <div>
+                          {isShowReplay.comment_id === item.comment_id &&
+                            replayData.map((ele) => {
+                              return (
+                                <div style={{ marginLeft: 50 }}>
+                                  <span
+                                    style={{
+                                      color: "#1890ff",
+                                      marginRight: 5,
+                                    }}
+                                  >
+                                    {ele.create_user_name
+                                      ? ele.create_user_name
+                                      : "名称"}
+                                  </span>
+                                  <span>{ele.content}</span>
+                                </div>
+                              );
+                            })}
+                        </div>
                       </div>
-                      <div style={{ marginLeft: 50 }}>
-                        <span
-                          style={{
-                            color: "#1890ff",
-                            marginRight: 5,
-                          }}
-                        >
-                          这是一个人名字:
-                        </span>
-                        <span>
-                          这是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的是一段很长的回复评论很长的
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                    );
+                  }}
                 />
                 <Comment
                   // avatar={
