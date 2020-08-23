@@ -92,6 +92,7 @@ class Author extends React.PureComponent {
       id: "",
       isShowReplay: "",
       isShowAvatar: true,
+      defaultValue: "",
       contentData: this.props.contentData,
     };
   }
@@ -168,6 +169,7 @@ class Author extends React.PureComponent {
   };
 
   gogetComment = async (id) => {
+    console.log(id, "12");
     let options = {
       pid: 0,
       content_id: id,
@@ -353,7 +355,8 @@ class Author extends React.PureComponent {
   };
   // 回复评论
   getSearch = async (value, item) => {
-    const { contentId, replyId, userId } = this.state;
+    console.log(value, "123");
+    const { contentId, replyId, userId, isShowReplay } = this.state;
     const options = {
       content: value,
       pid: replyId,
@@ -363,6 +366,13 @@ class Author extends React.PureComponent {
     const res = await goComment(options);
     if (res.message === "success") {
       message.success("回复成功");
+      this.gogetComment(contentId);
+      this.setState({
+        defaultValue: "",
+      });
+      if (isShowReplay) {
+        this.openReply(isShowReplay);
+      }
     }
   };
   //获取二级评论
@@ -384,6 +394,12 @@ class Author extends React.PureComponent {
     console.log(111);
     this.props.history.push({ pathname: "/tag", state: { tag: item } });
   };
+  // 获取input变化值
+  getchangeValue = (e) => {
+    this.setState({
+      defaultValue: e.target.value,
+    });
+  };
   render() {
     const {
       comments,
@@ -402,6 +418,7 @@ class Author extends React.PureComponent {
       isShowAvatar,
       replayData,
       isShowReplay,
+      defaultValue,
     } = this.state;
     // const menu = (
     //   <Menu onClick={this.handleChange1()}>
@@ -731,21 +748,14 @@ class Author extends React.PureComponent {
                               placeholder="请输入回复内容"
                               enterButton="评论"
                               size="small"
+                              onChange={(e) => this.getchangeValue(e)}
+                              value={defaultValue}
                               onSearch={(value) => this.getSearch(value)}
                             />
                           </div>
                         )}
                         {item.count > 0 && (
                           <div style={{ marginLeft: 50 }}>
-                            <span
-                              style={{
-                                color: "#1890ff",
-                                marginRight: 5,
-                              }}
-                            >
-                              {item.ref_user_name}
-                            </span>
-                            <span>等人</span>
                             <span
                               style={{
                                 color: "#1890ff",
@@ -762,7 +772,10 @@ class Author extends React.PureComponent {
                           {isShowReplay.comment_id === item.comment_id &&
                             replayData.map((ele) => {
                               return (
-                                <div style={{ marginLeft: 50 }}>
+                                <div
+                                  style={{ marginLeft: 50 }}
+                                  Key={ele.comment_id}
+                                >
                                   <span
                                     style={{
                                       color: "#1890ff",

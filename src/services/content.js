@@ -22,6 +22,19 @@ export const uploadavatartApi = async (options) => {
   }
   return false;
 };
+//修改用户资料
+export const updateDataApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/user/info/modify`,
+    options,
+    "PUT"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 收藏
 export const collectionApi = async (options) => {
   const res = await myFetch(
