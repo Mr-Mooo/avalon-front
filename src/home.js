@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Layout, Menu, BackTop, Row, Col, Affix } from "antd";
+import { Layout, Menu, BackTop, Row, Col, Affix, Button } from "antd";
 // import { HomeOutlined } from "@ant-design/icons";
 import SearchNav from "./components/search";
 // import TaskHeader from "./components/taskheader";
@@ -44,12 +44,18 @@ export default function Home() {
               <div className="mainwidth header-nav">
                 <Row>
                   <Col xs={4} sm={4} md={4} lg={4} className="logo">
-                    <Link to="/dashboard">主页</Link>
+                    <Link to="/dashboard">
+                      <Button style={{ color: "#1890ff", borderRadius: "4px" }}>
+                        主页
+                      </Button>
+                    </Link>
                     <Link
                       to={{ pathname: "person", state: { name: "person" } }}
                       style={{ marginLeft: 15 }}
                     >
-                      个人主页
+                      <Button style={{ color: "#1890ff", borderRadius: "4px" }}>
+                        个人主页
+                      </Button>
                     </Link>
                   </Col>
                   <Col xs={20} sm={20} md={12} lg={12} className="logo">

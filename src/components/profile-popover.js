@@ -116,13 +116,27 @@ class ProfileHeader extends React.PureComponent {
           </div>
         }
       >
-        {" "}
-        <Avatar
-          className="margin-bt-sm"
-          src={data.user && data.user.avatar ? data.user.avatar : defaultAvatar}
-          size={32}
-          icon={<UserOutlined />}
-        />
+        <div
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            background: "#fff",
+            verticalAlign: "center",
+            display: "inline-block",
+            lineHeight: 0,
+          }}
+          className="avatarF"
+        >
+          <Avatar
+            className="margin-bt-sm"
+            src={
+              data.user && data.user.avatar ? data.user.avatar : defaultAvatar
+            }
+            size={32}
+            icon={<UserOutlined />}
+          />
+        </div>
       </Popover>
     );
   }

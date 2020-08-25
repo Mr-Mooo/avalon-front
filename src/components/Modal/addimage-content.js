@@ -7,6 +7,7 @@ import {
   Modal,
   Input,
   Tag,
+  Select,
   Radio,
   notification,
   message,
@@ -18,6 +19,7 @@ import { withRouter } from "react-router-dom";
 import FormItem from "antd/lib/form/FormItem";
 import { uploadImg, addContentApi } from "../../services/content.js";
 import emitter from "../../utils/events.js";
+const { Option } = Select;
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -309,23 +311,36 @@ class AddImageContent extends React.Component {
   };
   handleSubmit = async () => {
     const { imgUrl, tags, message } = this.state;
+
+    let fieldsValue = "";
     try {
-      await this.formRef.current.validateFields();
+      fieldsValue = await this.formRef.current.validateFields();
     } catch (err) {
       console.log(err);
       return;
     }
+
     // if (message === "") {
     //   // message.error("请填写图文配文内容");
     //   return;
     // }
-    console.log(11111);
+    let tag_id = [];
+    if (fieldsValue.tag1) {
+      tag_id.push(fieldsValue.tag1);
+    }
+    if (fieldsValue.tag2) {
+      tag_id.push(fieldsValue.tag2);
+    }
+    if (fieldsValue.tag3) {
+      tag_id.push(fieldsValue.tag3);
+    }
+    console.log(tag_id, "tag");
     const options = {
       subject: "测试",
       brief_introduction: "测试",
       type: "pictrue",
       attachment: imgUrl,
-      tag: tags,
+      tag: [...tag_id, ...tags],
       content: message,
     };
     const addRes = await addContentApi(options);
@@ -411,47 +426,70 @@ class AddImageContent extends React.Component {
             >
               <TextArea rows={4} onChange={(e) => this.getMessage(e)} />
             </FormItem>
-          </Form>
-          <br />
-          <br />
-          <h4>上传图片</h4>
-          <p>
-            *图片上传格式为png、jpg、jpeg格式，单张图片不超过20M，最多可上传9张图片
-          </p>
-          <div>
-            <div className="clearfix">
-              <Upload
-                action={needOption.url}
-                listType="picture-card"
-                method="POST"
-                data={{
-                  key: needOption.key,
-                  "content-type": needOption.contentType,
-                  policy: needOption.policy,
-                  signature: needOption.signature,
-                  accessKeyId: needOption.accessKeyId,
-                }}
-                fileList={fileList}
-                onPreview={this.handlePreview}
-                beforeUpload={this.beforeUpload}
-                onChange={this.handleChange}
-              >
-                {fileList.length >= 9 ? null : uploadButton}
-              </Upload>
-              <Modal
-                visible={previewVisible}
-                title={previewTitle}
-                footer={null}
-                onCancel={this.handleCancel}
-              >
-                <img
-                  alt="example"
-                  style={{ width: "100%" }}
-                  src={previewImage}
-                />
-              </Modal>
+            <br />
+            <br />
+            <h4>上传图片</h4>
+            <p>
+              *图片上传格式为png、jpg、jpeg格式，单张图片不超过20M，最多可上传9张图片
+            </p>
+            <div>
+              <div className="clearfix">
+                <Upload
+                  action={needOption.url}
+                  listType="picture-card"
+                  method="POST"
+                  data={{
+                    key: needOption.key,
+                    "content-type": needOption.contentType,
+                    policy: needOption.policy,
+                    signature: needOption.signature,
+                    accessKeyId: needOption.accessKeyId,
+                  }}
+                  fileList={fileList}
+                  onPreview={this.handlePreview}
+                  beforeUpload={this.beforeUpload}
+                  onChange={this.handleChange}
+                >
+                  {fileList.length >= 9 ? null : uploadButton}
+                </Upload>
+                <Modal
+                  visible={previewVisible}
+                  title={previewTitle}
+                  footer={null}
+                  onCancel={this.handleCancel}
+                >
+                  <img
+                    alt="example"
+                    style={{ width: "100%" }}
+                    src={previewImage}
+                  />
+                </Modal>
+              </div>
             </div>
-          </div>
+            <h4>内容限制</h4>
+            <FormItem name="tag1" initialValue="全年龄">
+              <Select style={{ width: 120 }}>
+                <Option value="全年龄">全年龄</Option>
+                <Option value="限制内容">限制内容</Option>
+              </Select>
+            </FormItem>
+            <h4>创作属性</h4>
+            <FormItem name="tag2" initialValue="原创">
+              <Select style={{ width: 120 }}>
+                <Option value="原创">原创</Option>
+                <Option value="二创">二创</Option>
+              </Select>
+            </FormItem>
+            <h4>取向类型</h4>
+            <FormItem name="tag3" initialValue="无取向">
+              <Select style={{ width: 120 }}>
+                <Option value="BL">BL</Option>
+                <Option value="BG">BG</Option>
+                <Option value="GL">GL</Option>
+                <Option value="无取向">无取向</Option>
+              </Select>
+            </FormItem>
+          </Form>
           {/* <PicturesWall /> */}
           <h4>添加标签</h4>
           <div>
@@ -490,18 +528,10 @@ class AddImageContent extends React.Component {
               </Tag>
             )}
           </div>
-          {/* <HotTagsAge /> <br />
-      <br />
-      <HotTagsLegal />
-      <br />
-      <br />
-      <HotTagsType />
-      <br />
-      <br />
-      <h4>非必选标签</h4>
-      <HotTagsNonMandatory />
-      <h4>权限设置</h4>
-      <Permission /> */}
+          {/* <h4>非必选标签</h4>
+          <HotTagsNonMandatory />
+          <h4>权限设置</h4>
+          <Permission /> */}
         </div>
       </Modal>
     );

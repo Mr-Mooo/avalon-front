@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, message } from "antd";
+import { Menu, message, Button } from "antd";
 import ProfileHeader from "../profile-popover";
 // import TaskHeader from "../taskheader";
 import AddNewArticle from "../add-article";
@@ -19,12 +19,19 @@ export default function TopMenu() {
       </Menu.Item> */}
       <Menu.Item>
         <span onClick={() => getMessage()}>
-          <img src={photo} style={{ width: "30px", marginRight: "10px" }} />
-          充值中心
+          {/* <img src={photo} style={{ width: "30px", marginRight: "10px" }} />
+           */}
+          <Button style={{ color: "#1890ff", borderRadius: "4px" }}>
+            充值中心
+          </Button>
         </span>
       </Menu.Item>
       <Menu.Item>
-        <span onClick={() => getMessage()}>商城</span>
+        <span onClick={() => getMessage()}>
+          <Button style={{ color: "#1890ff", borderRadius: "4px" }}>
+            商城
+          </Button>
+        </span>
       </Menu.Item>
 
       <Menu.Item>
