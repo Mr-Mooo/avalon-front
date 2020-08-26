@@ -53,6 +53,7 @@ class Step2 extends React.PureComponent {
     options.mobile = sessionStorage.getItem("mobile");
     options.password = sessionStorage.getItem("password");
     options.otp = sessionStorage.getItem("otp");
+    options.nick_name = sessionStorage.getItem("nick_name");
     // const options = fieldsValue;
     console.log(options);
     message.loading("Loading...", 20, () => {

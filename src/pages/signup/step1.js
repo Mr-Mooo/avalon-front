@@ -46,6 +46,7 @@ class Step1 extends React.PureComponent {
       sessionStorage.setItem("mobile", fieldsValue.mobile);
       sessionStorage.setItem("password", fieldsValue.password);
       sessionStorage.setItem("otp", fieldsValue.otp);
+      sessionStorage.setItem("nick_name", fieldsValue.nick_name);
       this.props.next();
     }
   };
