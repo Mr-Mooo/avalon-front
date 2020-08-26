@@ -259,7 +259,7 @@ const PersonalProfile = () => {
         label="昵称"
         rules={[
           {
-            required: true,
+            required: false,
             message: "请输入昵称",
             whitespace: true,
           },
@@ -268,9 +268,9 @@ const PersonalProfile = () => {
         <Input disabled />
       </Form.Item>
 
-      <Form.Item name="birthdate" label="出生日期" hasFeedback>
+      {/* <Form.Item name="birthdate" label="出生日期" hasFeedback>
         <DatePicker />
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item name="phone" label="绑定手机">
         <Input
@@ -287,6 +287,7 @@ const PersonalProfile = () => {
         label="绑定邮箱"
         rules={[
           {
+            required: true,
             type: "email",
             message: "请输入正确的邮箱",
           },
@@ -295,7 +296,7 @@ const PersonalProfile = () => {
         <Input />
       </Form.Item>
 
-      <Form.Item name="academic-degree" label="最高学位">
+      {/* <Form.Item name="academic-degree" label="最高学位">
         <Select placeholder="请选择学位" allowClear>
           <Option value="primary-school">小学</Option>
           <Option value="junior-high">初中</Option>
@@ -305,25 +306,39 @@ const PersonalProfile = () => {
           <Option value="phd">博士</Option>
           <Option value="other">其他</Option>
         </Select>
+      </Form.Item> */}
+
+      <Form.Item name="residence" label="实名验证">
+        <Input disabled />
       </Form.Item>
 
-      <Form.Item name="residence" label="所在地">
-        <Input />
-      </Form.Item>
-
-      <Form.Item name={["user", "introduction"]} label="自我介绍">
+      <Form.Item
+        name="introduction"
+        rules={[
+          {
+            required: true,
+            type: "introduction",
+            message: "请输入正确的简介",
+          },
+        ]}
+        label="个人简介"
+      >
         <Input.TextArea />
       </Form.Item>
-
-      <Form.Item name="sex" label="性别">
+      <Form.Item {...tailFormItemLayout}>
+        <Button type="primary" htmlType="submit">
+          修改
+        </Button>
+      </Form.Item>
+      {/* <Form.Item name="sex" label="性别">
         <Select placeholder="请选择性别" allowClear>
           <Option value="male">男</Option>
           <Option value="female">女</Option>
           <Option value="none">保密</Option>
         </Select>
-      </Form.Item>
+      </Form.Item> */}
 
-      <Form.Item name="permission" label="个人信息访问权限">
+      {/* <Form.Item name="permission" label="个人信息访问权限">
         <Select placeholder="请选择访问权限" allowClear>
           <Option value="visible-for-all">全部可见</Option>
           <Option value="visible-for-fans">关注可见</Option>
@@ -337,9 +352,9 @@ const PersonalProfile = () => {
           <Option value="visible-for-fans">关注可见</Option>
           <Option value="visible-for-me">仅自己可见</Option>
         </Select>
-      </Form.Item>
+      </Form.Item> */}
 
-      <Form.Item name="weibo" label="微博">
+      {/* <Form.Item name="weibo" label="微博">
         <Input addonBefore="http://www.weibo.com/u/" />
 
         <Button
@@ -363,8 +378,8 @@ const PersonalProfile = () => {
         >
           关联
         </Button>
-      </Form.Item>
-
+      </Form.Item> */}
+      {/* 
       <Form.Item name="taobao" label="淘宝">
         <Input />
 
@@ -376,9 +391,9 @@ const PersonalProfile = () => {
         >
           关联
         </Button>
-      </Form.Item>
+      </Form.Item> */}
 
-      <Form.Item name="other" label="其他">
+      {/* <Form.Item name="other" label="其他">
         <Input />
 
         <Button
@@ -389,13 +404,7 @@ const PersonalProfile = () => {
         >
           关联
         </Button>
-      </Form.Item>
-
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          修改
-        </Button>
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   );
 };
