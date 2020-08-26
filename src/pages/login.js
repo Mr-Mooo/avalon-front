@@ -71,6 +71,7 @@ class Login extends React.PureComponent {
         description: null,
         duration: 2,
       });
+     
       // sessionStorage.setItem('token', loginRes.access_token);
       sessionStorage.setItem("mobile", loginRes.mobile);
       sessionStorage.setItem("email", loginRes.email);

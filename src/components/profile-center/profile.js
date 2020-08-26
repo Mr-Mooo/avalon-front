@@ -15,7 +15,11 @@ import {
   Modal,
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { uploadImg, uploadavatartApi } from "../../services/content.js";
+import {
+  uploadImg,
+  uploadavatartApi,
+  updateDataApi,
+} from "../../services/content.js";
 import "antd/dist/antd.css";
 
 function getBase64(file) {
@@ -101,7 +105,7 @@ class AvatarUpload extends React.Component {
       });
     }
     const op = {
-      path: res.data.key,
+      path: `${res.data.request_url}${res.data.key}`,
     };
     const data = await uploadavatartApi(op);
     if (data.code === 0) {
@@ -223,13 +227,18 @@ const tailFormItemLayout = {
   },
 };
 
-const PersonalProfile = () => {
+const PersonalProfile = (content) => {
   const [form] = Form.useForm();
-
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    const options = {
+      introduce: values.introduction,
+      email: values.email,
+    };
+    const res = await updateDataApi(options);
+    if (res.code === 0) {
+      message.success("修改成功");
+    }
   };
-
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -242,7 +251,17 @@ const PersonalProfile = () => {
       </Select>
     </Form.Item>
   );
-
+  const data = JSON.parse(localStorage.getItem("userInfo"));
+  const mobile = sessionStorage.getItem("mobile");
+  const email = sessionStorage.getItem("email");
+  const nick_name = sessionStorage.getItem("nick_name");
+  console.log(data, mobile, email, nick_name, "data");
+  const message = {
+    mobile,
+    email,
+    nick_name,
+    introduce: data.user.introduce,
+  };
   return (
     <Form
       {...formItemLayout}
@@ -251,12 +270,14 @@ const PersonalProfile = () => {
       onFinish={onFinish}
       initialValues={{
         prefix: "86",
+        remember: true,
       }}
       scrollToFirstError
     >
       <Form.Item
         name="nickname"
         label="昵称"
+        initialValues={nick_name}
         rules={[
           {
             required: false,
@@ -265,16 +286,17 @@ const PersonalProfile = () => {
           },
         ]}
       >
-        <Input disabled />
+        <Input disabled defaultValue={nick_name} />
       </Form.Item>
 
       {/* <Form.Item name="birthdate" label="出生日期" hasFeedback>
         <DatePicker />
       </Form.Item> */}
 
-      <Form.Item name="phone" label="绑定手机">
+      <Form.Item name="phone" initialValues={mobile} label="绑定手机">
         <Input
           addonBefore={prefixSelector}
+          defaultValue={mobile}
           disabled
           style={{
             width: "100%",
@@ -285,6 +307,7 @@ const PersonalProfile = () => {
       <Form.Item
         name="email"
         label="绑定邮箱"
+        initialValues={email}
         rules={[
           {
             required: true,
@@ -293,7 +316,7 @@ const PersonalProfile = () => {
           },
         ]}
       >
-        <Input />
+        <Input defaultValue={email} />
       </Form.Item>
 
       {/* <Form.Item name="academic-degree" label="最高学位">
@@ -314,16 +337,20 @@ const PersonalProfile = () => {
 
       <Form.Item
         name="introduction"
+        initialValues={data.user.introduce}
         rules={[
           {
             required: true,
-            type: "introduction",
             message: "请输入正确的简介",
+          },
+          {
+            max: 60,
+            message: "最多不能超过六十个字符",
           },
         ]}
         label="个人简介"
       >
-        <Input.TextArea />
+        <Input.TextArea defaultValue={data.user.introduce} />
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
@@ -411,6 +438,17 @@ const PersonalProfile = () => {
 
 export default function Profile() {
   const { TabPane } = Tabs;
+  const data = JSON.parse(localStorage.getItem("userInfo"));
+  const mobile = sessionStorage.getItem("mobile");
+  const email = sessionStorage.getItem("email");
+  const nick_name = sessionStorage.getItem("nick_name");
+  console.log(data, "data");
+  const message = {
+    mobile,
+    email,
+    nick_name,
+    introduce: data.user.introduce,
+  };
   return (
     <Row className="mainwidth margin-1">
       <div>
@@ -422,7 +460,7 @@ export default function Profile() {
                   <AvatarUpload />
                 </Col>
                 <Col span={18}>
-                  <PersonalProfile />
+                  <PersonalProfile content={message} />
                 </Col>
               </Row>
             </Card>
