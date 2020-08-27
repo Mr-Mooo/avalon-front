@@ -3,7 +3,8 @@ import { BigNumber } from "bignumber.js";
 const config = {
   // base_url: "http://119.3.87.150:7001/api",
 
-  base_url: 'http://127.0.0.1:7001/api',
+  // base_url: 'http://127.0.0.1:7001/api',
+  base_url: 'https://ava-lon-api.com/api',
   MAX_DECIMAL_DIGITS: 2,
   version: "v1.3.1",
   getLanguage() {
