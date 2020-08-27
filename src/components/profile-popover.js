@@ -50,7 +50,6 @@ class ProfileHeader extends React.PureComponent {
         duration: 2,
       });
     }
-
     window.location.replace(baseUrl);
   };
   render() {

@@ -89,8 +89,8 @@ class Login extends React.PureComponent {
 
       const userRes = await userApi({ user_id: loginRes.user_id });
       localStorage.setItem("userInfo", JSON.stringify(userRes));
-      // window.location.replace(`${baseUrl}`);
-      this.props.history.push("/dashboard");
+      window.location.replace(`${baseUrl}dashboard`);
+      // this.props.history.push("");
     }
   };
 
