@@ -1,34 +1,45 @@
-import request from 'superagent';
-import { message, notification } from 'antd';
+import request from "superagent";
+import { message, notification } from "antd";
 // import { history } from 'umi';
+import { baseUrl } from "../utils/util.js";
 
 function errTip(e, url) {
-  if (e.response && e.response.body && e.response.body.msg && typeof e.response.body.msg === 'string') {
-    if (url.includes('/admin/login')) {
+  if (
+    e.response &&
+    e.response.body &&
+    e.response.body.msg &&
+    typeof e.response.body.msg === "string"
+  ) {
+    if (url.includes("/admin/login")) {
       notification.error({
         message: e.response && e.response.body && e.response.body.msg,
         description: null,
         duration: 2,
       });
-    } else if (sessionStorage.getItem('token')) {
+    } else if (sessionStorage.getItem("token")) {
       notification.error({
         message: e.response && e.response.body && e.response.body.msg,
         description: null,
         duration: 2,
       });
     }
-  } else if (e.response && e.response.body && e.response.body.msg && typeof e.response.body.msg === 'object') {
-    let result = '';
+  } else if (
+    e.response &&
+    e.response.body &&
+    e.response.body.msg &&
+    typeof e.response.body.msg === "object"
+  ) {
+    let result = "";
     e.response.body.msg.map((val) => {
       result += `${val.field} ${val.message} \n`;
     });
-    if (url.includes('/admin/login')) {
+    if (url.includes("/admin/login")) {
       notification.error({
         message: result,
         description: null,
         duration: 2,
       });
-    } else if (sessionStorage.getItem('token')) {
+    } else if (sessionStorage.getItem("token")) {
       notification.error({
         message: result,
         description: null,
@@ -37,14 +48,14 @@ function errTip(e, url) {
     }
   }
   if (e.response && e.response.body && e.response.body.message) {
-    if (url.includes('/admin/login')) {
+    if (url.includes("/admin/login")) {
       // new LightTip().error(e.response && e.response.body && e.response.body.message, 2);
       notification.error({
         message: e.response && e.response.body && e.response.body.message,
         description: null,
         duration: 2,
       });
-    } else if (sessionStorage.getItem('token')) {
+    } else if (sessionStorage.getItem("token")) {
       notification.error({
         message: e.response && e.response.body && e.response.body.message,
         description: null,
@@ -54,45 +65,45 @@ function errTip(e, url) {
   }
 }
 
-const myFetch = async (url, parmas = {}, type = 'GET') => {
+const myFetch = async (url, parmas = {}, type = "GET") => {
   // console.log(url, 'urls')
   try {
     // const token = sessionStorage.getItem('token');
     const headers = {};
-    headers['Content-Type'] = 'application/json';
+    headers["Content-Type"] = "application/json";
     // headers['Authorization'] = `Bearer ${token}`;
     let res;
     let promise = {};
     switch (type) {
-      case 'GET':
+      case "GET":
         res = await request
           .get(url)
           .set(headers)
           .withCredentials()
           .query(parmas);
         break;
-      case 'POST':
+      case "POST":
         res = await request
           .post(url)
           .set(headers)
           .withCredentials()
           .send(parmas);
         break;
-      case 'PUT':
+      case "PUT":
         res = await request
           .put(url)
           .set(headers)
           .withCredentials()
           .send(parmas);
         break;
-      case 'DELETE':
+      case "DELETE":
         res = await request
           .del(url)
           .set(headers)
           .withCredentials()
           .send(parmas);
         break;
-      case 'HEAD':
+      case "HEAD":
         res = await request
           .get(url)
           .set(headers)
@@ -110,7 +121,7 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
       if (res.ok && res.statusCode === 200) {
         promise = Object.assign({}, res.body);
         if (promise && promise.code === 0) {
-          return promise
+          return promise;
         }
         // console.log(promise, 'promise')
         message.destroy();
@@ -120,7 +131,7 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
         if (promise.code === 1001) {
           if (Array.isArray(promise.data)) {
             promise.data.map((val) => {
-              errorStr = '';
+              errorStr = "";
               errorStr += `${val.field_display} ${val.message} \n`;
             });
             notification.error({
@@ -128,12 +139,11 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
               description: null,
               duration: 3,
             });
-            return false
+            return false;
           }
-          
         }
         // console.log(errorStr, 'errorStr')
-        if (promise.message && (typeof promise.message === 'string')) {
+        if (promise.message && typeof promise.message === "string") {
           notification.error({
             message: errorStr,
             description: null,
@@ -142,9 +152,9 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
         }
         if (promise.code === 4001) {
           sessionStorage.clear();
-          // this.props.history.push('/login'); 
-          
-          window.location.replace('http://localhost:3000/');
+          // this.props.history.push('/login');
+
+          window.location.replace(baseUrl);
           // const urlParams = new URL(window.location.href);
           // console.log(urlParams, 'urlParams')
         }
@@ -152,7 +162,7 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
       if (res.statusCode === 4001) {
         sessionStorage.clear();
         // this.props.history.push('/dashboard');
-        window.location.replace('http://localhost:3000/');
+        window.location.replace(baseUrl);
       }
       return false;
     }
@@ -168,7 +178,7 @@ const myFetch = async (url, parmas = {}, type = 'GET') => {
         // new LightTip().error(e.response.body.msg, 2);
       }
       // this.props.history.push('/dashboard');
-      window.location.replace('http://localhost:3000/');
+      window.location.replace(baseUrl);
     } else {
       // console.log(e.response.body, 'e.response.body.msg')
       errTip(e, url);

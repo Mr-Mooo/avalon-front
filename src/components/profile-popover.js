@@ -16,7 +16,7 @@ import "../index.css";
 import { logoutApi, userApi } from "../services/user";
 import { contentListApi } from "../services/content";
 import { Link, withRouter } from "react-router-dom";
-import { defaultAvatar } from "../utils/util";
+import { defaultAvatar, baseUrl } from "../utils/util";
 // export default function ProfileHeader() {
 
 class ProfileHeader extends React.PureComponent {
@@ -51,7 +51,7 @@ class ProfileHeader extends React.PureComponent {
       });
     }
 
-    window.location.replace("http://localhost:3000/");
+    window.location.replace(baseUrl);
   };
   render() {
     const { data } = this.state;

@@ -6,6 +6,7 @@ import "antd/dist/antd.css";
 import { Link, withRouter } from "react-router-dom";
 import { followListApi, mySetApi } from "../../services/content";
 import InfiniteScroll from "react-infinite-scroller";
+import _ from "lodash";
 import {
   CrownOutlined,
   HeartOutlined,
@@ -26,19 +27,40 @@ class ArticleBrief extends React.PureComponent {
       page: "",
       routerName: "",
       options: {
-        limit: 30,
+        limit: 10,
         page: 1,
       },
     };
   }
   componentDidMount() {
-    console.log("shuaxin");
     const { state } = this.props.location;
     const { options } = this.state;
     this.setState({
       routerName: state.name,
     });
     this.getFolleowData(options);
+    window.addEventListener("scroll", this.scrollHandler);
+  }
+  scrollHandler = _.debounce(() => {
+    let { options, page, scrollData } = this.state;
+    const distance =
+      document.documentElement.scrollHeight -
+      document.body.clientHeight -
+      document.documentElement.scrollTop;
+    const top = document.documentElement.scrollTop;
+    if (distance < 200 && top > scrollData) {
+      this.setState({
+        scrollData: top,
+      });
+      const options = {
+        page: page + 1,
+        limit: 10,
+      };
+      this.getFolleowData(options);
+    }
+  }, 500);
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.scrollHandler);
   }
   componentDidUpdate(prevProps) {
     console.log(prevProps.location, "props");
@@ -64,9 +86,10 @@ class ArticleBrief extends React.PureComponent {
   }
 
   getFolleowData = async (options = {}) => {
+    const { data } = this.state;
     const res = await followListApi(options);
     this.setState({
-      data: res.rows,
+      data: [...data, ...res.rows],
       count: res.count,
       page: options.page ? options.page : 1,
     });

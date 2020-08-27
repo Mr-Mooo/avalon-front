@@ -35,6 +35,7 @@ class HomeTab extends React.PureComponent {
     keyValue: "",
     isShow: false,
     scrollData: 0,
+    selectKey: "",
     options: {
       type: "recommend",
       limit: 10,
@@ -65,6 +66,10 @@ class HomeTab extends React.PureComponent {
         page: 1,
       });
     }
+
+    this.setState({
+      selectKey: key,
+    });
   };
   // 搜索话题
   getTopic = async () => {
@@ -129,22 +134,27 @@ class HomeTab extends React.PureComponent {
       async (message) => {
         let option = {
           key: message,
-          type: "recommend",
           limit: 10,
           page: 1,
         };
+        const { selectKey } = that.state;
         this.get(message);
         console.log(message, "message");
         localStorage.setItem("message", message);
+        console.log(selectKey, "selectKey");
+        if (selectKey === "3") {
+          this.getSub();
+        } else if (selectKey === "4") {
+          this.getTopic();
+        } else if (selectKey === "6") {
+          this.getSearch(selectKey);
+        } else if (selectKey === "5") {
+          this.getSearch(selectKey);
+        } else {
+        }
         this.setState({
           keyMesage: message,
           data: [],
-        });
-        const res = await contentListApi(option);
-        this.setState({
-          data: res.rows,
-          count: res.count,
-          page: options.page ? options.page : 1,
         });
       }
     );
@@ -387,7 +397,7 @@ class HomeTab extends React.PureComponent {
                 tab={
                   <span>
                     <CrownOutlined />
-                    推荐
+                    找人
                   </span>
                 }
                 key="1"

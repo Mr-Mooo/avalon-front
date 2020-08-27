@@ -28,9 +28,13 @@ import u2 from "./img/u2.png";
 import "antd/dist/antd.css";
 import "./index.css";
 import TopMenu from "./components/topmenu/topmenu";
-
+import emitter from "./utils/events.js";
 const { Header, Footer, Content } = Layout;
 // const { SubMenu } = Menu;
+function dashboard() {
+  console.log(11);
+  emitter.emit("changeValue", "");
+}
 export default function Home() {
   const pathName = window.location.pathname;
   const bottom = 5;
@@ -45,7 +49,10 @@ export default function Home() {
                 <Row>
                   <Col xs={4} sm={4} md={4} lg={4} className="logo">
                     <Link to="/dashboard">
-                      <Button style={{ color: "#1890ff", borderRadius: "4px" }}>
+                      <Button
+                        style={{ color: "#1890ff", borderRadius: "4px" }}
+                        onClick={() => dashboard()}
+                      >
                         主页
                       </Button>
                     </Link>
@@ -58,11 +65,11 @@ export default function Home() {
                       </Button>
                     </Link>
                   </Col>
-                  <Col xs={20} sm={20} md={12} lg={12} className="logo">
+                  <Col xs={16} sm={16} md={12} lg={12} className="logo">
                     {" "}
                     <SearchNav />
                   </Col>
-                  <Col xs={24} sm={24} md={8} lg={8}>
+                  <Col xs={10} sm={10} md={8} lg={8}>
                     {" "}
                     <TopMenu />
                   </Col>

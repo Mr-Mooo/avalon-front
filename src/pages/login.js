@@ -16,6 +16,7 @@ import "./login.css";
 import { BrowserRouter as Router, withRouter, Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import { loginApi, userApi } from "../services/user";
+import { baseUrl } from "../utils/util.js";
 import ForgotPassword from "../components/forgot-password";
 let i = 1;
 class Login extends React.PureComponent {
@@ -71,7 +72,7 @@ class Login extends React.PureComponent {
         description: null,
         duration: 2,
       });
-     
+
       // sessionStorage.setItem('token', loginRes.access_token);
       sessionStorage.setItem("mobile", loginRes.mobile);
       sessionStorage.setItem("email", loginRes.email);
@@ -88,12 +89,16 @@ class Login extends React.PureComponent {
 
       const userRes = await userApi({ user_id: loginRes.user_id });
       localStorage.setItem("userInfo", JSON.stringify(userRes));
-      window.location.replace("http://localhost:3000/dashboard");
+      // window.location.replace(`${baseUrl}`);
+      this.props.history.push("/dashboard");
     }
   };
 
   onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+  goSign = () => {
+    this.props.history.push("/sign-up");
   };
   render() {
     const {
@@ -141,7 +146,7 @@ class Login extends React.PureComponent {
                     required: true,
                     message: "请输入密码",
                   },
-                  // { min: 6, message: "密码最少要6个字符" },
+                  { min: 6, message: "密码最少要6个字符" },
                 ]}
               >
                 <Input.Password />
@@ -157,11 +162,7 @@ class Login extends React.PureComponent {
                   </Button>
                   <Button
                     onClick={() => {
-                      {
-                        /* this.props.history.push('/sign-up'); */
-                      }
-
-                      window.location.replace("http://localhost:3000/sign-up");
+                      this.goSign();
                     }}
                     className="margin-t"
                     block

@@ -18,6 +18,9 @@
 .box .ant-menu-item-active {
   border-bottom: none !important;
 }
-.box li {
+/* .box li {
   margin: 0 15px !important;
+} */
+.box {
+  display: flex;
 }
