@@ -13,6 +13,33 @@ export const addContentApi = async (options) => {
   }
   return false;
 };
+// 找人
+export const searchUserApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/user/search/list`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
+// 主页列表
+export const homePageApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/content/user/list`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res.data;
+  }
+  return false;
+};
+
 //上传头像
 export const uploadavatartApi = async (options) => {
   const res = await myFetch(`${config.base_url}/user/avatar`, options, "PUT");

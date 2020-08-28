@@ -17,15 +17,18 @@ import {
   mySubApi,
   searchMessageApi,
   searchTagApi,
+  searchUserApi,
 } from "../services/content";
 import InfiniteScroll from "react-infinite-scroller";
 import emitter from "../utils/events.js";
+import SearchAuthors from "../components/search-authors/all-hot-authors";
 import _ from "lodash";
 const { TabPane } = Tabs;
 
-class HomeTab extends React.PureComponent {
+class HomeTab extends React.Component {
   state = {
     data: [],
+    userData: [],
     loading: false,
     hasMore: true,
     count: 0,
@@ -46,6 +49,8 @@ class HomeTab extends React.PureComponent {
   callback = async (key) => {
     if (key === "3") {
       this.getSub();
+    } else if (key === "7") {
+      this.getUserData();
     } else if (key === "4") {
       this.getTopic();
     } else if (key === "6") {
@@ -70,6 +75,23 @@ class HomeTab extends React.PureComponent {
     this.setState({
       selectKey: key,
     });
+  };
+  // 找人
+  getUserData = async () => {
+    // const {} = this.state;
+    const mes = localStorage.getItem("message");
+    const options = {
+      keyword: mes,
+      limit: 10,
+      page: 1,
+    };
+    const res = await searchUserApi(options);
+    if (res.code === 0) {
+      this.setState({
+        userData: [...res.data.list.rows],
+      });
+      console.log(res, "找人");
+    }
   };
   // 搜索话题
   getTopic = async () => {
@@ -123,41 +145,48 @@ class HomeTab extends React.PureComponent {
   };
   componentDidMount() {
     const { options } = this.state;
-    this.getContentData(options);
+
     const { pathname } = this.props.location;
+    if (pathname !== "/search") {
+      this.getContentData(options);
+    }
     this.setState({
       isShow: pathname !== "/search",
     });
-    const that = this;
-    this.eventEmitter = emitter.addListener(
-      "changeMessage",
-      async (message) => {
-        let option = {
-          key: message,
-          limit: 10,
-          page: 1,
-        };
-        const { selectKey } = that.state;
-        this.get(message);
-        console.log(message, "message");
-        localStorage.setItem("message", message);
-        console.log(selectKey, "selectKey");
-        if (selectKey === "3") {
-          this.getSub();
-        } else if (selectKey === "4") {
-          this.getTopic();
-        } else if (selectKey === "6") {
-          this.getSearch(selectKey);
-        } else if (selectKey === "5") {
-          this.getSearch(selectKey);
-        } else {
+    if (pathname === "/search") {
+      this.getUserData();
+      const that = this;
+      this.eventEmitter = emitter.addListener(
+        "changeMessage",
+        async (message) => {
+          let option = {
+            key: message,
+            limit: 10,
+            page: 1,
+          };
+          const { selectKey } = that.state;
+          this.get(message);
+          console.log(message, "message");
+          localStorage.setItem("message", message);
+          console.log(selectKey, "selectKey");
+          if (selectKey === "3") {
+            this.getSub();
+          } else if (selectKey === "4") {
+            this.getTopic();
+          } else if (selectKey === "6") {
+            this.getSearch(selectKey);
+          } else if (selectKey === "5") {
+            this.getSearch(selectKey);
+          } else {
+            this.getUserData();
+          }
+          this.setState({
+            keyMesage: message,
+            data: [],
+          });
         }
-        this.setState({
-          keyMesage: message,
-          data: [],
-        });
-      }
-    );
+      );
+    }
     window.addEventListener("scroll", this.scrollHandler);
   }
   scrollHandler = _.debounce(() => {
@@ -266,8 +295,8 @@ class HomeTab extends React.PureComponent {
     return;
   };
   render() {
-    const { data, isShow } = this.state;
-    console.log(isShow, "is");
+    const { data, isShow, userData } = this.state;
+    console.log(userData, "is");
     return (
       <Card className="margin-1">
         {isShow && (
@@ -400,7 +429,7 @@ class HomeTab extends React.PureComponent {
                     找人
                   </span>
                 }
-                key="1"
+                key="7"
               >
                 <div>
                   <InfiniteScroll
@@ -411,11 +440,14 @@ class HomeTab extends React.PureComponent {
                     useWindow={false}
                   >
                     <List
-                      dataSource={data}
+                      dataSource={userData}
                       renderItem={(item) => {
                         return (
-                          <List.Item key={item.id}>
-                            <Author contentData={item} refush={this.refush} />
+                          <List.Item key={item.user_id}>
+                            <SearchAuthors
+                              contentData={item}
+                              refush={this.refush}
+                            />
                           </List.Item>
                         );
                       }}

@@ -18,6 +18,7 @@ import SignUp from "./pages/signup/signup";
 import Messagetab from "./components/message/message";
 import TopicCenter from "./components/topic-center/topic-center";
 import UserPage from "./components/user-page/user-page";
+import UserhomePage from "./components/user-home-page/user-page";
 import PersonPage from "./components/person-page/user-page";
 import Recharge from "./components/recharge/recharge";
 import ForgotPassword from "./components/forgot-password";
@@ -93,6 +94,7 @@ export default function Home() {
           <Route path="/forgot-password" component={ForgotPassword} exact />
           <Route path="/tag" component={Tag} exact />
           <Route path="/person" component={PersonPage} exact />
+          <Route path="/user-home" component={UserhomePage} exact />
         </Content>
         <Affix offsetBottom={bottom}>
           <Footer className="align-center">

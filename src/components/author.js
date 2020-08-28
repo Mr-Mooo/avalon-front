@@ -426,13 +426,17 @@ class Author extends React.PureComponent {
     //     <Menu.Item key="2">投诉动态</Menu.Item>
     //   </Menu>
     // );
-    const setData = JSON.parse(JSON.stringify(contentData.avl_attachments));
-    const srcData = setData.map((item) => {
-      return {
-        src: `https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${item.path}`,
-        alt: "图片",
-      };
-    });
+    const setData =
+      contentData.avl_attachments &&
+      JSON.parse(JSON.stringify(contentData.avl_attachments));
+    const srcData =
+      setData &&
+      setData.map((item) => {
+        return {
+          src: `https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${item.path}`,
+          alt: "图片",
+        };
+      });
     return (
       <div style={{ width: "100%" }}>
         {!(id === contentData.content_id) && (
@@ -501,7 +505,10 @@ class Author extends React.PureComponent {
                     <MailOutlined /> 私信
                   </Button> */}
                         <Link
-                          to={{ pathname: "/user", state: { name: "user" } }}
+                          to={{
+                            pathname: "/user-home",
+                            state: { id: contentData.avl_user.user_id },
+                          }}
                         >
                           <Button size="small" className="margin-sm">
                             <MailOutlined /> 查看主页
