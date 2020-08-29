@@ -13,6 +13,28 @@ export const addContentApi = async (options) => {
   }
   return false;
 };
+// 话题人气榜单(simple)
+export const topSentimentApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/tag/top/list/simple`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
+// 话题人气榜单
+export const topSentimentListApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/tag/top/list`, options, "GET");
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 内容人气榜单(simple)
 export const contentSentimentApi = async (options) => {
   const res = await myFetch(

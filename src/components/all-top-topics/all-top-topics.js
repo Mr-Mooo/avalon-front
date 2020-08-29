@@ -1,37 +1,93 @@
 import React from "react";
 
-import { Col, Row, Avatar, Button, Divider, Card } from "antd";
+import { Col, Row, Avatar, Button, Divider, Card, Pagination } from "antd";
 import "antd/dist/antd.css";
-
-export default function AllTopTopics() {
-  return (
-    <div className="mainwidth">
-      <Card className="margin-1">
-        <Row>
-          <Col className="align-center" span={4}>
-            <Avatar className="margin-author-img" size={64} shape="square" />
-            <br />
-            <Button type="primary" size="small">
-              参与话题
-            </Button>
-          </Col>
-          <Col span={20} className="align-left">
-            话题名称
-            <Divider />
-            <Row>
-              <p className="gap">404w浏览量</p>{" "}
-              <p className="gap">1.2w参与量</p>{" "}
-              <p className="gap">1.3w条作品</p>
-            </Row>
-            <Button type="primary" className="gap" size="small">
-              订阅话题
-            </Button>
-            <Button type="primary" className="gap" size="small">
-              分享话题
-            </Button>
-          </Col>
-        </Row>
-      </Card>
-    </div>
-  );
+import { Link, withRouter } from "react-router-dom";
+import { topSentimentListApi } from "../../services/content";
+class AllTopTopics extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      data: [],
+      count: "",
+    };
+  }
+  async componentDidMount() {
+    const res = await topSentimentListApi();
+    console.log(res, "0");
+    if (res) {
+      this.setState({
+        data: res.data.rows,
+        count: res.data.count,
+      });
+    }
+  }
+  onchange = async (page, pageSize) => {
+    const options = {
+      page: page,
+      limit: pageSize,
+    };
+    const res = await topSentimentListApi(options);
+    if (res) {
+      this.setState({
+        data: res.data.rows,
+        count: res.data.count,
+      });
+    }
+  };
+  render() {
+    const { data, count } = this.state;
+    return (
+      <div className="mainwidth">
+        {data.map((item, index) => {
+          return (
+            <Card className="margin-1" key={index}>
+              <Row>
+                <Col
+                  span={24}
+                  className="align-left"
+                  style={{ position: "relative" }}
+                >
+                  <Link
+                    to={{
+                      pathname: "/tag",
+                      state: {
+                        tag: item.avl_tag.content,
+                      },
+                    }}
+                    key={index}
+                  >
+                    <h2>{item.avl_tag.content}</h2>
+                  </Link>
+                  <p>这是一段默认的标签简介</p>
+                  <Divider />
+                  <p className="gap">{item.degree_of_heat}热度</p>
+                  <Button
+                    type="primary"
+                    className="gap"
+                    size="small"
+                    style={{ position: "absolute", top: "0px", right: "0px" }}
+                  >
+                    订阅话题
+                  </Button>
+                </Col>
+              </Row>
+            </Card>
+          );
+        })}
+        {count > 5 && (
+          <Pagination
+            className="margin-1"
+            style={{ float: "right" }}
+            defaultPageSize={5}
+            defaultCurrent={1}
+            onChange={(page, pageSize) => this.onchange(page, pageSize)}
+            total={count > 20 ? 20 : count}
+          />
+        )}
+      </div>
+    );
+  }
 }
+export default withRouter(AllTopTopics);

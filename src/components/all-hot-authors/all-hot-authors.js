@@ -103,16 +103,16 @@ class AllHotAuthors extends React.PureComponent {
             </Card>
           );
         })}
-        {/* {count > 5 && ( */}
-        <Pagination
-          className="margin-1"
-          style={{ float: "right" }}
-          defaultPageSize={5}
-          defaultCurrent={1}
-          onChange={(page, pageSize) => this.onchange(page, pageSize)}
-          total={count > 20 ? 20 : count}
-        />
-        {/* )} */}
+        {count > 5 && (
+          <Pagination
+            className="margin-1"
+            style={{ float: "right" }}
+            defaultPageSize={5}
+            defaultCurrent={1}
+            onChange={(page, pageSize) => this.onchange(page, pageSize)}
+            total={count > 20 ? 20 : count}
+          />
+        )}
       </div>
     );
   }
