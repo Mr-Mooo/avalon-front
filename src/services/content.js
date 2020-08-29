@@ -13,6 +13,54 @@ export const addContentApi = async (options) => {
   }
   return false;
 };
+// 内容人气榜单(simple)
+export const contentSentimentApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/content/top/list/simple`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
+// 内容人气榜单
+export const contentSentimentListApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/content/top/list`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
+// 用户人气榜单(simple)
+export const userSentimentApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/user/top/list/simple`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
+// 用户人气榜单
+export const userSentimentListApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/user/top/list`, options, "GET");
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 找人
 export const searchUserApi = async (options) => {
   const res = await myFetch(

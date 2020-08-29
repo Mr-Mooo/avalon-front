@@ -3,7 +3,7 @@ import React from "react";
 import { Col, Row } from "antd";
 import "antd/dist/antd.css";
 
-import Hotcontent from "../hotcontent";
+import Hotcontent from "../hotcontent.js";
 import Toptopic from "../toptopic";
 import AllTopTopics from "../all-top-topics/all-top-topics";
 

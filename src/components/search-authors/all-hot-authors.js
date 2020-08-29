@@ -9,7 +9,7 @@ import {
   RotateRightOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 class SearchAuthors extends React.PureComponent {
   render() {
     console.log("父级:", this.props);
@@ -29,9 +29,20 @@ class SearchAuthors extends React.PureComponent {
               <Button type="primary" className="gap" size="small">
                 <SmileOutlined /> 关注
               </Button>
-              <Button size="small">
-                <MailOutlined /> 查看主页
-              </Button>
+              <Link
+                to={{
+                  pathname: "/user-home",
+                  state: {
+                    id: contentData.user_id,
+                    name: "user-home",
+                    user: contentData,
+                  },
+                }}
+              >
+                <Button size="small">
+                  <MailOutlined /> 查看主页
+                </Button>
+              </Link>
             </div>
           </Col>
           <Col span={18} className="align-left">

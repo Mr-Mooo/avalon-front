@@ -255,13 +255,7 @@ const PersonalProfile = (content) => {
   const mobile = sessionStorage.getItem("mobile");
   const email = sessionStorage.getItem("email");
   const nick_name = sessionStorage.getItem("nick_name");
-  console.log(data, mobile, email, nick_name, "data");
-  const message = {
-    mobile,
-    email,
-    nick_name,
-    introduce: data.user.introduce,
-  };
+
   return (
     <Form
       {...formItemLayout}
@@ -316,7 +310,7 @@ const PersonalProfile = (content) => {
           },
         ]}
       >
-        <Input defaultValue={email} />
+        <Input />
       </Form.Item>
 
       {/* <Form.Item name="academic-degree" label="最高学位">

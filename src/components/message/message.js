@@ -7,11 +7,11 @@ import {
   MessageOutlined,
   LikeOutlined,
   StarOutlined,
-  CrownOutlined
+  CrownOutlined,
 } from "@ant-design/icons";
 
-import Hotcontent from "../hotcontent";
-import Toptopic from "../toptopic";
+import Hotcontent from "../hotcontent.js";
+import Toptopic from "../toptopic.js";
 import Commentdetial from "./comments";
 import Author from "../author";
 

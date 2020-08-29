@@ -26,7 +26,7 @@ import SearchNav from "../search";
 import { Link, withRouter } from "react-router-dom";
 import { homePageApi } from "../../services/content";
 import ArticleBrief from "./article-brief";
-
+import { defaultAvatar } from "../../utils/util";
 const { Option } = Select;
 
 class UserPage extends React.PureComponent {
@@ -35,10 +35,9 @@ class UserPage extends React.PureComponent {
     this.state = {};
   }
   render() {
-    let isShow =
-      this.props.location.state &&
-      (this.props.location.state.name === "my" ||
-        this.props.location.state.name === "person");
+    const { state } = this.props.location;
+    const { user } = state;
+    console.log(user, "user");
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
     return (
       <div className="mainwidth">
@@ -47,26 +46,22 @@ class UserPage extends React.PureComponent {
             {" "}
             <Avatar
               className="margin-bt-sm"
+              src={user.avatar ? user.avatar : defaultAvatar}
               size={64}
               icon={<UserOutlined />}
             />
-            <p>作者昵称：{userInfo.user.nick_name}</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              euismod bibendum laoreet.
-            </p>
-            {!isShow && (
-              <div>
-                <Divider />
-                <Button type="primary" size="small" className="margin-sm">
-                  <SmileOutlined />
-                  关注
-                </Button>
-                {/* <Button size="small" className="margin-sm">
+            <p>作者昵称：{user.nick_name}</p>
+            <p>{user.introduce}</p>
+            <div>
+              <Divider />
+              <Button type="primary" size="small" className="margin-sm">
+                <SmileOutlined />
+                关注
+              </Button>
+              {/* <Button size="small" className="margin-sm">
                   <MailOutlined /> 私信
                 </Button> */}
-              </div>
-            )}
+            </div>
           </div>
         </Card>
         {/* <Col span={8}>

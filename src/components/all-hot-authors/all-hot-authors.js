@@ -2,148 +2,120 @@ import React from "react";
 
 import { Col, Row, Avatar, Button, Divider, Card, Pagination } from "antd";
 import "antd/dist/antd.css";
-
+import { Link, withRouter } from "react-router-dom";
 import {
   UserOutlined,
   SmileOutlined,
-  RotateRightOutlined
+  RotateRightOutlined,
+  MailOutlined,
 } from "@ant-design/icons";
+import { userSentimentListApi } from "../../services/content";
+class AllHotAuthors extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      data: [],
+      count: "",
+    };
+  }
+  async componentDidMount() {
+    const res = await userSentimentListApi();
+    if (res) {
+      this.setState({
+        data: res.data.rows,
+        count: res.data.count,
+      });
+    }
+  }
+  onchange = async (page, pageSize) => {
+    const options = {
+      page: page,
+      limit: pageSize,
+    };
+    const res = await userSentimentListApi(options);
+    if (res) {
+      this.setState({
+        data: res.data.rows,
+        count: res.data.count,
+      });
+    }
+  };
+  render() {
+    const { data, count } = this.state;
+    return (
+      <div className="mainwidth">
+        {data.map((item, index) => {
+          return (
+            <Card className="margin-1" key={index}>
+              <Row>
+                <Col className="align-center" span={6}>
+                  <Avatar
+                    className="margin-bt-sm"
+                    size={64}
+                    icon={<UserOutlined />}
+                  />
+                  <br /> {item.avl_user.nick_name} <br />
+                  <br />
+                  <Button type="primary" className="gap" size="small">
+                    <SmileOutlined /> 关注
+                  </Button>
+                  <Link
+                    to={{
+                      pathname: "/user-home",
+                      state: {
+                        id: item.avl_user.user_id,
+                        name: "user-home",
+                        user: item.avl_user,
+                      },
+                    }}
+                  >
+                    <Button size="small" className="margin-sm">
+                      <MailOutlined /> 查看主页
+                    </Button>
+                  </Link>
+                  {/* <Button type="primary" size="small">
+                    <RotateRightOutlined /> 分享
+                  </Button> */}
+                </Col>
+                <Col span={18} className="align-left">
+                  {item.avl_user.introduce
+                    ? item.avl_user.introduce
+                    : "这是一段默认的介绍"}
 
-export default function AllHotAuthors() {
-  return (
-    <div className="mainwidth">
-      <Card className="margin-1">
-        <Row>
-          <Col className="align-center" span={4}>
-            <Avatar
-              className="margin-bt-sm"
-              size={64}
-              icon={<UserOutlined />}
-            />
-            <br /> 作者昵称 <br />
-            <br />
-            <Button type="primary" className="gap" size="small">
-              <SmileOutlined /> 关注
-            </Button>
-            <Button type="primary" size="small">
-              <RotateRightOutlined /> 分享
-            </Button>
-          </Col>
-          <Col span={20} className="align-left">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum laoreet. Proin gravida dolor sit amet lacus
-            accumsan et viverra justo commodo. Proin sodales pulvinar sic
-            tempor. Sociis natoque penatibus et magnis dis parturient montes,
-            nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra
-            vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc
-            accuan eget.
-            <br />
-            <Divider />
-            <Row className="align-center">
-              <Col span={8}>
-                {" "}
-                <h3>关注 102</h3>
-              </Col>
+                  <br />
+                  <Divider />
+                  <Row className="align-center">
+                    <Col span={8}>
+                      {" "}
+                      <h3>关注 {item.avl_user.follow_count}</h3>
+                    </Col>
 
-              <Col span={8}>
-                <h3>粉丝 326</h3>
-              </Col>
-              <Col span={8}>
-                <h3>投稿 35</h3>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Card>
-
-      <Card className="margin-1">
-        <Row>
-          <Col className="align-center" span={4}>
-            <Avatar
-              className="margin-bt-sm"
-              size={64}
-              icon={<UserOutlined />}
-            />
-            <br /> 作者昵称 <br />
-            <br />
-            <Button type="primary" className="gap" size="small">
-              <SmileOutlined /> 关注
-            </Button>
-            <Button type="primary" size="small">
-              <RotateRightOutlined /> 分享
-            </Button>
-          </Col>
-          <Col span={20} className="align-left">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum laoreet. Proin gravida dolor sit amet lacus
-            accumsan et viverra justo commodo. Proin sodales pulvinar sic
-            tempor. Sociis natoque penatibus et magnis dis parturient montes,
-            nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra
-            vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc
-            accuan eget.
-            <br />
-            <Divider />
-            <Row className="align-center">
-              <Col span={8}>
-                {" "}
-                <h3>关注 102</h3>
-              </Col>
-
-              <Col span={8}>
-                <h3>粉丝 326</h3>
-              </Col>
-              <Col span={8}>
-                <h3>投稿 35</h3>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Card>
-
-      <Card className="margin-1">
-        <Row>
-          <Col className="align-center" span={4}>
-            <Avatar
-              className="margin-bt-sm"
-              size={64}
-              icon={<UserOutlined />}
-            />
-            <br /> 作者昵称 <br />
-            <br />
-            <Button type="primary" className="gap" size="small">
-              <SmileOutlined /> 关注
-            </Button>
-            <Button type="primary" size="small">
-              <RotateRightOutlined /> 分享
-            </Button>
-          </Col>
-          <Col span={20} className="align-left">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum laoreet. Proin gravida dolor sit amet lacus
-            accumsan et viverra justo commodo. Proin sodales pulvinar sic
-            tempor. Sociis natoque penatibus et magnis dis parturient montes,
-            nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra
-            vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc
-            accuan eget.
-            <br />
-            <Divider />
-            <Row className="align-center">
-              <Col span={8}>
-                {" "}
-                <h3>关注 102</h3>
-              </Col>
-
-              <Col span={8}>
-                <h3>粉丝 326</h3>
-              </Col>
-              <Col span={8}>
-                <h3>投稿 35</h3>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Card>
-      <Pagination className="margin-1" defaultCurrent={1} total={50} />
-    </div>
-  );
+                    <Col span={8}>
+                      <h3>粉丝 {item.avl_user.be_follow_count}</h3>
+                    </Col>
+                    <Col span={8}>
+                      <h3>投稿 {item.avl_user.content_count}</h3>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Card>
+          );
+        })}
+        {/* {count > 5 && ( */}
+        <Pagination
+          className="margin-1"
+          style={{ float: "right" }}
+          defaultPageSize={5}
+          defaultCurrent={1}
+          onChange={(page, pageSize) => this.onchange(page, pageSize)}
+          total={count > 20 ? 20 : count}
+        />
+        {/* )} */}
+      </div>
+    );
+  }
 }
+
+export default withRouter(AllHotAuthors);

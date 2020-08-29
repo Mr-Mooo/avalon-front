@@ -98,7 +98,7 @@ class Author extends React.PureComponent {
   }
   componentWillMount() {
     const { state } = this.props.location;
-    if (state && state.name === "person") {
+    if (state && (state.name === "person" || state.name === "user-home")) {
       this.setState({
         isShowAvatar: false,
       });
@@ -106,7 +106,7 @@ class Author extends React.PureComponent {
   }
   componentDidUpdate() {
     const { state } = this.props.location;
-    if (state && state.name === "person") {
+    if (state && (state.name === "person" || state.name === "user-home")) {
       this.setState({
         isShowAvatar: false,
       });
@@ -114,7 +114,7 @@ class Author extends React.PureComponent {
   }
   componentWillReceiveProps(nextProps) {
     const { state } = this.props.location;
-    if (state && state.name === "person") {
+    if (state && (state.name === "person" || state.name === "user-home")) {
       this.setState({
         isShowAvatar: false,
       });
@@ -507,7 +507,11 @@ class Author extends React.PureComponent {
                         <Link
                           to={{
                             pathname: "/user-home",
-                            state: { id: contentData.avl_user.user_id },
+                            state: {
+                              id: contentData.avl_user.user_id,
+                              name: "user-home",
+                              user: contentData.avl_user,
+                            },
                           }}
                         >
                           <Button size="small" className="margin-sm">

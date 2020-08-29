@@ -21,55 +21,35 @@ export default function Toptopic() {
           <FileTextOutlined /> 查看全部
         </Button>
       </Link>
-      <Tabs defaultActiveKey="1" onChange={callback}>
-        <TabPane tab="作品名称" key="1">
-          <Row>
-            <Col span={7}>1. XXXXXX</Col>
-            <Col span={3}>
-              <FileOutlined className="margin-l-sm" />
-            </Col>
-            <Col span={11}>353w浏览 35w参与</Col>
-          </Row>
+        <Row>
+          <Col span={7}>1. XXXXXX</Col>
+          <Col span={3}>
+            <FileOutlined className="margin-l-sm" />
+          </Col>
+          <Col span={11}>353w浏览 35w参与</Col>
+        </Row>
 
-          <Row>
-            <Col span={7}>1. XXXXXX</Col>
-            <Col span={3}>
-              <FileOutlined className="margin-l-sm" />
-            </Col>
-            <Col span={11}>353w浏览 35w参与</Col>
-          </Row>
-          <Row>
-            <Col span={7}>1. XXXXXX</Col>
-            <Col span={3}>
-              <FileOutlined className="margin-l-sm" />
-            </Col>
-            <Col span={11}>353w浏览 35w参与</Col>
-          </Row>
-          <Row>
-            <Col span={7}>1. XXXXXX</Col>
-            <Col span={3}>
-              <FileOutlined className="margin-l-sm" />
-            </Col>
-            <Col span={11}>353w浏览 35w参与</Col>
-          </Row>
-        </TabPane>
-        <TabPane tab="#Tag" key="2">
-          <Row>
-            <Col span={7}>1. XXXXXX</Col>
-            <Col span={3}>
-              <FileOutlined className="margin-l-sm" />
-            </Col>
-            <Col span={11}>353w浏览 35w参与</Col>
-          </Row>
-          <Row>
-            <Col span={7}>1. XXXXXX</Col>
-            <Col span={3}>
-              <FileOutlined className="margin-l-sm" />
-            </Col>
-            <Col span={11}>353w浏览 35w参与</Col>
-          </Row>
-        </TabPane>
-      </Tabs>
+        <Row>
+          <Col span={7}>1. XXXXXX</Col>
+          <Col span={3}>
+            <FileOutlined className="margin-l-sm" />
+          </Col>
+          <Col span={11}>353w浏览 35w参与</Col>
+        </Row>
+        <Row>
+          <Col span={7}>1. XXXXXX</Col>
+          <Col span={3}>
+            <FileOutlined className="margin-l-sm" />
+          </Col>
+          <Col span={11}>353w浏览 35w参与</Col>
+        </Row>
+        <Row>
+          <Col span={7}>1. XXXXXX</Col>
+          <Col span={3}>
+            <FileOutlined className="margin-l-sm" />
+          </Col>
+          <Col span={11}>353w浏览 35w参与</Col>
+        </Row>
     </Card>
   );
 }

@@ -40,7 +40,8 @@ class MainContent extends React.PureComponent {
             <Col xs={24} sm={24} md={6} lg={6}>
               {" "}
               <HomeShoppingTab />
-              <Hotcontent />
+              <Hotcontent name="author" />
+              <Hotcontent name="content" />
               <Toptopic />
             </Col>
           </Row>

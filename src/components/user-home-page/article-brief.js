@@ -87,7 +87,14 @@ class ArticleBrief extends React.PureComponent {
       limit: 10,
       user_id: id,
     };
-    this.getFolleowData(options);
+    const res = await homePageApi(options);
+    if (res) {
+      this.setState({
+        data: [...res.rows],
+        count: res.count,
+        page: options.page ? options.page : 1,
+      });
+    }
   };
 
   handleInfiniteOnLoad = () => {
@@ -144,7 +151,7 @@ class ArticleBrief extends React.PureComponent {
               hasMore={!this.state.loading && this.state.hasMore}
               useWindow={false}
             >
-              {/* <List
+              <List
                 dataSource={data}
                 renderItem={(item) => {
                   return (
@@ -159,7 +166,7 @@ class ArticleBrief extends React.PureComponent {
                     <Spin />
                   </div>
                 )}
-              </List> */}
+              </List>
             </InfiniteScroll>
           </div>
         </Card>

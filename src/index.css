@@ -51,6 +51,9 @@ div#root {
 .margin-1 {
   margin: 1rem;
 }
+.cardColor a {
+  color: rgba(0, 0, 0, 0.65) !important;
+}
 
 .margin-sm {
   margin: 3px;
