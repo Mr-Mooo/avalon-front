@@ -57,6 +57,7 @@ class AvatarUpload extends React.Component {
     needOption: {},
     imgUrl: [],
     fileList: [],
+    imgprv: "",
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -105,11 +106,17 @@ class AvatarUpload extends React.Component {
       });
     }
     const op = {
-      path: `${res.data.request_url}${res.data.key}`,
+      path: `${res.data.request_url}/${res.data.key}`,
     };
+
     const data = await uploadavatartApi(op);
     if (data.code === 0) {
       message.success("上传成功");
+      setTimeout(() => {
+        this.setState({
+          imgprv: `${res.data.request_url}/${res.data.key}`,
+        });
+      }, 2000);
     }
   };
   handleChange = async ({ file, fileList }) => {
@@ -153,19 +160,32 @@ class AvatarUpload extends React.Component {
       fileList,
       previewTitle,
       needOption,
+      imgprv,
     } = this.state;
+    const { user } = JSON.parse(localStorage.getItem("userInfo"));
+    console.log(localStorage.getItem("userInfo"), "000000");
     const uploadButton = (
       <div>
-        <PlusOutlined />
-        <div className="ant-upload-text">Upload</div>
+        {/* <PlusOutlined />
+        <div className="ant-upload-text">Upload</div> */}
+        <Button>上传头像</Button>
       </div>
     );
     const { imageUrl } = this.state;
     return (
       <div>
+        <img
+          src={user.avatar && !imgprv ? user.avatar : imgprv}
+          style={{
+            width: 100,
+            height: 100,
+            border: "1px solid gray",
+            marginBottom: 30,
+          }}
+        />
         <Upload
           action={needOption.url}
-          listType="picture-card"
+          listType="picture"
           method="POST"
           data={{
             key: needOption.key,
@@ -178,8 +198,9 @@ class AvatarUpload extends React.Component {
           onPreview={this.handlePreview}
           beforeUpload={this.beforeUpload}
           onChange={this.handleChange}
+          showUploadList={false}
         >
-          {fileList.length >= 1 ? null : uploadButton}
+          {uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}

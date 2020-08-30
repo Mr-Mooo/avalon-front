@@ -178,6 +178,19 @@ export const mySetApi = async (options) => {
   }
   return false;
 };
+// 详情tag列表
+export const tagListApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/content/tag/list`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res.data;
+  }
+  return false;
+};
 // 搜索tag数据
 export const searchTagApi = async (options) => {
   const res = await myFetch(

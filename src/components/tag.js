@@ -2,11 +2,7 @@ import React from "react";
 import { Input, Layout, Card, Button, List, message } from "antd";
 import "antd/dist/antd.css";
 import "../index.css";
-import {
-  contentListApi,
-  searchTagApi,
-  subscriptApi,
-} from "../services/content";
+import { contentListApi, subscriptApi, tagListApi } from "../services/content";
 import emitter from "../utils/events.js";
 import { Link, withRouter } from "react-router-dom";
 import HomeTab from "./home-tab";
@@ -28,7 +24,7 @@ class Tag extends React.PureComponent {
   componentDidMount() {
     const { state } = this.props.location;
     const options = {
-      key: state.tag,
+      tag_content: state.tag,
       page: 1,
       limit: 30,
     };
@@ -50,7 +46,7 @@ class Tag extends React.PureComponent {
       const options = {
         page: page + 1,
         limit: 5,
-        key: state.tag,
+        tag_content: state.tag,
       };
       this.getData(options);
     }
@@ -60,19 +56,19 @@ class Tag extends React.PureComponent {
   }
   getData = async (options = {}) => {
     const { data } = this.state;
-    const res = await searchTagApi(options);
+    const res = await tagListApi(options);
     this.setState({
-      data: [...data, ...res.rows],
+      data: [...data, ...res.list.rows],
     });
   };
   refush = async () => {
     const { state } = this.props.location;
     const options = {
-      key: state.tag,
+      tag_content: state.tag,
     };
-    const res = await searchTagApi(options);
+    const res = await tagListApi(options);
     this.setState({
-      data: res.rows,
+      data: res.list.rows,
     });
   };
   getSub = async () => {
