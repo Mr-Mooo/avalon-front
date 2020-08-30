@@ -283,6 +283,7 @@ class Author extends React.PureComponent {
 
   goComment = async (optionss) => {
     let options = { ...optionss };
+    console.log(options, "评论");
     const addRes = await goComment(options);
     if (addRes && addRes.success) {
       message.success("评论成功");
@@ -788,7 +789,7 @@ class Author extends React.PureComponent {
                               return (
                                 <div
                                   style={{ marginLeft: 50 }}
-                                  Key={ele.comment_id}
+                                  key={ele.comment_id}
                                 >
                                   <span
                                     style={{

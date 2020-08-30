@@ -116,54 +116,84 @@ class Hotcontent extends React.PureComponent {
             <TabPane tab="综合榜" key="1">
               {contentData.map((item, index) => {
                 return (
-                  <Row key={index} style={{ cursor: "pointer" }}>
-                    <Col
-                      span={11}
-                      style={{ overflow: "hidden", whiteSpace: "nowrap" }}
-                    >
-                      {index + 1}. {item.avl_content.subject}
-                    </Col>
-                    <Col span={3}>
-                      <RobotOutlined className="margin-l-sm" />
-                    </Col>
-                    <Col span={3}>{item.degree_of_heat}</Col>
-                  </Row>
+                  <Link
+                    to={{
+                      pathname: "/content-detail",
+                      state: {
+                        id: item.content_id,
+                      },
+                    }}
+                    key={index}
+                  >
+                    <Row style={{ cursor: "pointer" }}>
+                      <Col
+                        span={11}
+                        style={{ overflow: "hidden", whiteSpace: "nowrap" }}
+                      >
+                        {index + 1}. {item.avl_content.subject}
+                      </Col>
+                      <Col span={3}>
+                        <RobotOutlined className="margin-l-sm" />
+                      </Col>
+                      <Col span={3}>{item.degree_of_heat}</Col>
+                    </Row>
+                  </Link>
                 );
               })}
             </TabPane>
             <TabPane tab="图片榜" key="2">
               {contentData.map((item, index) => {
                 return (
-                  <Row key={index} style={{ cursor: "pointer" }}>
-                    <Col
-                      span={11}
-                      style={{ overflow: "hidden", whiteSpace: "nowrap" }}
-                    >
-                      {index + 1}. {item.avl_content.subject}
-                    </Col>
-                    <Col span={3}>
-                      <RobotOutlined className="margin-l-sm" />
-                    </Col>
-                    <Col span={3}>{item.degree_of_heat}</Col>
-                  </Row>
+                  <Link
+                    to={{
+                      pathname: "/content-detail",
+                      state: {
+                        id: item.content_id,
+                      },
+                    }}
+                    key={index}
+                  >
+                    <Row key={index} style={{ cursor: "pointer" }}>
+                      <Col
+                        span={11}
+                        style={{ overflow: "hidden", whiteSpace: "nowrap" }}
+                      >
+                        {index + 1}. {item.avl_content.subject}
+                      </Col>
+                      <Col span={3}>
+                        <RobotOutlined className="margin-l-sm" />
+                      </Col>
+                      <Col span={3}>{item.degree_of_heat}</Col>
+                    </Row>
+                  </Link>
                 );
               })}
             </TabPane>
             <TabPane tab="文字榜" key="3">
               {contentData.map((item, index) => {
                 return (
-                  <Row key={index} style={{ cursor: "pointer" }}>
-                    <Col
-                      span={11}
-                      style={{ overflow: "hidden", whiteSpace: "nowrap" }}
-                    >
-                      {index + 1}. {item.avl_content.subject}
-                    </Col>
-                    <Col span={3}>
-                      <RobotOutlined className="margin-l-sm" />
-                    </Col>
-                    <Col span={3}>{item.degree_of_heat}</Col>
-                  </Row>
+                  <Link
+                    to={{
+                      pathname: "/content-detail",
+                      state: {
+                        id: item.content_id,
+                      },
+                    }}
+                    key={index}
+                  >
+                    <Row key={index} style={{ cursor: "pointer" }}>
+                      <Col
+                        span={11}
+                        style={{ overflow: "hidden", whiteSpace: "nowrap" }}
+                      >
+                        {index + 1}. {item.avl_content.subject}
+                      </Col>
+                      <Col span={3}>
+                        <RobotOutlined className="margin-l-sm" />
+                      </Col>
+                      <Col span={3}>{item.degree_of_heat}</Col>
+                    </Row>
+                  </Link>
                 );
               })}
             </TabPane>

@@ -35,6 +35,19 @@ export const topSentimentListApi = async (options) => {
   }
   return false;
 };
+// 内容详情
+export const contentdetailApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/content/detail`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 内容人气榜单(simple)
 export const contentSentimentApi = async (options) => {
   const res = await myFetch(

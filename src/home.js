@@ -23,6 +23,7 @@ import PersonPage from "./components/person-page/user-page";
 import Recharge from "./components/recharge/recharge";
 import ForgotPassword from "./components/forgot-password";
 import ContentSentiment from "./components/contentsentiment";
+import ContentDetail from "./components/contentDetail";
 import Tag from "./components/tag";
 import u2 from "./img/u2.png";
 // import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
@@ -95,7 +96,7 @@ export default function Home() {
           <Route path="/forgot-password" component={ForgotPassword} exact />
           <Route path="/tag" component={Tag} exact />
           <Route path="/person" component={PersonPage} exact />
-
+          <Route path="/content-detail" component={ContentDetail} exact />
           <Route path="/user-home" component={UserhomePage} exact />
           <Route path="/content-sentiment" component={ContentSentiment} exact />
         </Content>
