@@ -1,6 +1,15 @@
 import React from "react";
 
-import { Col, Row, Avatar, Button, Divider, Card, Pagination } from "antd";
+import {
+  Col,
+  Row,
+  Avatar,
+  Button,
+  Divider,
+  Card,
+  Pagination,
+  message,
+} from "antd";
 import "antd/dist/antd.css";
 
 import {
@@ -10,7 +19,24 @@ import {
   MailOutlined,
 } from "@ant-design/icons";
 import { withRouter, Link } from "react-router-dom";
+import { guanzhu } from "../../services/content";
 class SearchAuthors extends React.PureComponent {
+  gocollect = async (id, is_recommend) => {
+    let options = {
+      follow_id: id,
+      is_delete: is_recommend ? 1 : 0,
+    };
+    const addRes = await guanzhu(options);
+    if (addRes && addRes.success) {
+      if (is_recommend) {
+        message.success("取消关注");
+        this.props.refush();
+      } else {
+        message.success("关注成功");
+        this.props.refush();
+      }
+    }
+  };
   render() {
     console.log("父级:", this.props);
     const { contentData } = this.props;
@@ -26,8 +52,15 @@ class SearchAuthors extends React.PureComponent {
             <br /> {contentData.nick_name} <br />
             <br />
             <div style={{ display: "flex" }}>
-              <Button type="primary" className="gap" size="small">
-                <SmileOutlined /> 关注
+              <Button
+                type="primary"
+                className="gap"
+                size="small"
+                onClick={() =>
+                  this.gocollect(contentData.user_id, contentData.is_follow)
+                }
+              >
+                <SmileOutlined /> {contentData.is_follow ? "已关注" : "关注"}
               </Button>
               <Link
                 to={{

@@ -35,6 +35,15 @@ export const topSentimentListApi = async (options) => {
   }
   return false;
 };
+// 删除内容
+export const deteleContentlApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/content`, options, "DELETE");
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 内容详情
 export const contentdetailApi = async (options) => {
   const res = await myFetch(

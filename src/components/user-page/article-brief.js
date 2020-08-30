@@ -99,7 +99,14 @@ class ArticleBrief extends React.PureComponent {
       page: 1,
       limit: 10,
     };
-    this.getFolleowData(options);
+    const res = await followListApi(options);
+    if (res) {
+      this.setState({
+        data: [...res.rows],
+        count: res.count,
+        page: options.page ? options.page : 1,
+      });
+    }
   };
 
   handleInfiniteOnLoad = () => {

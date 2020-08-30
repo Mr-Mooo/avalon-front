@@ -211,7 +211,31 @@ class AddImageContent extends React.Component {
       needOption: {},
       imgUrl: [],
       fileList: [],
+      fvisible: false,
+      messageImage: "",
     };
+  }
+  componentDidMount() {
+    console.log(0);
+    this.eventEmitter = emitter.addListener("openmask", (message) => {
+      if (message) {
+        if (message.avl_attachments.length > 0) {
+          const image = message.avl_attachments.map((item, index) => {
+            return {
+              uid: index,
+              url: `https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${item.path}`,
+              urlhttp: item.path,
+            };
+          });
+          this.setState({
+            fileList: image,
+          });
+        }
+        this.setState({
+          messageImage: message,
+        });
+      }
+    });
   }
   handleCancel = () => this.setState({ previewVisible: false });
 
@@ -310,7 +334,7 @@ class AddImageContent extends React.Component {
     this.props.onCancel();
   };
   handleSubmit = async () => {
-    const { imgUrl, tags, message } = this.state;
+    const { imgUrl, tags, message, messageImage ,fileList} = this.state;
 
     let fieldsValue = "";
     try {
@@ -343,21 +367,25 @@ class AddImageContent extends React.Component {
       tag: [...tag_id, ...tags],
       content: message,
     };
-    const addRes = await addContentApi(options);
-    if (addRes) {
-      this.onCancel();
-      notification.success({
-        message: "发布成功",
-        description: null,
-        duration: 2,
-      });
-      this.setState({
-        tags: [],
-        imgUrl: [],
-        fileList: [],
-        message: "",
-      });
-      emitter.emit("changeMessage", "");
+    console.log(imgUrl, message, fileList, "123");
+    if (messageImage) {
+    } else {
+      const addRes = await addContentApi(options);
+      if (addRes) {
+        this.onCancel();
+        notification.success({
+          message: "发布成功",
+          description: null,
+          duration: 2,
+        });
+        this.setState({
+          tags: [],
+          imgUrl: [],
+          fileList: [],
+          message: "",
+        });
+        emitter.emit("changeMessage", "");
+      }
     }
   };
   forMap = (tag) => {
@@ -389,7 +417,9 @@ class AddImageContent extends React.Component {
       fileList,
       previewTitle,
       needOption,
+      messageImage,
     } = this.state;
+    console.log(message, "message");
     const { visible } = this.props;
     const tagChild = tags.map(this.forMap);
     const uploadButton = (
@@ -423,6 +453,7 @@ class AddImageContent extends React.Component {
             <FormItem
               name="subject"
               rules={[{ required: true, message: "内容不能为空" }]}
+              initialValue={messageImage && messageImage.content}
             >
               <TextArea rows={4} onChange={(e) => this.getMessage(e)} />
             </FormItem>
@@ -468,66 +499,91 @@ class AddImageContent extends React.Component {
             </div>
             <h4>内容限制</h4>
             <FormItem name="tag1" initialValue="全年龄">
-              <Select style={{ width: 120 }}>
-                <Option value="全年龄">全年龄</Option>
-                <Option value="限制内容">限制内容</Option>
-              </Select>
+              {messageImage ? (
+                <Select style={{ width: 120 }} disabled>
+                  <Option value="全年龄">全年龄</Option>
+                  <Option value="限制内容">限制内容</Option>
+                </Select>
+              ) : (
+                <Select style={{ width: 120 }}>
+                  <Option value="全年龄">全年龄</Option>
+                  <Option value="限制内容">限制内容</Option>
+                </Select>
+              )}
             </FormItem>
             <h4>创作属性</h4>
             <FormItem name="tag2" initialValue="原创">
-              <Select style={{ width: 120 }}>
-                <Option value="原创">原创</Option>
-                <Option value="二创">二创</Option>
-              </Select>
+              {messageImage ? (
+                <Select style={{ width: 120 }} disabled>
+                  <Option value="原创">原创</Option>
+                  <Option value="二创">二创</Option>
+                </Select>
+              ) : (
+                <Select style={{ width: 120 }}>
+                  <Option value="原创">原创</Option>
+                  <Option value="二创">二创</Option>
+                </Select>
+              )}
             </FormItem>
             <h4>取向类型</h4>
             <FormItem name="tag3" initialValue="无取向">
-              <Select style={{ width: 120 }}>
-                <Option value="BL">BL</Option>
-                <Option value="BG">BG</Option>
-                <Option value="GL">GL</Option>
-                <Option value="无取向">无取向</Option>
-              </Select>
+              {messageImage ? (
+                <Select style={{ width: 120 }} disabled>
+                  <Option value="BL">BL</Option>
+                  <Option value="BG">BG</Option>
+                  <Option value="GL">GL</Option>
+                  <Option value="无取向">无取向</Option>
+                </Select>
+              ) : (
+                <Select style={{ width: 120 }}>
+                  <Option value="BL">BL</Option>
+                  <Option value="BG">BG</Option>
+                  <Option value="GL">GL</Option>
+                  <Option value="无取向">无取向</Option>
+                </Select>
+              )}
             </FormItem>
           </Form>
           {/* <PicturesWall /> */}
           <h4>添加标签</h4>
-          <div>
-            <div style={{ marginBottom: 16 }}>
-              <TweenOneGroup
-                enter={{
-                  scale: 0.8,
-                  opacity: 0,
-                  type: "from",
-                  duration: 100,
-                  onComplete: (e) => {
-                    e.target.style = "";
-                  },
-                }}
-                leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
-                appear={false}
-              >
-                {tagChild}
-              </TweenOneGroup>
+          {!messageImage && (
+            <div>
+              <div style={{ marginBottom: 16 }}>
+                <TweenOneGroup
+                  enter={{
+                    scale: 0.8,
+                    opacity: 0,
+                    type: "from",
+                    duration: 100,
+                    onComplete: (e) => {
+                      e.target.style = "";
+                    },
+                  }}
+                  leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                  appear={false}
+                >
+                  {tagChild}
+                </TweenOneGroup>
+              </div>
+              {inputVisible && (
+                <Input
+                  ref={this.saveInputRef}
+                  type="text"
+                  size="small"
+                  style={{ width: 78 }}
+                  value={inputValue}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputConfirm}
+                  onPressEnter={this.handleInputConfirm}
+                />
+              )}
+              {!inputVisible && (
+                <Tag onClick={this.showInput} className="site-tag-plus">
+                  <PlusOutlined /> 添加标签
+                </Tag>
+              )}
             </div>
-            {inputVisible && (
-              <Input
-                ref={this.saveInputRef}
-                type="text"
-                size="small"
-                style={{ width: 78 }}
-                value={inputValue}
-                onChange={this.handleInputChange}
-                onBlur={this.handleInputConfirm}
-                onPressEnter={this.handleInputConfirm}
-              />
-            )}
-            {!inputVisible && (
-              <Tag onClick={this.showInput} className="site-tag-plus">
-                <PlusOutlined /> 添加标签
-              </Tag>
-            )}
-          </div>
+          )}
           {/* <h4>非必选标签</h4>
           <HotTagsNonMandatory />
           <h4>权限设置</h4>

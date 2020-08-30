@@ -33,6 +33,7 @@ import {
   gotousu,
   chaozan,
   collectionApi,
+  deteleContentlApi,
 } from "../services/content";
 import {
   CrownOutlined,
@@ -47,6 +48,8 @@ import {
 import Zmage from "react-zmage";
 import { Link, withRouter } from "react-router-dom";
 import { defaultAvatar } from "../utils/util";
+import AddImageContent from "./Modal/addimage-content";
+import emitter from "../utils/events.js";
 const { Option } = Select;
 const { TextArea, Search } = Input;
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
@@ -93,6 +96,8 @@ class Author extends React.PureComponent {
       isShowReplay: "",
       isShowAvatar: true,
       defaultValue: "",
+      visible: false,
+      visible3: false,
       contentData: this.props.contentData,
     };
   }
@@ -401,6 +406,22 @@ class Author extends React.PureComponent {
       defaultValue: e.target.value,
     });
   };
+  delete = async (id) => {
+    const options = {
+      content_id: id,
+    };
+    const res = await deteleContentlApi(options);
+    if (res.code === 0) {
+      message.success("删除成功");
+      this.props.refush();
+    }
+  };
+  operation = (data) => {
+    this.setState({
+      visible3: true,
+    });
+    emitter.emit("openmask", data);
+  };
   render() {
     const {
       comments,
@@ -420,6 +441,7 @@ class Author extends React.PureComponent {
       replayData,
       isShowReplay,
       defaultValue,
+      visible3,
     } = this.state;
     // const menu = (
     //   <Menu onClick={this.handleChange1()}>
@@ -438,6 +460,8 @@ class Author extends React.PureComponent {
           alt: "图片",
         };
       });
+    console.log(JSON.parse(localStorage.getItem("userInfo")), "user");
+    const { user } = JSON.parse(localStorage.getItem("userInfo"));
     return (
       <div style={{ width: "100%" }}>
         {!(id === contentData.content_id) && (
@@ -576,6 +600,24 @@ class Author extends React.PureComponent {
                               收藏
                             </a>
                           </Menu.Item>
+                          {/* {user.user_id === contentData.create_user && (
+                            <Menu.Item key="4">
+                              <a onClick={() => this.operation(contentData)}>
+                                编辑
+                              </a>
+                            </Menu.Item>
+                          )} */}
+                          {user.user_id === contentData.create_user && (
+                            <Menu.Item key="5">
+                              <a
+                                onClick={() =>
+                                  this.delete(contentData.content_id)
+                                }
+                              >
+                                删除
+                              </a>
+                            </Menu.Item>
+                          )}
                         </Menu>
                       }
                       trigger={["click"]}
@@ -860,6 +902,15 @@ class Author extends React.PureComponent {
             </Modal>
           </List>
         )}
+        <AddImageContent
+          title="文章投稿"
+          visible={visible3}
+          onCancel={() => {
+            this.setState({
+              visible3: false,
+            });
+          }}
+        />
       </div>
     );
   }

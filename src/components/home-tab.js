@@ -93,12 +93,14 @@ class HomeTab extends React.Component {
         this.setState({
           userData: [...userData, ...res.data.list.rows],
           page: page + 1,
+          selectKey: "7",
         });
       }
     } else {
       if (res.code === 0) {
         this.setState({
           userData: [...res.data.list.rows],
+          selectKey: "7",
         });
       }
     }
@@ -263,25 +265,37 @@ class HomeTab extends React.Component {
   //   emitter.removeListener(this.eventEmitter);
   // }
   refush = async () => {
-    const { options, keyValue, keyMesage } = this.state;
-    const option = {
-      page: 1,
-      limit: 5,
-      key: keyMesage,
-      type:
-        keyValue === "1"
-          ? "recommend"
-          : keyValue === "2"
-          ? "follow"
-          : "subscribe",
-    };
-    const res = await contentListApi(option);
-    this.setState({
-      data: res.rows,
-      count: res.count,
-      page: 1,
-      scrollData: 0,
-    });
+    const { options, keyValue, keyMesage, selectKey } = this.state;
+    if (selectKey === "3") {
+      this.getSub();
+    } else if (selectKey === "4") {
+      this.getTopic();
+    } else if (selectKey === "6") {
+      this.getSearch(selectKey);
+    } else if (selectKey === "5") {
+      this.getSearch(selectKey);
+    } else if (selectKey === "7") {
+      this.getUserData();
+    } else {
+      const option = {
+        page: 1,
+        limit: 5,
+        key: keyMesage,
+        type:
+          keyValue === "1"
+            ? "recommend"
+            : keyValue === "2"
+            ? "follow"
+            : "subscribe",
+      };
+      const res = await contentListApi(option);
+      this.setState({
+        data: res.rows,
+        count: res.count,
+        page: 1,
+        scrollData: 0,
+      });
+    }
   };
 
   getContentData = async (options = {}) => {
