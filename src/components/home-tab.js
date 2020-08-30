@@ -74,67 +74,96 @@ class HomeTab extends React.Component {
 
     this.setState({
       selectKey: key,
+      scrollData: 0,
+      page: 1,
     });
   };
   // 找人
-  getUserData = async () => {
-    // const {} = this.state;
+  getUserData = async (value) => {
+    const { page, userData } = this.state;
     const mes = localStorage.getItem("message");
     const options = {
       keyword: mes,
       limit: 10,
-      page: 1,
+      page: value ? page + 1 : 1,
     };
     const res = await searchUserApi(options);
-    if (res.code === 0) {
-      this.setState({
-        userData: [...res.data.list.rows],
-      });
-      console.log(res, "找人");
+    if (value) {
+      if (res.code === 0) {
+        this.setState({
+          userData: [...userData, ...res.data.list.rows],
+          page: page + 1,
+        });
+      }
+    } else {
+      if (res.code === 0) {
+        this.setState({
+          userData: [...res.data.list.rows],
+        });
+      }
     }
   };
   // 搜索话题
-  getTopic = async () => {
-    const { keyMesage } = this.state;
-    console.log(keyMesage, "ddd");
+  getTopic = async (value) => {
+    const { keyMesage, page, data } = this.state;
+
     const mes = localStorage.getItem("message");
     const options = {
-      page: 1,
-      limit: 50,
+      page: value ? page + 1 : 1,
+      limit: 10,
       key: mes,
     };
     const res = await searchTagApi(options);
-    this.setState({
-      data: res.rows,
-    });
+    if (value) {
+      this.setState({
+        data: [...data, ...res.rows],
+        page: page + 1,
+      });
+    } else {
+      this.setState({
+        data: res.rows,
+      });
+    }
   };
   // 搜索图片文字
-  getSearch = async (value) => {
-    const { keyMesage } = this.state;
+  getSearch = async (value, item) => {
+    const { keyMesage, page, data } = this.state;
     const mes = localStorage.getItem("message");
     const options = {
-      page: 1,
-      limit: 50,
+      page: item ? page + 1 : 1,
+      limit: 10,
       key: mes,
       type: value === "5" ? "message" : "picture",
     };
     const res = await searchMessageApi(options);
-    this.setState({
-      data: res.rows,
-    });
+    if (item) {
+      this.setState({
+        data: [...data, ...res.rows],
+        page: page + 1,
+      });
+    } else {
+      this.setState({
+        data: res.rows,
+      });
+    }
   };
-  getSub = async () => {
+  getSub = async (value) => {
+    const { page, data } = this.state;
     const op = {
-      page: 1,
-      limit: 50,
+      page: value ? page + 1 : 1,
+      limit: 10,
     };
-    const data = await mySubApi(op);
-    this.setState({
-      data: data.rows,
-      // keyValue: key,
-      // scrollData: 0,
-      // page: 1,
-    });
+    const res = await mySubApi(op);
+    if (value) {
+      this.setState({
+        data: [...data, ...res.rows],
+        page: page + 1,
+      });
+    } else {
+      this.setState({
+        data: res.rows,
+      });
+    }
   };
   get = (message) => {
     console.log(message, "4564");
@@ -201,7 +230,15 @@ class HomeTab extends React.Component {
         scrollData: top,
       });
       if (keyValue === "3") {
-        this.getSub();
+        this.getSub(true);
+      } else if (keyValue === "4") {
+        this.getTopic(true);
+      } else if (keyValue === "6") {
+        this.getSearch(keyValue, true);
+      } else if (keyValue === "5") {
+        this.getSearch(keyValue, true);
+      } else if (keyValue === "7") {
+        this.getUserData(true);
       } else {
         const options = {
           page: page + 1,

@@ -101,6 +101,7 @@ class Imgslider extends React.PureComponent {
         </div>
       ),
       onOk() {},
+      width: 700,
     });
   };
   openTwo = () => {
@@ -446,6 +447,7 @@ class Imgslider extends React.PureComponent {
       ),
       onOk() {},
       maskClosable: true,
+      width: 700,
     });
   };
   openThree = () => {
@@ -511,13 +513,14 @@ class Imgslider extends React.PureComponent {
         </div>
       ),
       onOk() {},
+      width: 700,
     });
   };
   openFour = () => {
     Modal.info({
       title: "平台功能简介",
       maskClosable: true,
-      width: 500,
+      width: 700,
       content: (
         <div style={{ overflowY: "auto", maxHeight: 600 }}>
           <p>

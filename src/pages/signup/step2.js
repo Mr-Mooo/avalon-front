@@ -79,7 +79,10 @@ class Step2 extends React.PureComponent {
       <Card title="答题验证">
         <Form {...layout} name="nest-messages" ref={this.formRef}>
           <Form.Item>
-            一、“同人”一词源于日语中的“どうじん”，它的含义是？"
+            <span style={{ fontWeight: "bold" }}>
+              {" "}
+              一、“同人”一词源于日语中的“どうじん”，它的含义是？"
+            </span>
             <Form.Item
               name="question1"
               rules={[
@@ -91,15 +94,20 @@ class Step2 extends React.PureComponent {
             >
               <Radio.Group name="question1">
                 <Radio value="1">A.同一个人</Radio>
+                <br />
                 <Radio value="2">B.志同道合之人</Radio>
+                <br />
                 <Radio value="3">C.同性恋人群</Radio>
+                <br />
                 <Radio value="4">D.少林寺十八铜人</Radio>
               </Radio.Group>
             </Form.Item>
           </Form.Item>
 
           <Form.Item>
-            二、现代同人的正式解读是？
+            <span style={{ fontWeight: "bold" }}>
+              二、现代同人的正式解读是？
+            </span>
             <Form.Item
               name="question2"
               rules={[
@@ -124,7 +132,9 @@ class Step2 extends React.PureComponent {
           </Form.Item>
 
           <Form.Item>
-            三、在同人创作活动之中，最为核心的目的应是？
+            <span style={{ fontWeight: "bold" }}>
+              三、在同人创作活动之中，最为核心的目的应是？
+            </span>
             <Form.Item
               name="question3"
               rules={[
@@ -136,14 +146,19 @@ class Step2 extends React.PureComponent {
             >
               <Radio.Group name="question3">
                 <Radio value="1">A.赚取利益</Radio>
+                <br />
                 <Radio value="2">B.博得关注与热度</Radio>
+                <br />
                 <Radio value="3">C.分享与交流</Radio>
+                <br />
                 <Radio value="4">D.拉帮结派、党同伐异</Radio>
               </Radio.Group>
             </Form.Item>
           </Form.Item>
           <Form.Item>
-            四、在我国当前的网络语境下，我们在多数情况中所说的“同人”一般是指？
+            <span style={{ fontWeight: "bold" }}>
+              四、在我国当前的网络语境下，我们在多数情况中所说的“同人”一般是指？
+            </span>
             <Form.Item
               name="question4"
               rules={[
@@ -155,14 +170,19 @@ class Step2 extends React.PureComponent {
             >
               <Radio.Group name="question4">
                 <Radio value="1">A.基于某一原作/原型的二次创作</Radio>
+                <br />
                 <Radio value="2">B.桐谷和人</Radio>
+                <br />
                 <Radio value="3">C.少林寺十八铜人</Radio>
+                <br />
                 <Radio value="4">D.同一个人</Radio>
               </Radio.Group>
             </Form.Item>
           </Form.Item>
           <Form.Item>
-            五、基于以上定义，以下作品之中哪些可以被视为“同人创作”？
+            <span style={{ fontWeight: "bold" }}>
+              五、基于以上定义，以下作品之中哪些可以被视为“同人创作”？
+            </span>
             <Form.Item
               name="question5"
               rules={[
@@ -186,7 +206,9 @@ class Step2 extends React.PureComponent {
             </Form.Item>
           </Form.Item>
           <Form.Item>
-            六、在我国当前的网络语境下，对于没有原作/原型、且不以盈利为目的原创作品，以下定义正确的是？
+            <span style={{ fontWeight: "bold" }}>
+              六、在我国当前的网络语境下，对于没有原作/原型、且不以盈利为目的原创作品，以下定义正确的是？
+            </span>
             <Form.Item
               name="question6"
               rules={[
@@ -210,7 +232,9 @@ class Step2 extends React.PureComponent {
             </Form.Item>
           </Form.Item>
           <Form.Item>
-            七、基于以上定义，以下作品之中哪些可以被视为“原创同人”或“一创同人”？
+            <span style={{ fontWeight: "bold" }}>
+              七、基于以上定义，以下作品之中哪些可以被视为“原创同人”或“一创同人”？
+            </span>
             <Form.Item
               name="question7"
               rules={[
@@ -238,7 +262,9 @@ class Step2 extends React.PureComponent {
             </Form.Item>
           </Form.Item>
           <Form.Item>
-            八、除了以上所提及的“文字形式”与“图片形式”以外，还有哪些常见的同人创作形式？
+            <span style={{ fontWeight: "bold" }}>
+              八、除了以上所提及的“文字形式”与“图片形式”以外，还有哪些常见的同人创作形式？
+            </span>
             <Form.Item
               name="question8"
               rules={[
@@ -250,14 +276,19 @@ class Step2 extends React.PureComponent {
             >
               <Radio.Group name="question8">
                 <Radio value="1">A.同人音乐</Radio>
+                <br />
                 <Radio value="2">B.同人游戏</Radio>
+                <br />
                 <Radio value="3">C.其余三者全是</Radio>
+                <br />
                 <Radio value="4">D.同人视频</Radio>
               </Radio.Group>
             </Form.Item>
           </Form.Item>
           <Form.Item>
-            九、对于以现实生活之中的真人作为创作原型时，以下处理方式正确的是？
+            <span style={{ fontWeight: "bold" }}>
+              九、对于以现实生活之中的真人作为创作原型时，以下处理方式正确的是？
+            </span>
             <Form.Item
               name="question9"
               rules={[
@@ -283,7 +314,9 @@ class Step2 extends React.PureComponent {
             </Form.Item>
           </Form.Item>
           <Form.Item>
-            十、对于公开表示不欢迎以自身为原型的同人创作的人或组织，以下处理方式正确的是？
+            <span style={{ fontWeight: "bold" }}>
+              十、对于公开表示不欢迎以自身为原型的同人创作的人或组织，以下处理方式正确的是？
+            </span>
             <Form.Item
               name="question10"
               rules={[
