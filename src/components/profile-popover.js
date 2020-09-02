@@ -89,7 +89,7 @@ class ProfileHeader extends React.PureComponent {
                 <h3>投稿 {data.user && data.user.content_count}</h3>
               </Col>
             </Row>
-            <Link to="/profile" replace>
+            <Link to="/profile">
               <Button type="primary" size="small" className="margin-sm">
                 个人中心
               </Button>

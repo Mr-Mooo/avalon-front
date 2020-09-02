@@ -30,11 +30,13 @@ class Toptopic extends React.PureComponent {
     return (
       <Card className="margin-1 cardColor">
         <ThunderboltOutlined /> 话题榜单 Top5
-        <Link to="/all-top-topics" replace>
-          <Button className="gap" type="link">
-            <FileTextOutlined /> 查看全部
-          </Button>
-        </Link>
+        {tagData.length > 0 && (
+          <Link to="/all-top-topics">
+            <Button className="gap" type="link">
+              <FileTextOutlined /> 查看全部
+            </Button>
+          </Link>
+        )}
         {tagData.map((item, index) => {
           return (
             <Link

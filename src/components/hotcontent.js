@@ -70,19 +70,21 @@ class Hotcontent extends React.PureComponent {
       <Card className="margin-1 cardColor">
         <FireOutlined /> {name === "author" ? "用户人气榜单" : "内容人气榜单"}{" "}
         Top5{" "}
-        {name === "author" ? (
-          <Link to="/all-hot-authors" replace>
-            <Button className="gap" type="link">
-              <FileTextOutlined /> 查看全部
-            </Button>
-          </Link>
-        ) : (
-          <Link to="/content-sentiment" replace>
-            <Button className="gap" type="link">
-              <FileTextOutlined /> 查看全部
-            </Button>
-          </Link>
-        )}
+        {name === "author"
+          ? userData.length > 0 && (
+              <Link to="/all-hot-authors">
+                <Button className="gap" type="link">
+                  <FileTextOutlined /> 查看全部
+                </Button>
+              </Link>
+            )
+          : contentData.length > 0 && (
+              <Link to="/content-sentiment">
+                <Button className="gap" type="link">
+                  <FileTextOutlined /> 查看全部
+                </Button>
+              </Link>
+            )}
         {name === "author" ? (
           <div>
             {userData.map((item, index) => {
