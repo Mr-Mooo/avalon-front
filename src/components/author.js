@@ -99,6 +99,7 @@ class Author extends React.PureComponent {
       visible: false,
       visible3: false,
       contentData: this.props.contentData,
+      imgIndex: 0,
     };
   }
   componentWillMount() {
@@ -422,6 +423,16 @@ class Author extends React.PureComponent {
     });
     emitter.emit("openmask", data);
   };
+  closeMore = () => {
+    this.setState({
+      maskId: "",
+    });
+  };
+  getIndex = (index) => {
+    this.setState({
+      imgIndex: index,
+    });
+  };
   render() {
     const {
       comments,
@@ -442,6 +453,7 @@ class Author extends React.PureComponent {
       isShowReplay,
       defaultValue,
       visible3,
+      imgIndex,
     } = this.state;
     // const menu = (
     //   <Menu onClick={this.handleChange1()}>
@@ -452,6 +464,7 @@ class Author extends React.PureComponent {
     const setData =
       contentData.avl_attachments &&
       JSON.parse(JSON.stringify(contentData.avl_attachments));
+
     const srcData =
       setData &&
       setData.map((item) => {
@@ -460,7 +473,7 @@ class Author extends React.PureComponent {
           alt: "图片",
         };
       });
-    console.log(JSON.parse(localStorage.getItem("userInfo")), "user");
+    const { state } = this.props.location;
     const { user } = JSON.parse(localStorage.getItem("userInfo"));
     return (
       <div style={{ width: "100%" }}>
@@ -569,37 +582,44 @@ class Author extends React.PureComponent {
                 <Row>
                   <h3>{contentData.subject}</h3>
                   {/* <DownOutlined className="icon-down" onClick={()=>this.goModal(contentData.content_id)}></DownOutlined> */}
-                  {isShowAvatar && (
+                  {(isShowAvatar || (state && state.name === "person")) && (
                     <Dropdown
                       overlay={
                         <Menu>
-                          <Menu.Item key="1">
-                            <a
-                              onClick={() =>
-                                this.handleChange1(contentData.content_id, 1)
-                              }
-                            >
-                              屏蔽动态
-                            </a>
-                          </Menu.Item>
-                          <Menu.Item key="2">
-                            <a
-                              onClick={() =>
-                                this.handleChange1(contentData.content_id, 2)
-                              }
-                            >
-                              投诉动态
-                            </a>
-                          </Menu.Item>
-                          <Menu.Item key="3">
-                            <a
-                              onClick={() =>
-                                this.handleChange1(contentData.content_id, 3)
-                              }
-                            >
-                              收藏
-                            </a>
-                          </Menu.Item>
+                          {state && state.name !== "person" && (
+                            <Menu.Item key="1">
+                              <a
+                                onClick={() =>
+                                  this.handleChange1(contentData.content_id, 1)
+                                }
+                              >
+                                屏蔽动态
+                              </a>
+                            </Menu.Item>
+                          )}
+                          {state && state.name !== "person" && (
+                            <Menu.Item key="2">
+                              <a
+                                onClick={() =>
+                                  this.handleChange1(contentData.content_id, 2)
+                                }
+                              >
+                                投诉动态
+                              </a>
+                            </Menu.Item>
+                          )}
+                          {state && state.name !== "person" && (
+                            <Menu.Item key="3">
+                              <a
+                                onClick={() =>
+                                  this.handleChange1(contentData.content_id, 3)
+                                }
+                              >
+                                收藏
+                              </a>
+                            </Menu.Item>
+                          )}
+
                           {/* {user.user_id === contentData.create_user && (
                             <Menu.Item key="4">
                               <a onClick={() => this.operation(contentData)}>
@@ -649,16 +669,35 @@ class Author extends React.PureComponent {
                       查看更多
                     </div>
                   )}
+                {maskId === contentData.content_id &&
+                  contentData &&
+                  contentData.content.length > 130 && (
+                    <div
+                      className="more"
+                      onClick={() =>
+                        this.closeMore(
+                          contentData.brief_introduction,
+                          contentData.content_id
+                        )
+                      }
+                    >
+                      收起更多
+                    </div>
+                  )}
                 {contentData &&
                   contentData.avl_attachments &&
-                  contentData.avl_attachments.map((val) => {
+                  contentData.avl_attachments.map((val, index) => {
                     return (
                       <Zmage
                         className="margin-author-img"
                         src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
                         set={srcData}
+                        onClick={() => this.getIndex(index)}
                         style={{ width: 100, height: 100 }}
+                        defaultPage={imgIndex}
                         key={val.document_id}
+                        hideOnScroll={false}
+                        backdrop="rgba(0,0,0,0.5)"
                       />
                     );
                   })}
@@ -696,14 +735,16 @@ class Author extends React.PureComponent {
                 {/* <Row className="buttom-click"> */}
                 <Row>
                   <Col span={6}>
-                    <div className="iconShow">
+                    <div
+                      className="iconShow"
+                      onClick={() => this.gotuijian(contentData.content_id)}
+                    >
                       推荐
                       <RotateRightOutlined
                         className="margin-sm"
                         style={{
                           color: contentData.is_recommend ? "#1890ff" : "",
                         }}
-                        onClick={() => this.gotuijian(contentData.content_id)}
                       />
                       {contentData.recommend_number}
                     </div>
@@ -719,28 +760,30 @@ class Author extends React.PureComponent {
                     </div>
                   </Col>
                   <Col span={6}>
-                    <div className="iconShow">
+                    <div
+                      className="iconShow"
+                      onClick={() =>
+                        this.goDianzan(
+                          contentData.content_id,
+                          contentData.is_like
+                        )
+                      }
+                    >
                       点赞
                       <LikeOutlined
                         className="margin-sm"
                         style={{ color: contentData.is_like ? "#1890ff" : "" }}
-                        onClick={() =>
-                          this.goDianzan(
-                            contentData.content_id,
-                            contentData.is_like
-                          )
-                        }
                       />
                       {contentData.like_number}
                     </div>
                   </Col>
                   <Col span={6}>
-                    <div className="iconShow">
+                    <div
+                      className="iconShow"
+                      onClick={() => this.chaozan(contentData.content_id)}
+                    >
                       超赞
-                      <CrownOutlined
-                        className="margin-sm"
-                        onClick={() => this.chaozan(contentData.content_id)}
-                      />
+                      <CrownOutlined className="margin-sm" />
                       {contentData.collect_number}
                     </div>
                   </Col>

@@ -103,7 +103,7 @@ class AddArticleContent extends PureComponent {
   //   console.log(`checked = ${e.target.checked}`);
   // }
   handleSubmit = async (e) => {
-    const fieldsValue = "";
+    let fieldsValue = "";
     try {
       fieldsValue = await this.formRef.current.validateFields();
     } catch (err) {
@@ -193,9 +193,9 @@ class AddArticleContent extends PureComponent {
           <h4>文章简介</h4>
           <FormItem
             name="brief_introduction"
-            rules={[{ required: true, message: " 内容不能为空" }]}
+            rules={[{ required: false, message: " 内容不能为空" }]}
           >
-            <Input placeholder="简介文章内容（32字内）" />
+            <Input placeholder="简介文章内容（64字内）" />
           </FormItem>
           <br />
           <h4>正文</h4>

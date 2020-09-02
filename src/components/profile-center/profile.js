@@ -470,10 +470,21 @@ export default function Profile() {
         <Tabs tabPosition="left">
           <TabPane tab="个人基本信息" key="1">
             <Card className="margin-1" title="基本信息">
-              <Row>
+              <Row style={{ position: "relative" }}>
                 <Col span={4} className="gap">
                   <AvatarUpload />
                 </Col>
+                <div
+                  style={{
+                    borderLeft: "1px solid #1890ff",
+                    display: "inline-block",
+                    verticalAlign: "top",
+                    width: "2px",
+                    height: "300px",
+                    position: "absolute",
+                    left: "140px",
+                  }}
+                ></div>
                 <Col span={18}>
                   <PersonalProfile content={message} />
                 </Col>

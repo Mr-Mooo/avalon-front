@@ -266,6 +266,7 @@ class ContentDetail extends React.Component {
                           return (
                             <img
                               src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${item.path}`}
+                              className="margin-author-img"
                               key={index}
                               style={{ width: 200, height: 200 }}
                             />
@@ -292,14 +293,16 @@ class ContentDetail extends React.Component {
                     <Divider />
                     <Row>
                       <Col span={6}>
-                        <div className="iconShow">
+                        <div
+                          className="iconShow"
+                          onClick={() => this.gotuijian(data.content_id)}
+                        >
                           推荐
                           <RotateRightOutlined
                             className="margin-sm"
                             style={{
                               color: data.is_recommend ? "#1890ff" : "",
                             }}
-                            onClick={() => this.gotuijian(data.content_id)}
                           />
                           {data.recommend_number}
                         </div>
@@ -315,27 +318,29 @@ class ContentDetail extends React.Component {
                         </div>
                       </Col>
                       <Col span={6}>
-                        <div className="iconShow">
+                        <div
+                          className="iconShow"
+                          onClick={() =>
+                            this.goDianzan(data.content_id, data.is_like)
+                          }
+                        >
                           点赞
                           <LikeOutlined
                             className="margin-sm"
                             style={{
                               color: data.is_like ? "#1890ff" : "",
                             }}
-                            onClick={() =>
-                              this.goDianzan(data.content_id, data.is_like)
-                            }
                           />
                           {data.like_number}
                         </div>
                       </Col>
                       <Col span={6}>
-                        <div className="iconShow">
+                        <div
+                          className="iconShow"
+                          onClick={() => this.chaozan(data.content_id)}
+                        >
                           超赞
-                          <CrownOutlined
-                            className="margin-sm"
-                            onClick={() => this.chaozan(data.content_id)}
-                          />
+                          <CrownOutlined className="margin-sm" />
                           {data.collect_number}
                         </div>
                       </Col>
