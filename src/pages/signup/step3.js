@@ -15,11 +15,7 @@ export default function Step3() {
       </Link>
       <br /> */}
       <Link to="/">
-        <Button
-          type="primary"
-          style={{ marginTop: 40 }}
-          onClick={() => message.success("Processing complete!")}
-        >
+        <Button type="primary" style={{ marginTop: 40 }}>
           完成
         </Button>
       </Link>
