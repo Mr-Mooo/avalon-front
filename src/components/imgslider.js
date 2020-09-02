@@ -30,7 +30,7 @@ class Imgslider extends React.PureComponent {
           </p>
           <p>1.法律与道德相关</p>
           <p>X-与我国现有法律法规相违背的内容</p>
-          <p>X-没画罪犯形象、足以引起对罪犯同情或赞赏的内容</p>
+          <p>X-美化罪犯形象、足以引起对罪犯同情或赞赏的内容</p>
           <p>X-唆使他人蔑视法律尊严的内容</p>
           <p>X-描述犯罪方法或细节，会诱发或鼓动人们模仿犯罪行为的内容</p>
           <p>X-正面肯定或诱导他人进行犯罪行为的内容</p>
@@ -518,7 +518,7 @@ class Imgslider extends React.PureComponent {
   };
   openFour = () => {
     Modal.info({
-      title: "平台功能简介",
+      title: "平台服务简介",
       maskClosable: true,
       width: 700,
       content: (
@@ -577,7 +577,7 @@ class Imgslider extends React.PureComponent {
                 </tr>
                 <tr>
                   <td>认证满18周岁，未开启会员模式</td>
-                  <td>√</td>
+                  <td>X</td>
                   <td>√</td>
                 </tr>
                 <tr>

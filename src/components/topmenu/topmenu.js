@@ -7,7 +7,7 @@ import AddNewArticle from "../add-article";
 import photo from "../../img/package.png";
 import "./index.css";
 function getMessage() {
-  message.info("功能开发中，敬请期待。。。");
+  message.info("功能开发中，敬请期待！！！");
 }
 export default function TopMenu() {
   // render() {
