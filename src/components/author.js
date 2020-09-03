@@ -527,20 +527,22 @@ class Author extends React.PureComponent {
                             <h3>投稿 {contentData.avl_user.content_number}</h3>
                           </Col>
                         </Row>
-                        <Button
-                          type="primary"
-                          size="small"
-                          className="margin-sm"
-                          onClick={() =>
-                            this.gocollect(
-                              contentData.avl_user.user_id,
-                              contentData.avl_user.is_follow
-                            )
-                          }
-                        >
-                          <SmileOutlined />
-                          {contentData.avl_user.is_follow ? "已关注" : "关注"}
-                        </Button>
+                        {user.user_id !== contentData.create_user && (
+                          <Button
+                            type="primary"
+                            size="small"
+                            className="margin-sm"
+                            onClick={() =>
+                              this.gocollect(
+                                contentData.avl_user.user_id,
+                                contentData.avl_user.is_follow
+                              )
+                            }
+                          >
+                            <SmileOutlined />
+                            {contentData.avl_user.is_follow ? "已关注" : "关注"}
+                          </Button>
+                        )}
                         {/* <Button size="small" className="margin-sm">
                     <MailOutlined /> 私信
                   </Button> */}
@@ -588,7 +590,7 @@ class Author extends React.PureComponent {
                     <Dropdown
                       overlay={
                         <Menu>
-                          {state && state.name !== "person" && (
+                          {
                             <Menu.Item key="1">
                               <a
                                 onClick={() =>
@@ -598,8 +600,8 @@ class Author extends React.PureComponent {
                                 屏蔽动态
                               </a>
                             </Menu.Item>
-                          )}
-                          {state && state.name !== "person" && (
+                          }
+                          {
                             <Menu.Item key="2">
                               <a
                                 onClick={() =>
@@ -609,8 +611,8 @@ class Author extends React.PureComponent {
                                 投诉动态
                               </a>
                             </Menu.Item>
-                          )}
-                          {state && state.name !== "person" && (
+                          }
+                          {
                             <Menu.Item key="3">
                               <a
                                 onClick={() =>
@@ -620,7 +622,7 @@ class Author extends React.PureComponent {
                                 收藏
                               </a>
                             </Menu.Item>
-                          )}
+                          }
 
                           {/* {user.user_id === contentData.create_user && (
                             <Menu.Item key="4">
