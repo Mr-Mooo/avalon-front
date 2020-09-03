@@ -50,6 +50,8 @@ import { Link, withRouter } from "react-router-dom";
 import { defaultAvatar } from "../utils/util";
 import AddImageContent from "./Modal/addimage-content";
 import emitter from "../utils/events.js";
+import grey from "../img/avalon(grey).png";
+import golden from "../img/avalon(golden).png";
 const { Option } = Select;
 const { TextArea, Search } = Input;
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
@@ -783,7 +785,31 @@ class Author extends React.PureComponent {
                       onClick={() => this.chaozan(contentData.content_id)}
                     >
                       超赞
-                      <CrownOutlined className="margin-sm" />
+                      {contentData.is_collected ? (
+                        <img
+                          src={golden}
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            marginLeft: "5px",
+                            marginRight: "5px",
+                            verticalAlign: "top",
+                            marginTop: "3px",
+                          }}
+                        />
+                      ) : (
+                        <img
+                          src={grey}
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            marginLeft: "5px",
+                            marginRight: "5px",
+                            verticalAlign: "top",
+                            marginTop: "3px",
+                          }}
+                        />
+                      )}
                       {contentData.collect_number}
                     </div>
                   </Col>

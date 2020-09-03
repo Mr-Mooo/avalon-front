@@ -308,10 +308,7 @@ class ContentDetail extends React.Component {
                         </div>
                       </Col>
                       <Col span={6}>
-                        <div
-                          className="iconShow"
-                          onClick={() => this.openValue()}
-                        >
+                        <div className="iconShow">
                           评论
                           <MessageOutlined className="margin-sm" />
                           {data.comment_number}
@@ -349,16 +346,16 @@ class ContentDetail extends React.Component {
                 </Row>
                 <Divider />
                 <div>
-                  {isShow && (
-                    <Search
-                      placeholder="请输入评论内容"
-                      enterButton="评论"
-                      size="large"
-                      onChange={(e) => this.getFValue(e)}
-                      value={defaultFValue}
-                      onSearch={(value) => this.getFSearch(value)}
-                    />
-                  )}
+                  {/* {isShow && ( */}
+                  <Search
+                    placeholder="请输入评论内容"
+                    enterButton="评论"
+                    size="large"
+                    onChange={(e) => this.getFValue(e)}
+                    value={defaultFValue}
+                    onSearch={(value) => this.getFSearch(value)}
+                  />
+                  {/* )} */}
                 </div>
                 <List
                   itemLayout="horizontal"

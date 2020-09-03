@@ -10,6 +10,7 @@ import {
   MailOutlined,
 } from "@ant-design/icons";
 import { userSentimentListApi } from "../../services/content";
+import { defaultAvatar } from "../../utils/util";
 class AllHotAuthors extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -52,6 +53,11 @@ class AllHotAuthors extends React.PureComponent {
                 <Col className="align-center" span={6}>
                   <Avatar
                     className="margin-bt-sm"
+                    src={
+                      item.avl_user.avatar
+                        ? item.avl_user.avatar
+                        : defaultAvatar
+                    }
                     size={64}
                     icon={<UserOutlined />}
                   />

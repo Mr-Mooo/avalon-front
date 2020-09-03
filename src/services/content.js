@@ -13,6 +13,19 @@ export const addContentApi = async (options) => {
   }
   return false;
 };
+// 我的关注
+export const userFollowApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/user/follow/list`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 话题人气榜单(simple)
 export const topSentimentApi = async (options) => {
   const res = await myFetch(

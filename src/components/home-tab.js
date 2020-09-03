@@ -18,6 +18,7 @@ import {
   searchMessageApi,
   searchTagApi,
   searchUserApi,
+  userFollowApi,
 } from "../services/content";
 import InfiniteScroll from "react-infinite-scroller";
 import emitter from "../utils/events.js";
@@ -57,6 +58,8 @@ class HomeTab extends React.Component {
       this.getSearch(key);
     } else if (key === "5") {
       this.getSearch(key);
+    } else if (key === "2") {
+      this.userFollow();
     } else {
       const options = {
         type: key === "1" ? "recommend" : key === "2" ? "follow" : "subscribe",
@@ -103,6 +106,25 @@ class HomeTab extends React.Component {
           selectKey: "7",
         });
       }
+    }
+  };
+  //我的关注
+  userFollow = async (value) => {
+    const { data, page } = this.state;
+    const options = {
+      page: value ? page + 1 : 1,
+      limit: 10,
+    };
+    const res = await userFollowApi(options);
+    if (value) {
+      this.setState({
+        data: [...data, ...res.rows],
+        page: page + 1,
+      });
+    } else {
+      this.setState({
+        data: res.rows,
+      });
     }
   };
   // 搜索话题
@@ -241,6 +263,8 @@ class HomeTab extends React.Component {
         this.getSearch(keyValue, true);
       } else if (keyValue === "7") {
         this.getUserData(true);
+      } else if (keyValue === "2") {
+        this.userFollow(true);
       } else {
         const options = {
           page: page + 1,
@@ -276,6 +300,8 @@ class HomeTab extends React.Component {
       this.getSearch(selectKey);
     } else if (selectKey === "7") {
       this.getUserData();
+    } else if (selectKey == "2") {
+      this.userFollow();
     } else {
       const option = {
         page: 1,

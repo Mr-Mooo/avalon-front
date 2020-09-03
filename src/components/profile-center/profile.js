@@ -21,6 +21,9 @@ import {
   updateDataApi,
 } from "../../services/content.js";
 import "antd/dist/antd.css";
+import "cropperjs/dist/cropper.css";
+
+import Cropper from "react-cropper";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -29,18 +32,6 @@ function getBase64(file) {
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
 }
 
 class AvatarUpload extends React.Component {
@@ -58,8 +49,32 @@ class AvatarUpload extends React.Component {
     imgUrl: [],
     fileList: [],
     imgprv: "",
+    srcCropper: "",
+    visible: false,
+    confirmLoading: false,
   };
-
+  beforeUpload = (file) => {
+    // const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    // if (!isJpgOrPng) {
+    //   message.error("You can only upload JPG/PNG file!");
+    // }
+    // const isLt2M = file.size / 1024 / 1024 < 2;
+    // if (!isLt2M) {
+    //   message.error("Image must smaller than 2MB!");
+    // }
+    const reader = new FileReader();
+    reader.readAsDataURL(file); // 开始读取文件
+    // 因为读取文件需要时间,所以要在回调函数中使用读取的结果
+    reader.onload = (e) => {
+      console.log(e, "e");
+      this.setState({
+        visible: true,
+        srcCropper: e.target.result, // cropper的图片路径
+      });
+    };
+    return false;
+    // return isJpgOrPng && isLt2M;
+  };
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file) => {
@@ -149,7 +164,64 @@ class AvatarUpload extends React.Component {
       inputValue: "",
     });
   };
+  // 取消
+  onCloseModal = () => {
+    this.setState({
+      visible: false,
+      confirmLoading: false,
+    });
+  };
+  b64toBlob = (dataurl) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
 
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new Blob([u8arr], { type: mime });
+  };
+  // saveImg = () => {
+  //   const lrz = require("lrz");
+  //   console.log(this.refs.cropper.getCroppedCanvas().toDataURL(), "000");
+  //   this.setState({
+  //     confirmLoading: true,
+  //   });
+  //   // 通过refs读取到Cropper实例，并读取到裁剪之后的图片（base64）
+  //   const cropper = this.refs.cropper;
+  //   console.log(cropper, "cropper");
+  //   const url = cropper.getCroppedCanvas().toDataURL();
+  //   console.log(cropper.getCroppedCanvas().toDataURL(), "1231");
+  //   return;
+  //   // 此处使用了lrz组件对裁剪之后的图片进行压缩，lrz的API十分简单，quality是指对压缩图片的品质，一般0.6或者0.7即可
+  //   lrz(url, { quality: 0.6 }).then((results) => {
+  //     const { onSuccess, onChange } = this.props;
+  //     const fd = new FormData();
+  //     // 由于后台接口参数需要一个文件名，所有根据当前时间生成文件名
+  //     const imgName = `${new Date().getTime()}.png`;
+  //     // 将base64转化成二进制流
+  //     fd.append("file", this.b64toBlob(results.base64), imgName);
+  //     // 发送请求
+
+  //     // axios
+  //     //   .post(`${BaseUrl}/tools/saveAvatar`, fd)
+  //     //   .then((res) => {
+  //     //     const { data = {} } = res;
+  //     //     if (data.code === 200) {
+  //     //       onSuccess(data.data.file);
+  //     //       onChange && onChange(data.data.file);
+  //     //       message.success(data.message || "上传成功");
+  //     //     }
+  //     //   })
+  //     //   .catch((err) => {
+  //     //     message.error("上传失败");
+  //     //   })
+  //     //   .finally(() => this.onCloseModal());
+  //   });
+  // };
   render() {
     const {
       tags,
@@ -171,7 +243,8 @@ class AvatarUpload extends React.Component {
         <Button>上传头像</Button>
       </div>
     );
-    const { imageUrl } = this.state;
+    const { imageUrl, srcCropper, visible, confirmLoading } = this.state;
+    console.log(srcCropper, "srcCropper");
     return (
       <div>
         <img
@@ -202,14 +275,42 @@ class AvatarUpload extends React.Component {
         >
           {uploadButton}
         </Upload>
-        <Modal
+        {/* <Modal
           visible={previewVisible}
           title={previewTitle}
           footer={null}
           onCancel={this.handleCancel}
         >
           <img alt="example" style={{ width: "100%" }} src={previewImage} />
-        </Modal>
+        </Modal> */}
+        {/* <Modal
+          visible={visible}
+          onOk={this.saveImg}
+          onCancel={this.onCloseModal}
+          okText="确认上传"
+          cancelText="取消"
+          confirmLoading={confirmLoading}
+        >
+          {srcCropper ? (
+            <Cropper
+              style={{ height: 400 }}
+              src={srcCropper}
+              ref="cropper"
+              // ref={cropper => this.cropper = cropper}
+              // Cropper.js options
+              viewMode={1}
+              zoomable={false}
+              aspectRatio={75 / 32}
+              guides={true}
+              viewMode={1}
+              background={false} //是否显示马赛克
+              rotatable={true} //是否旋转
+              preview=".cropper-preview"
+            />
+          ) : (
+            ""
+          )}
+        </Modal> */}
       </div>
     );
   }
