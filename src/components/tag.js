@@ -76,11 +76,11 @@ class Tag extends React.PureComponent {
     const { isSubscribe } = this.state;
     const options = {
       tag_content: state.tag,
-      is_delete: isSubscribe ? 0 : 1,
+      is_delete: !isSubscribe ? 0 : 1,
     };
     const res = await subscriptApi(options);
     if (res.code === 0) {
-      if (isSubscribe) {
+      if (!isSubscribe) {
         message.success("订阅成功");
       } else {
         message.success("取消订阅");
@@ -104,7 +104,7 @@ class Tag extends React.PureComponent {
               style={{ float: "right" }}
               onClick={() => this.getSub()}
             >
-              {isSubscribe ? "订阅" : "已订阅"}
+              {!isSubscribe ? "订阅" : "已订阅"}
             </Button>
           </Card>
           <Card style={{ minHeight: "calc(100vh - 400px)" }}>

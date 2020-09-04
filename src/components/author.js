@@ -590,7 +590,7 @@ class Author extends React.PureComponent {
                     <Dropdown
                       overlay={
                         <Menu>
-                          {
+                          {user.user_id !== contentData.create_user && (
                             <Menu.Item key="1">
                               <a
                                 onClick={() =>
@@ -600,8 +600,9 @@ class Author extends React.PureComponent {
                                 屏蔽动态
                               </a>
                             </Menu.Item>
-                          }
-                          {
+                          )}
+
+                          {user.user_id !== contentData.create_user && (
                             <Menu.Item key="2">
                               <a
                                 onClick={() =>
@@ -611,8 +612,8 @@ class Author extends React.PureComponent {
                                 投诉动态
                               </a>
                             </Menu.Item>
-                          }
-                          {
+                          )}
+                          {user.user_id !== contentData.create_user && (
                             <Menu.Item key="3">
                               <a
                                 onClick={() =>
@@ -622,8 +623,7 @@ class Author extends React.PureComponent {
                                 收藏
                               </a>
                             </Menu.Item>
-                          }
-
+                          )}
                           {/* {user.user_id === contentData.create_user && (
                             <Menu.Item key="4">
                               <a onClick={() => this.operation(contentData)}>
@@ -850,7 +850,16 @@ class Author extends React.PureComponent {
                       <div>
                         <List.Item>
                           <List.Item.Meta
-                            avatar={<Avatar icon={<UserOutlined />} />}
+                            avatar={
+                              <Avatar
+                                src={
+                                  item["avl_user.avatar"]
+                                    ? item["avl_user.avatar"]
+                                    : defaultAvatar
+                                }
+                                icon={<UserOutlined />}
+                              />
+                            }
                             title={item.nick_name}
                             description={item.content}
                             onClick={() =>

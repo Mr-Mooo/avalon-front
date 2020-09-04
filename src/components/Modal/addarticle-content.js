@@ -13,7 +13,7 @@ import {
   Tag,
 } from "antd";
 import FormItem from "antd/lib/form/FormItem";
-import { addContentApi } from "../../services/content";
+import { addContentApi, defaulttagApi } from "../../services/content";
 import { TweenOneGroup } from "rc-tween-one";
 import { PlusOutlined } from "@ant-design/icons";
 import emitter from "../../utils/events.js";
@@ -34,8 +34,20 @@ class AddArticleContent extends PureComponent {
       tags: [],
       inputVisible: false,
       inputValue: "",
+      tagData: [],
     };
   }
+  componentDidMount() {
+    this.getDefaultData();
+  }
+  getDefaultData = async () => {
+    const res = await defaulttagApi();
+    if (res) {
+      this.setState({
+        tagData: res.data,
+      });
+    }
+  };
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter((tag) => tag !== removedTag);
     console.log(tags);
@@ -125,6 +137,9 @@ class AddArticleContent extends PureComponent {
     if (fieldsValue.tag3) {
       tag_id.push(fieldsValue.tag3);
     }
+    if (fieldsValue.tag4) {
+      tag_id.push(fieldsValue.tag4);
+    }
     const options = {
       subject: fieldsValue.subject,
       content: fieldsValue.content,
@@ -134,7 +149,6 @@ class AddArticleContent extends PureComponent {
       tag: [...tag_id, ...tags],
     };
     const addRes = await addContentApi(options);
-    console.log(addRes, "123");
     message.destroy();
     this.formRef.current.resetFields();
     if (addRes) {
@@ -148,6 +162,7 @@ class AddArticleContent extends PureComponent {
         tags: [],
       });
       emitter.emit("changeMessage", "");
+      window.location.reload();
     }
   };
 
@@ -162,7 +177,7 @@ class AddArticleContent extends PureComponent {
   render() {
     const { visible, type, onOk, onCancel, message, options } = this.props;
 
-    const { tags, inputVisible, inputValue } = this.state;
+    const { tags, inputVisible, inputValue, tagData } = this.state;
     const tagChild = tags.map(this.forMap);
     return (
       <Modal
@@ -242,6 +257,18 @@ class AddArticleContent extends PureComponent {
               <Option value="BG">BG</Option>
               <Option value="GL">GL</Option>
               <Option value="无取向">无取向</Option>
+            </Select>
+          </FormItem>
+          <h4>推荐标签</h4>
+          <FormItem name="tag4">
+            <Select style={{ width: 120 }}>
+              {tagData.map((item) => {
+                return (
+                  <Option value={item.content} key={item.tag_id}>
+                    {item.content}
+                  </Option>
+                );
+              })}
             </Select>
           </FormItem>
           <h4>添加标签</h4>

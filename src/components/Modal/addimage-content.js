@@ -17,7 +17,11 @@ import { TweenOneGroup } from "rc-tween-one";
 import { PlusOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 import FormItem from "antd/lib/form/FormItem";
-import { uploadImg, addContentApi } from "../../services/content.js";
+import {
+  uploadImg,
+  addContentApi,
+  defaulttagApi,
+} from "../../services/content.js";
 import emitter from "../../utils/events.js";
 const { Option } = Select;
 function getBase64(file) {
@@ -31,170 +35,7 @@ function getBase64(file) {
 
 const { CheckableTag } = Tag;
 
-const tagsDataAge = ["全年龄", "限制内容"];
-
-class HotTagsAge extends React.Component {
-  state = {
-    selectedTags: ["全年龄"],
-  };
-
-  handleChange(tag, checked) {
-    const { selectedTags } = this.state;
-    const nextSelectedTags = checked
-      ? [...selectedTags, tag]
-      : selectedTags.filter((t) => t !== tag);
-    console.log("You are interested in: ", nextSelectedTags);
-    this.setState({ selectedTags: nextSelectedTags });
-  }
-
-  render() {
-    const { selectedTags } = this.state;
-    return (
-      <>
-        <span style={{ marginRight: 8 }}>标签一:</span>
-        {tagsDataAge.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={selectedTags.indexOf(tag) > -1}
-            onChange={(checked) => this.handleChange(tag, checked)}
-          >
-            {tag}
-          </CheckableTag>
-        ))}
-      </>
-    );
-  }
-}
-
-const tagsDataLegal = ["原创", "二创"];
-
-class HotTagsLegal extends React.Component {
-  state = {
-    selectedTags: ["原创"],
-  };
-
-  handleChange(tag, checked) {
-    const { selectedTags } = this.state;
-    const nextSelectedTags = checked
-      ? [...selectedTags, tag]
-      : selectedTags.filter((t) => t !== tag);
-    console.log("You are interested in: ", nextSelectedTags);
-    this.setState({ selectedTags: nextSelectedTags });
-  }
-
-  render() {
-    const { selectedTags } = this.state;
-    return (
-      <>
-        <span style={{ marginRight: 8 }}>标签二:</span>
-        {tagsDataLegal.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={selectedTags.indexOf(tag) > -1}
-            onChange={(checked) => this.handleChange(tag, checked)}
-          >
-            {tag}
-          </CheckableTag>
-        ))}
-      </>
-    );
-  }
-}
-
-const tagsDataType = ["BL", "BG", "GL", "无取向"];
-
-class HotTagsType extends React.Component {
-  state = {
-    selectedTags: ["BL"],
-  };
-
-  handleChange(tag, checked) {
-    const { selectedTags } = this.state;
-    const nextSelectedTags = checked
-      ? [...selectedTags, tag]
-      : selectedTags.filter((t) => t !== tag);
-    console.log("You are interested in: ", nextSelectedTags);
-    this.setState({ selectedTags: nextSelectedTags });
-  }
-
-  render() {
-    const { selectedTags } = this.state;
-    return (
-      <>
-        <span style={{ marginRight: 8 }}>标签三:</span>
-        {tagsDataType.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={selectedTags.indexOf(tag) > -1}
-            onChange={(checked) => this.handleChange(tag, checked)}
-          >
-            {tag}
-          </CheckableTag>
-        ))}
-      </>
-    );
-  }
-}
-
-const tagsDataNonMandatory = ["标签一", "标签二", "标签三", "标签四"];
-
-class HotTagsNonMandatory extends React.Component {
-  state = {
-    selectedTags: ["标签一"],
-  };
-
-  handleChange(tag, checked) {
-    const { selectedTags } = this.state;
-    const nextSelectedTags = checked
-      ? [...selectedTags, tag]
-      : selectedTags.filter((t) => t !== tag);
-    console.log("You are interested in: ", nextSelectedTags);
-    this.setState({ selectedTags: nextSelectedTags });
-  }
-
-  render() {
-    const { selectedTags } = this.state;
-    return (
-      <>
-        <span style={{ marginRight: 8 }}>标签:</span>
-        {tagsDataNonMandatory.map((tag) => (
-          <CheckableTag
-            key={tag}
-            checked={selectedTags.indexOf(tag) > -1}
-            onChange={(checked) => this.handleChange(tag, checked)}
-          >
-            {tag}
-          </CheckableTag>
-        ))}
-      </>
-    );
-  }
-}
-
 const { TextArea } = Input;
-
-class Permission extends React.Component {
-  state = {
-    value: 1,
-  };
-
-  onChange = (e) => {
-    console.log("radio checked", e.target.value);
-    this.setState({
-      value: e.target.value,
-    });
-  };
-
-  render() {
-    return (
-      <Radio.Group onChange={this.onChange} value={this.state.value}>
-        <Radio value={1}>仅粉丝可见</Radio>
-        <Radio value={2}>全部可见</Radio>
-        <Radio value={3}>仅自己可见</Radio>
-      </Radio.Group>
-    );
-  }
-}
 
 class AddImageContent extends React.Component {
   constructor(props) {
@@ -213,10 +54,10 @@ class AddImageContent extends React.Component {
       fileList: [],
       fvisible: false,
       messageImage: "",
+      tagData: [],
     };
   }
   componentDidMount() {
-    console.log(0);
     this.eventEmitter = emitter.addListener("openmask", (message) => {
       if (message) {
         if (message.avl_attachments.length > 0) {
@@ -236,7 +77,17 @@ class AddImageContent extends React.Component {
         });
       }
     });
+    this.getDefaultData();
   }
+  getDefaultData = async () => {
+    const res = await defaulttagApi();
+    if (res) {
+      this.setState({
+        tagData: res.data,
+      });
+      console.log(res, "123");
+    }
+  };
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file) => {
@@ -334,7 +185,7 @@ class AddImageContent extends React.Component {
     this.props.onCancel();
   };
   handleSubmit = async () => {
-    const { imgUrl, tags, message, messageImage ,fileList} = this.state;
+    const { imgUrl, tags, message, messageImage, fileList } = this.state;
 
     let fieldsValue = "";
     try {
@@ -358,10 +209,13 @@ class AddImageContent extends React.Component {
     if (fieldsValue.tag3) {
       tag_id.push(fieldsValue.tag3);
     }
+    if (fieldsValue.tag4) {
+      tag_id.push(fieldsValue.tag4);
+    }
     console.log(tag_id, "tag");
     const options = {
       subject: "测试",
-      brief_introduction: "测试",
+      brief_introduction: fieldsValue.brief_introduction,
       type: "pictrue",
       attachment: imgUrl,
       tag: [...tag_id, ...tags],
@@ -384,7 +238,9 @@ class AddImageContent extends React.Component {
           fileList: [],
           message: "",
         });
+
         emitter.emit("changeMessage", "");
+        window.location.reload();
       }
     }
   };
@@ -418,6 +274,7 @@ class AddImageContent extends React.Component {
       previewTitle,
       needOption,
       messageImage,
+      tagData,
     } = this.state;
     console.log(message, "message");
     const { visible } = this.props;
@@ -457,8 +314,13 @@ class AddImageContent extends React.Component {
             >
               <TextArea rows={4} onChange={(e) => this.getMessage(e)} />
             </FormItem>
-            <br />
-            <br />
+            <h4>内容简介</h4>
+            <FormItem
+              name="brief_introduction"
+              rules={[{ required: false, message: " 内容不能为空" }]}
+            >
+              <Input placeholder="内容简介（64字内）" />
+            </FormItem>
             <h4>上传图片</h4>
             <p>
               *图片上传格式为png、jpg、jpeg格式，单张图片不超过20M，最多可上传9张图片
@@ -540,6 +402,27 @@ class AddImageContent extends React.Component {
                   <Option value="BG">BG</Option>
                   <Option value="GL">GL</Option>
                   <Option value="无取向">无取向</Option>
+                </Select>
+              )}
+            </FormItem>
+            <h4>推荐标签</h4>
+            <FormItem name="tag4">
+              {messageImage ? (
+                <Select style={{ width: 120 }} disabled>
+                  <Option value="BL">BL</Option>
+                  <Option value="BG">BG</Option>
+                  <Option value="GL">GL</Option>
+                  <Option value="无取向">无取向</Option>
+                </Select>
+              ) : (
+                <Select style={{ width: 120 }}>
+                  {tagData.map((item) => {
+                    return (
+                      <Option value={item.content} key={item.tag_id}>
+                        {item.content}
+                      </Option>
+                    );
+                  })}
                 </Select>
               )}
             </FormItem>

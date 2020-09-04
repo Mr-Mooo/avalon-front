@@ -9,6 +9,7 @@ import {
   Card,
   Pagination,
   Select,
+  message,
 } from "antd";
 import "antd/dist/antd.css";
 import {
@@ -27,17 +28,79 @@ import { Link, withRouter } from "react-router-dom";
 import { homePageApi } from "../../services/content";
 import ArticleBrief from "./article-brief";
 import { defaultAvatar } from "../../utils/util";
+import { guanzhu } from "../../services/content";
+import { userApi } from "../../services/user";
 const { Option } = Select;
 
 class UserPage extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      is_follow: false,
+      follow_count: 0,
+      content_count: 0,
+      be_follow_count: 0,
+    };
   }
+  componentDidMount() {
+    this.getFolleowData();
+    this.getUser();
+  }
+  getUser = async () => {
+    const { state } = this.props.location;
+    const options = {
+      limit: 10,
+      page: 1,
+      user_id: state.user.user_id,
+    };
+    const res = await userApi(options);
+    if (res) {
+      this.setState({
+        follow_count: res.user.follow_count,
+        content_count: res.user.content_count,
+        be_follow_count: res.user.be_follow_count,
+      });
+    }
+  };
+  getFolleowData = async () => {
+    const { state } = this.props.location;
+    const options = {
+      limit: 10,
+      page: 1,
+      user_id: state.user.user_id,
+    };
+    const res = await homePageApi(options);
+    if (res) {
+      this.setState({
+        is_follow: res.is_follow,
+      });
+    }
+  };
+  gocollect = async (id, is_recommend) => {
+    let options = {
+      follow_id: id,
+      is_delete: is_recommend ? 1 : 0,
+    };
+    const addRes = await guanzhu(options);
+    if (addRes && addRes.success) {
+      if (is_recommend) {
+        message.success("取消关注");
+        this.getFolleowData();
+      } else {
+        message.success("关注成功");
+        this.getFolleowData();
+      }
+    }
+  };
   render() {
     const { state } = this.props.location;
     const { user } = state;
-    console.log(user, "user");
+    const {
+      is_follow,
+      follow_count,
+      content_count,
+      be_follow_count,
+    } = this.state;
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
     return (
       <div className="mainwidth">
@@ -52,16 +115,28 @@ class UserPage extends React.PureComponent {
             />
             <p>作者昵称：{user.nick_name}</p>
             <p>{user.introduce}</p>
-            <div>
-              <Divider />
-              <Button type="primary" size="small" className="margin-sm">
-                <SmileOutlined />
-                关注
-              </Button>
-              {/* <Button size="small" className="margin-sm">
+            <Row style={{ display: "flex", justifyContent: "center" }}>
+              <Col span={1}>关注 {follow_count}</Col>
+              <Col span={1}>粉丝 {be_follow_count}</Col>
+              <Col span={1}>投稿 {content_count}</Col>
+            </Row>
+            {user.user_id !== userInfo.user.user_id && (
+              <div>
+                <Divider />
+                <Button
+                  type="primary"
+                  size="small"
+                  className="margin-sm"
+                  onClick={() => this.gocollect(user.user_id, is_follow)}
+                >
+                  <SmileOutlined />
+                  {is_follow ? "已关注" : "关注"}
+                </Button>
+              </div>
+            )}
+            {/* <Button size="small" className="margin-sm">
                   <MailOutlined /> 私信
                 </Button> */}
-            </div>
           </div>
         </Card>
         {/* <Col span={8}>

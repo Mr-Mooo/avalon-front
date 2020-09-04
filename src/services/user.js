@@ -1,30 +1,29 @@
-import { config, myFetch } from '../utils';
+import { config, myFetch } from "../utils";
 // import { myFetch } from '../utils/myFetch';
 // import '../utils';
 
-
 // 登录
-export const loginApi = async options => {
+export const loginApi = async (options) => {
   const res = await myFetch(
     `${config.base_url}/user/login`,
     // `https://goant-dev.rootant.org/ucenter/api/sme/login`,
     options,
-    'POST',
+    "POST"
   );
   // console.log(res, 'res');
   if (res && res.code === 0) {
-    return res.data;
+    return res;
   }
   return false;
 };
 
 // 登出
-export const logoutApi = async options => {
+export const logoutApi = async (options) => {
   const res = await myFetch(
     `${config.base_url}/user/logout`,
     // `https://goant-dev.rootant.org/ucenter/api/sme/login`,
     options,
-    'POST',
+    "POST"
   );
   // console.log(res, 'res');
   if (res && res.code === 0) {
@@ -33,12 +32,8 @@ export const logoutApi = async options => {
   return false;
 };
 // 发送 otp
-export const sendOtpApi = async options => {
-  const res = await myFetch(
-    `${config.base_url}/send/notice`,
-    options,
-    'POST',
-  );
+export const sendOtpApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/send/notice`, options, "POST");
   // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
@@ -46,12 +41,8 @@ export const sendOtpApi = async options => {
   return false;
 };
 // signUp
-export const signUpApi = async options => {
-  const res = await myFetch(
-    `${config.base_url}/user/create`,
-    options,
-    'POST',
-  );
+export const signUpApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/user/create`, options, "POST");
   // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
@@ -59,12 +50,9 @@ export const signUpApi = async options => {
   return false;
 };
 
-
-export const userApi = async options => {
-  const res = await myFetch(
-    `${config.base_url}/user/info`,
-    options,
-    'GET',
-  );
-  return res.data;
+export const userApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/user/info`, options, "GET");
+  if (res && res.code === 0) {
+    return res.data;
+  }
 };

@@ -23,20 +23,24 @@ class ProfileHeader extends React.PureComponent {
   state = {
     data: [],
   };
-  componentDidMount() {
+  componentDidUpdate() {
     const options = {};
     this.getContentData(options);
   }
   getContentData = async (options = {}) => {
     const { data } = this.state;
     console.log(localStorage.getItem("userInfo"), "00000");
-    let user_id = JSON.parse(localStorage.getItem("userInfo")).user.user_id;
-    const userRes = await userApi({ user_id: user_id });
-    localStorage.setItem("userInfo", JSON.stringify(userRes));
-    if (userRes) {
-      this.setState({
-        data: userRes,
-      });
+    const data1 = localStorage.getItem("userInfo");
+    if (data1) {
+      console.log(data1, "00");
+      // let user_id = data1 && JSON.parse(data1).user.user_id;
+      // const userRes = await userApi({ user_id: user_id });
+      // localStorage.setItem("userInfo", JSON.stringify(userRes));
+      // if (userRes) {
+      //   this.setState({
+      //     data: userRes,
+      //   });
+      // }
     }
   };
 

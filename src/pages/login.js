@@ -66,7 +66,8 @@ class Login extends React.PureComponent {
     });
     const loginRes = await loginApi(values);
     message.destroy();
-    if (loginRes) {
+    console.log(loginRes, "red");
+    if (loginRes.code === 0) {
       notification.success({
         message: "Login successful!",
         description: null,
@@ -74,12 +75,12 @@ class Login extends React.PureComponent {
       });
 
       // sessionStorage.setItem('token', loginRes.access_token);
-      sessionStorage.setItem("mobile", loginRes.mobile);
-      sessionStorage.setItem("email", loginRes.email);
-      sessionStorage.setItem("nick_name", loginRes.nick_name);
+      sessionStorage.setItem("mobile", loginRes.data.mobile);
+      sessionStorage.setItem("email", loginRes.data.email);
+      sessionStorage.setItem("nick_name", loginRes.data.nick_name);
       // sessionStorage.setItem('phone', loginRes.phone);
       // sessionStorage.setItem('type', loginRes.type);
-      sessionStorage.setItem("user_id", loginRes.user_id);
+      sessionStorage.setItem("user_id", loginRes.data.user_id);
       // const { dispatch } = this.props;
       // dispatch({
       //   type: 'global/getBankData',
@@ -87,7 +88,7 @@ class Login extends React.PureComponent {
       // this.getLoanSimpleDetailApi();
       // this.props.history.push('/dashboard');
 
-      const userRes = await userApi({ user_id: loginRes.user_id });
+      const userRes = await userApi({ user_id: loginRes.data.user_id });
       localStorage.setItem("userInfo", JSON.stringify(userRes));
       window.location.replace(`${baseUrl}dashboard`);
       // this.props.history.push("");

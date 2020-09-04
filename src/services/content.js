@@ -13,6 +13,15 @@ export const addContentApi = async (options) => {
   }
   return false;
 };
+// 推荐标签
+export const defaulttagApi = async (options) => {
+  const res = await myFetch(`${config.base_url}/default/tag`, options, "GET");
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 我的关注
 export const userFollowApi = async (options) => {
   const res = await myFetch(

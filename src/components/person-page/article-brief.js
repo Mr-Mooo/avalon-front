@@ -66,11 +66,13 @@ class ArticleBrief extends React.PureComponent {
   getUserData = async (options = {}) => {
     const { data } = this.state;
     const res = await mySetApi(options);
-    this.setState({
-      data: [...data, ...res.rows],
-      count: res.count,
-      page: options.page ? options.page : 1,
-    });
+    if (res) {
+      this.setState({
+        data: [...data, ...res.rows],
+        count: res.count,
+        page: options.page ? options.page : 1,
+      });
+    }
   };
   getData = async (options = {}) => {
     const res = await followListApi();

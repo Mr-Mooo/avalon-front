@@ -367,7 +367,11 @@ class ContentDetail extends React.Component {
                           <List.Item.Meta
                             avatar={
                               <Avatar
-                                src={defaultAvatar}
+                              src={
+                                item["avl_user.avatar"]
+                                  ? item["avl_user.avatar"]
+                                  : defaultAvatar
+                              }
                                 icon={<UserOutlined />}
                               />
                             }

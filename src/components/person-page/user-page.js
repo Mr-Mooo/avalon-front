@@ -24,7 +24,7 @@ import {
 import ImageWall from "./image-wall";
 import SearchNav from "../search";
 import { Link, withRouter } from "react-router-dom";
-
+import { userApi } from "../../services/user";
 import ArticleBrief from "./article-brief";
 
 const { Option } = Select;
@@ -32,15 +32,38 @@ const { Option } = Select;
 class PersonPage extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      follow_count: 0,
+      content_count: 0,
+      be_follow_count: 0,
+    };
   }
-
+  componentDidMount() {
+    this.getUser();
+  }
+  getUser = async () => {
+    const id = JSON.parse(localStorage.getItem("userInfo"));
+    const options = {
+      limit: 10,
+      page: 1,
+      user_id: id.user.user_id,
+    };
+    const res = await userApi(options);
+    if (res) {
+      this.setState({
+        follow_count: res.user.follow_count,
+        content_count: res.user.content_count,
+        be_follow_count: res.user.be_follow_count,
+      });
+    }
+  };
   render() {
     let isShow =
       this.props.location.state &&
       (this.props.location.state.name === "my" ||
         this.props.location.state.name === "person");
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const { follow_count, content_count, be_follow_count } = this.state;
     return (
       <div className="mainwidth">
         <Card className="margin-1 align-center">
@@ -56,18 +79,11 @@ class PersonPage extends React.PureComponent {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
               euismod bibendum laoreet.
             </p>
-            {!isShow && (
-              <div>
-                <Divider />
-                <Button type="primary" size="small" className="margin-sm">
-                  <SmileOutlined />
-                  关注
-                </Button>
-                <Button size="small" className="margin-sm">
-                  <MailOutlined /> 私信
-                </Button>
-              </div>
-            )}
+            <Row style={{ display: "flex", justifyContent: "center" }}>
+              <Col span={1}>关注 {follow_count}</Col>
+              <Col span={1}>粉丝 {be_follow_count}</Col>
+              <Col span={1}>投稿 {content_count}</Col>
+            </Row>
           </div>
         </Card>
         {/* <Col span={8}>
