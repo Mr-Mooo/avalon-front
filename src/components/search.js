@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "antd";
+import { Input, message } from "antd";
 import "antd/dist/antd.css";
 import "../index.css";
 import { contentListApi } from "../services/content";
@@ -27,6 +27,10 @@ class SearchNav extends React.PureComponent {
     });
   }
   onchange = (value) => {
+    if (!value) {
+      message.info("请输入关键词搜索");
+      return;
+    }
     emitter.emit("changeMessage", value);
     this.props.history.push("/search");
   };
