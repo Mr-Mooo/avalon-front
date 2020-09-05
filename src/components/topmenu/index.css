@@ -27,8 +27,13 @@
 .box .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu {
   margin: 0 10px !important;
+  padding: 0 !important;
 }
 .box .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu {
   margin: 0 10px !important;
+  padding: 0 !important;
+}
+.box .ant-menu-item {
+  padding: 0 !important;
 }
