@@ -1,7 +1,9 @@
 .ant-layout {
   min-height: 100%;
 }
-
+.ant-avatar > img {
+  object-fit: cover;
+}
 .login-form {
   max-width: 500px;
 }
