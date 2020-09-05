@@ -40,18 +40,26 @@ class UserPage extends React.PureComponent {
       follow_count: 0,
       content_count: 0,
       be_follow_count: 0,
+      user: {},
     };
   }
   componentDidMount() {
     this.getFolleowData();
     this.getUser();
   }
+  componentWillReceiveProps(nextprops) {
+    const { id } = nextprops.location.state;
+    if (id !== this.props.location.state.id) {
+      this.getFolleowData();
+      this.getUser();
+    }
+  }
   getUser = async () => {
     const { state } = this.props.location;
     const options = {
       limit: 10,
       page: 1,
-      user_id: state.user.user_id,
+      user_id: state.id,
     };
     const res = await userApi(options);
     if (res) {
@@ -59,6 +67,7 @@ class UserPage extends React.PureComponent {
         follow_count: res.user.follow_count,
         content_count: res.user.content_count,
         be_follow_count: res.user.be_follow_count,
+        user: res.user,
       });
     }
   };
@@ -67,7 +76,7 @@ class UserPage extends React.PureComponent {
     const options = {
       limit: 10,
       page: 1,
-      user_id: state.user.user_id,
+      user_id: state.id,
     };
     const res = await homePageApi(options);
     if (res) {
@@ -93,14 +102,14 @@ class UserPage extends React.PureComponent {
     }
   };
   render() {
-    const { state } = this.props.location;
-    const { user } = state;
     const {
       is_follow,
       follow_count,
       content_count,
       be_follow_count,
+      user,
     } = this.state;
+    console.log(user, "userid");
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
     return (
       <div className="mainwidth">

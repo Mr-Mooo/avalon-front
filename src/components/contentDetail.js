@@ -67,7 +67,15 @@ class ContentDetail extends React.Component {
   async componentDidMount() {
     this.getData();
   }
-
+  componentWillReceiveProps(nextprops) {
+    const { id } = nextprops.location.state;
+    console.log(nextprops, this.props.location, "是否变化");
+    console.log(id, this.props.location.state.id, "idid");
+    if (id !== this.props.location.state.id) {
+      console.log(id, this.props.location.state.id, "idid");
+      this.getData();
+    }
+  }
   getData = async () => {
     const { state } = this.props.location;
     const options = {
@@ -367,11 +375,11 @@ class ContentDetail extends React.Component {
                           <List.Item.Meta
                             avatar={
                               <Avatar
-                              src={
-                                item["avl_user.avatar"]
-                                  ? item["avl_user.avatar"]
-                                  : defaultAvatar
-                              }
+                                src={
+                                  item["avl_user.avatar"]
+                                    ? item["avl_user.avatar"]
+                                    : defaultAvatar
+                                }
                                 icon={<UserOutlined />}
                               />
                             }

@@ -139,7 +139,6 @@ class AddImageContent extends React.Component {
   };
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter((tag) => tag !== removedTag);
-    console.log(tags);
     this.setState({ tags });
   };
 
@@ -157,7 +156,6 @@ class AddImageContent extends React.Component {
     if (inputValue && tags.indexOf(inputValue) === -1) {
       tags = [...tags, inputValue];
     }
-    console.log(tags);
     this.setState({
       tags,
       inputVisible: false,
@@ -212,7 +210,6 @@ class AddImageContent extends React.Component {
     if (fieldsValue.tag4) {
       tag_id.push(fieldsValue.tag4);
     }
-    console.log(tag_id, "tag");
     const options = {
       subject: "测试",
       brief_introduction: fieldsValue.brief_introduction,
@@ -276,7 +273,6 @@ class AddImageContent extends React.Component {
       messageImage,
       tagData,
     } = this.state;
-    console.log(message, "message");
     const { visible } = this.props;
     const tagChild = tags.map(this.forMap);
     const uploadButton = (

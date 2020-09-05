@@ -18,9 +18,17 @@
 .box .ant-menu-item-active {
   border-bottom: none !important;
 }
-/* .box li {
-  margin: 0 15px !important;
-} */
+.box li {
+  margin: 0 10px !important;
+}
 .box {
   display: flex;
+}
+.box .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu {
+  margin: 0 10px !important;
+}
+.box .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu {
+  margin: 0 10px !important;
 }

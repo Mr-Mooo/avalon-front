@@ -9,7 +9,7 @@ import {
   RotateRightOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import { userSentimentListApi } from "../../services/content";
+import { userSentimentListApi, fansListApi } from "../../services/content";
 import { defaultAvatar } from "../../utils/util";
 class AllHotAuthors extends React.PureComponent {
   constructor(props) {
@@ -21,14 +21,30 @@ class AllHotAuthors extends React.PureComponent {
     };
   }
   async componentDidMount() {
-    const res = await userSentimentListApi();
-    if (res) {
-      this.setState({
-        data: res.data.rows,
-        count: res.data.count,
-      });
+    const { state } = this.props.location;
+    if (state && state.id) {
+      this.fansList();
+    } else {
+      const res = await userSentimentListApi();
+      if (res) {
+        console.log(res, "000000");
+        this.setState({
+          data: res.data.rows,
+          count: res.data.count,
+        });
+      }
     }
   }
+  fansList = async () => {
+    const { state } = this.props.location;
+    const res = await fansListApi();
+    if (res) {
+      this.setState({
+        data: res.data.list.rows,
+        count: res.data.list.count,
+      });
+    }
+  };
   onchange = async (page, pageSize) => {
     const options = {
       page: page,

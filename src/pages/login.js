@@ -16,6 +16,7 @@ import "./login.css";
 import { BrowserRouter as Router, withRouter, Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import { loginApi, userApi } from "../services/user";
+import { userMessageApi } from "../services/content";
 import { baseUrl } from "../utils/util.js";
 import ForgotPassword from "../components/forgot-password";
 let i = 1;
@@ -88,8 +89,8 @@ class Login extends React.PureComponent {
       // this.getLoanSimpleDetailApi();
       // this.props.history.push('/dashboard');
 
-      const userRes = await userApi({ user_id: loginRes.data.user_id });
-      localStorage.setItem("userInfo", JSON.stringify(userRes));
+      const userRes = await userMessageApi();
+      localStorage.setItem("userInfo", JSON.stringify(userRes.data));
       window.location.replace(`${baseUrl}dashboard`);
       // this.props.history.push("");
     }

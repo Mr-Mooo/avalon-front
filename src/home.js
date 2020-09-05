@@ -11,6 +11,7 @@ import SearchNav from "./components/search";
 
 import MainContent from "./components/main-content";
 import AllHotAuthors from "./components/all-hot-authors/all-hot-authors";
+import AllFAnAuthors from "./components/all-fan-authors/all-hot-authors";
 import AllTopTopics from "./components/all-top-topics/all-top-topics";
 import Login from "./pages/login";
 import Profile from "./components/profile-center/profile";
@@ -86,6 +87,7 @@ export default function Home() {
           <Route path="/dashboard" component={MainContent} exact />
           <Route path="/search" component={MainContent} exact />
           <Route path="/all-hot-authors" component={AllHotAuthors} exact />
+          <Route path="/all-fan-authors" component={AllFAnAuthors} exact />
           <Route path="/all-top-topics" component={AllTopTopics} exact />
           <Route path="/profile" component={Profile} exact />
           <Route path="/sign-up" component={SignUp} exact />

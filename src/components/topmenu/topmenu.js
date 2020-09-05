@@ -1,6 +1,7 @@
 import React from "react";
 import { Menu, message, Button } from "antd";
 import ProfileHeader from "../profile-popover";
+import ProfileMessage from "../profile-message";
 // import TaskHeader from "../taskheader";
 import AddNewArticle from "../add-article";
 // import SearchNav from "../search";
@@ -37,7 +38,9 @@ export default function TopMenu() {
       <Menu.Item>
         <ProfileHeader />
       </Menu.Item>
-
+      <Menu.Item>
+        <ProfileMessage />
+      </Menu.Item>
       <Menu.Item>
         <AddNewArticle />
       </Menu.Item>

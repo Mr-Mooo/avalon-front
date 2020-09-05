@@ -477,6 +477,7 @@ class Author extends React.PureComponent {
       });
     const { state } = this.props.location;
     const { user } = JSON.parse(localStorage.getItem("userInfo"));
+    console.log(localStorage.getItem("userInfo"), "sssss");
     return (
       <div style={{ width: "100%" }}>
         {!(id === contentData.content_id) && (
