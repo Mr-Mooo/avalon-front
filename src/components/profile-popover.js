@@ -62,14 +62,13 @@ class ProfileHeader extends React.PureComponent {
 
   onClick = async () => {
     // this.props.history.push('/');
-    const logoutRes = await logoutApi({});
-    if (logoutRes) {
-      notification.success({
-        message: "登出成功",
-        description: null,
-        duration: 2,
-      });
-    }
+    sessionStorage.setItem("token", "");
+    notification.success({
+      message: "登出成功",
+      description: null,
+      duration: 2,
+    });
+
     window.location.replace(baseUrl);
   };
   readFans = async () => {

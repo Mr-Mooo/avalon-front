@@ -12,6 +12,10 @@ import {
   notification,
   message,
   Form,
+  Button,
+  Checkbox,
+  Row,
+  Col,
 } from "antd";
 import { TweenOneGroup } from "rc-tween-one";
 import { PlusOutlined } from "@ant-design/icons";
@@ -55,6 +59,7 @@ class AddImageContent extends React.Component {
       fvisible: false,
       messageImage: "",
       tagData: [],
+      checkedValues: [],
     };
   }
   componentDidMount() {
@@ -183,7 +188,14 @@ class AddImageContent extends React.Component {
     this.props.onCancel();
   };
   handleSubmit = async () => {
-    const { imgUrl, tags, message, messageImage, fileList } = this.state;
+    const {
+      imgUrl,
+      tags,
+      message,
+      messageImage,
+      fileList,
+      checkedValues,
+    } = this.state;
 
     let fieldsValue = "";
     try {
@@ -207,15 +219,13 @@ class AddImageContent extends React.Component {
     if (fieldsValue.tag3) {
       tag_id.push(fieldsValue.tag3);
     }
-    if (fieldsValue.tag4) {
-      tag_id.push(fieldsValue.tag4);
-    }
+    console.log(checkedValues, "checkedValues");
     const options = {
       subject: "测试",
       brief_introduction: fieldsValue.brief_introduction,
       type: "pictrue",
       attachment: imgUrl,
-      tag: [...tag_id, ...tags],
+      tag: [...tag_id, ...checkedValues, ...tags],
       content: message,
     };
     console.log(imgUrl, message, fileList, "123");
@@ -240,6 +250,11 @@ class AddImageContent extends React.Component {
         window.location.reload();
       }
     }
+  };
+  getcheckValue = (checkedValues) => {
+    this.setState({
+      checkedValues: checkedValues,
+    });
   };
   forMap = (tag) => {
     const tagElem = (
@@ -403,7 +418,22 @@ class AddImageContent extends React.Component {
             </FormItem>
             <h4>推荐标签</h4>
             <FormItem name="tag4">
-              {messageImage ? (
+              <Checkbox.Group
+                style={{ width: "100%" }}
+                onChange={(checkedValues) => this.getcheckValue(checkedValues)}
+              >
+                <Row>
+                  {tagData.map((item) => {
+                    return (
+                      <Col span={8} key={item.tag_id}>
+                        <Checkbox value={item.content}>{item.content}</Checkbox>
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </Checkbox.Group>
+
+              {/* {messageImage ? (
                 <Select style={{ width: 120 }} disabled>
                   <Option value="BL">BL</Option>
                   <Option value="BG">BG</Option>
@@ -420,7 +450,7 @@ class AddImageContent extends React.Component {
                     );
                   })}
                 </Select>
-              )}
+              )} */}
             </FormItem>
           </Form>
           {/* <PicturesWall /> */}

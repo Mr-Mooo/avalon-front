@@ -14,7 +14,7 @@ import {
   Tabs,
   List,
 } from "antd";
-import { UserOutlined, CommentOutlined } from "@ant-design/icons";
+import { UserOutlined, MailOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "../index.css";
 import { logoutApi, userApi } from "../services/user";
@@ -49,13 +49,14 @@ class ProfileMessage extends React.PureComponent {
       this.getuser();
     }, 1200000);
     this.noticeMessage();
-    this.noticeMessageList();
+    // this.noticeMessageList();
   }
   noticeMessage = async () => {
     const res = await noticeApi();
     if (res) {
       this.setState({
         message: res.data.count,
+        dataList: res.data.rows,
       });
     }
   };
@@ -372,7 +373,13 @@ class ProfileMessage extends React.PureComponent {
                 verticalAlign: "center",
               }}
             >
-              <CommentOutlined style={{ fontSize: "36px", color: "#1890ff" }} />
+              <MailOutlined
+                style={{
+                  fontSize: "36px",
+                  color: "#1890ff",
+                  verticalAlign: "baseline",
+                }}
+              />
             </div>
           </Badge>
         </div>

@@ -11,6 +11,8 @@ import {
   message,
   notification,
   Tag,
+  Row,
+  Col,
 } from "antd";
 import FormItem from "antd/lib/form/FormItem";
 import { addContentApi, defaulttagApi } from "../../services/content";
@@ -35,6 +37,7 @@ class AddArticleContent extends PureComponent {
       inputVisible: false,
       inputValue: "",
       tagData: [],
+      checkedValues: [],
     };
   }
   componentDidMount() {
@@ -115,6 +118,7 @@ class AddArticleContent extends PureComponent {
   //   console.log(`checked = ${e.target.checked}`);
   // }
   handleSubmit = async (e) => {
+    const { checkedValues } = this.state;
     let fieldsValue = "";
     try {
       fieldsValue = await this.formRef.current.validateFields();
@@ -137,16 +141,13 @@ class AddArticleContent extends PureComponent {
     if (fieldsValue.tag3) {
       tag_id.push(fieldsValue.tag3);
     }
-    if (fieldsValue.tag4) {
-      tag_id.push(fieldsValue.tag4);
-    }
     const options = {
       subject: fieldsValue.subject,
       content: fieldsValue.content,
       brief_introduction: fieldsValue.brief_introduction,
       pid: 0,
       type: "message",
-      tag: [...tag_id, ...tags],
+      tag: [...tag_id, ...checkedValues, ...tags],
     };
     const addRes = await addContentApi(options);
     message.destroy();
@@ -165,7 +166,11 @@ class AddArticleContent extends PureComponent {
       window.location.reload();
     }
   };
-
+  getcheckValue = (checkedValues) => {
+    this.setState({
+      checkedValues: checkedValues,
+    });
+  };
   onCancel = () => {
     this.formRef.current.resetFields();
     this.setState({
@@ -261,15 +266,20 @@ class AddArticleContent extends PureComponent {
           </FormItem>
           <h4>推荐标签</h4>
           <FormItem name="tag4">
-            <Select style={{ width: 120 }}>
-              {tagData.map((item) => {
-                return (
-                  <Option value={item.content} key={item.tag_id}>
-                    {item.content}
-                  </Option>
-                );
-              })}
-            </Select>
+            <Checkbox.Group
+              style={{ width: "100%" }}
+              onChange={(checkedValues) => this.getcheckValue(checkedValues)}
+            >
+              <Row>
+                {tagData.map((item) => {
+                  return (
+                    <Col span={8} key={item.tag_id}>
+                      <Checkbox value={item.content}>{item.content}</Checkbox>
+                    </Col>
+                  );
+                })}
+              </Row>
+            </Checkbox.Group>
           </FormItem>
           <h4>添加标签</h4>
           <div>
