@@ -219,7 +219,6 @@ class AddImageContent extends React.Component {
     if (fieldsValue.tag3) {
       tag_id.push(fieldsValue.tag3);
     }
-    console.log(checkedValues, "checkedValues");
     const options = {
       subject: "测试",
       brief_introduction: fieldsValue.brief_introduction,
@@ -228,7 +227,6 @@ class AddImageContent extends React.Component {
       tag: [...tag_id, ...checkedValues, ...tags],
       content: message,
     };
-    console.log(imgUrl, message, fileList, "123");
     if (messageImage) {
     } else {
       const addRes = await addContentApi(options);

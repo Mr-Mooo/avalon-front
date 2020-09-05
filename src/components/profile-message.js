@@ -45,10 +45,12 @@ class ProfileMessage extends React.PureComponent {
     const options = {};
     this.getContentData(options);
     this.getuser();
+    this.noticeMessage();
     setInterval(() => {
       this.getuser();
+      this.noticeMessage();
     }, 1200000);
-    this.noticeMessage();
+
     // this.noticeMessageList();
   }
   noticeMessage = async () => {
@@ -82,7 +84,6 @@ class ProfileMessage extends React.PureComponent {
       });
     }
   };
-  getMore = async () => {};
   getuser = async () => {
     const res = await userMessageApi();
     if (res) {
