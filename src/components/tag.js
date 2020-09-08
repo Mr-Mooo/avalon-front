@@ -21,13 +21,32 @@ class Tag extends React.PureComponent {
       page: 1,
     };
   }
+  async componentWillReceiveProps(nextprops) {
+    console.log(nextprops, "nextprops");
+    const { state } = this.props.location;
+    if (nextprops.location.state.tag !== state.tag) {
+      const options = {
+        tag_content: nextprops.location.state.tag,
+        page: 1,
+        limit: 10,
+      };
+      const res = await tagListApi(options);
+      if (res) {
+        this.setState({
+          data: res.list.rows,
+        });
+        document.documentElement.scrollTop = 0;
+      }
+    }
+  }
   componentDidMount() {
     const { state } = this.props.location;
     const options = {
       tag_content: state.tag,
       page: 1,
-      limit: 30,
+      limit: 10,
     };
+    console.log(state, "state");
     this.getData(options);
     window.addEventListener("scroll", this.scrollHandler);
   }

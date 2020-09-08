@@ -237,7 +237,7 @@ class AvatarUpload extends React.Component {
     const { user } = JSON.parse(localStorage.getItem("userInfo"));
     console.log(localStorage.getItem("userInfo"), "000000");
     const uploadButton = (
-      <div>
+      <div style={{ marginLeft: "6px" }}>
         {/* <PlusOutlined />
         <div className="ant-upload-text">Upload</div> */}
         <Button>上传头像</Button>

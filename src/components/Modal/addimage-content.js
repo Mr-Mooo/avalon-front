@@ -114,6 +114,16 @@ class AddImageContent extends React.Component {
       return suffix;
     }
   };
+  onRemove = (file) => {
+    const { fileList, imgUrl } = this.state;
+    fileList.forEach((item, index) => {
+      if (item.name === file.name) {
+        this.setState({
+          imgUrl: imgUrl.splice(index, 1),
+        });
+      }
+    });
+  };
   beforeUpload = async (file, fileList) => {
     const { imgUrl } = this.state;
     const query = {
@@ -225,7 +235,7 @@ class AddImageContent extends React.Component {
       type: "pictrue",
       attachment: imgUrl,
       tag: [...tag_id, ...checkedValues, ...tags],
-      content: message,
+      content: message ? message : "分享图片",
     };
     if (messageImage) {
     } else {
@@ -318,7 +328,7 @@ class AddImageContent extends React.Component {
             {" "}
             <FormItem
               name="subject"
-              rules={[{ required: true, message: "内容不能为空" }]}
+              rules={[{ required: false, message: "内容不能为空" }]}
               initialValue={messageImage && messageImage.content}
             >
               <TextArea rows={4} onChange={(e) => this.getMessage(e)} />
@@ -351,6 +361,7 @@ class AddImageContent extends React.Component {
                   onPreview={this.handlePreview}
                   beforeUpload={this.beforeUpload}
                   onChange={this.handleChange}
+                  onRemove={this.onRemove}
                 >
                   {fileList.length >= 9 ? null : uploadButton}
                 </Upload>
@@ -368,7 +379,7 @@ class AddImageContent extends React.Component {
                 </Modal>
               </div>
             </div>
-            <h4>内容限制</h4>
+            <h4>内容限制（*仅用于后台分类，不用于前端展示）</h4>
             <FormItem name="tag1" initialValue="全年龄">
               {messageImage ? (
                 <Select style={{ width: 120 }} disabled>
@@ -382,21 +393,7 @@ class AddImageContent extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <h4>创作属性</h4>
-            <FormItem name="tag2" initialValue="原创">
-              {messageImage ? (
-                <Select style={{ width: 120 }} disabled>
-                  <Option value="原创">原创</Option>
-                  <Option value="二创">二创</Option>
-                </Select>
-              ) : (
-                <Select style={{ width: 120 }}>
-                  <Option value="原创">原创</Option>
-                  <Option value="二创">二创</Option>
-                </Select>
-              )}
-            </FormItem>
-            <h4>取向类型</h4>
+            <h4>取向类型（*仅用于后台分类，不用于前端展示）</h4>
             <FormItem name="tag3" initialValue="无取向">
               {messageImage ? (
                 <Select style={{ width: 120 }} disabled>
@@ -411,6 +408,20 @@ class AddImageContent extends React.Component {
                   <Option value="BG">BG</Option>
                   <Option value="GL">GL</Option>
                   <Option value="无取向">无取向</Option>
+                </Select>
+              )}
+            </FormItem>
+            <h4>创作属性</h4>
+            <FormItem name="tag2" initialValue="原创">
+              {messageImage ? (
+                <Select style={{ width: 120 }} disabled>
+                  <Option value="原创">原创</Option>
+                  <Option value="二创">二创</Option>
+                </Select>
+              ) : (
+                <Select style={{ width: 120 }}>
+                  <Option value="原创">原创</Option>
+                  <Option value="二创">二创</Option>
                 </Select>
               )}
             </FormItem>

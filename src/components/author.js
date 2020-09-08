@@ -475,6 +475,7 @@ class Author extends React.PureComponent {
           alt: "图片",
         };
       });
+    const dataContent = contentData.content.replace(/\n/g, "</br>");
     const { state } = this.props.location;
     const { user } = JSON.parse(localStorage.getItem("userInfo"));
     console.log(localStorage.getItem("userInfo"), "sssss");
@@ -651,14 +652,18 @@ class Author extends React.PureComponent {
                     </Dropdown>
                   )}
                 </Row>
-
-                <div
-                  className={
-                    maskId === contentData.content_id ? "" : "showThree"
-                  }
-                >
-                  {contentData && contentData.content}
-                </div>
+                {dataContent && (
+                  <div
+                    className={
+                      maskId === contentData.content_id ? "" : "showThree"
+                    }
+                    dangerouslySetInnerHTML={{
+                      __html: dataContent,
+                    }}
+                  >
+                    {/* {contentData && contentData.content} */}
+                  </div>
+                )}
                 {!(maskId === contentData.content_id) &&
                   contentData &&
                   contentData.content.length > 130 && (

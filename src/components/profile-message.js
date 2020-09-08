@@ -23,6 +23,8 @@ import {
   userMessageApi,
   noticeApi,
   internalnoticeApi,
+  noticelistApi,
+  readmessageApi,
 } from "../services/content";
 import { Link, withRouter } from "react-router-dom";
 import { defaultAvatar, baseUrl } from "../utils/util";
@@ -46,6 +48,7 @@ class ProfileMessage extends React.PureComponent {
     this.getContentData(options);
     this.getuser();
     this.noticeMessage();
+    this.noticeMessageList();
     setInterval(() => {
       this.getuser();
       this.noticeMessage();
@@ -75,10 +78,9 @@ class ProfileMessage extends React.PureComponent {
           ? "super_like"
           : "recommend",
     };
-    const res = await noticeApi(options);
+    const res = await noticelistApi(options);
     if (res) {
       this.setState({
-        message: res.data.count,
         dataList: res.data.rows,
         count: res.data.count,
       });
@@ -152,15 +154,20 @@ class ProfileMessage extends React.PureComponent {
           ? "super_like"
           : "recommend",
     };
-    const res = await noticeApi(options);
+    const res = await noticelistApi(options);
     if (res) {
       this.setState({
-        message: res.data.count,
         dataList: [...dataList, ...res.data.rows],
         count: res.data.count,
       });
     }
     return;
+  };
+  getupdateMessage = async (id) => {
+    const options = {
+      id: id,
+    };
+    const res = await readmessageApi(options);
   };
   render() {
     const { data, message, dataList } = this.state;
@@ -194,6 +201,7 @@ class ProfileMessage extends React.PureComponent {
                               // user: contentData.avl_user,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           {item.user_name}
                         </Link>
@@ -205,6 +213,7 @@ class ProfileMessage extends React.PureComponent {
                               id: item.content_id,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           查看详情
                         </Link>
@@ -234,6 +243,7 @@ class ProfileMessage extends React.PureComponent {
                               // user: contentData.avl_user,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           {item.user_name}
                         </Link>
@@ -245,6 +255,7 @@ class ProfileMessage extends React.PureComponent {
                               id: item.content_id,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           查看详情
                         </Link>
@@ -274,6 +285,7 @@ class ProfileMessage extends React.PureComponent {
                               // user: contentData.avl_user,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           {item.user_name}
                         </Link>
@@ -285,6 +297,7 @@ class ProfileMessage extends React.PureComponent {
                               id: item.content_id,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           查看详情
                         </Link>
@@ -314,6 +327,7 @@ class ProfileMessage extends React.PureComponent {
                               // user: contentData.avl_user,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           {item.user_name}
                         </Link>
@@ -325,6 +339,7 @@ class ProfileMessage extends React.PureComponent {
                               id: item.content_id,
                             },
                           }}
+                          onClick={() => this.getupdateMessage(item.id)}
                         >
                           查看详情
                         </Link>

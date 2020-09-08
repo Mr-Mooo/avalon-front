@@ -41,7 +41,7 @@ function dashboard() {
 }
 export default function Home() {
   const pathName = window.location.pathname;
-  const bottom = 5;
+  const bottom = 0;
   return (
     <Router>
       <Layout>
@@ -57,7 +57,7 @@ export default function Home() {
                         style={{ color: "#1890ff", borderRadius: "4px" }}
                         onClick={() => dashboard()}
                       >
-                        主页
+                        首页
                       </Button>
                     </Link>
                     <Link

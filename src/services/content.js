@@ -26,6 +26,19 @@ export const internalnoticeApi = async (options) => {
   }
   return false;
 };
+//已读消息
+export const readmessageApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/user/internal/notice`,
+    options,
+    "POST"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
 // 粉丝列表 /user/fans/list
 export const fansListApi = async (options) => {
   const res = await myFetch(
@@ -67,6 +80,19 @@ export const userMessageApi = async (options) => {
 };
 // 未读消息
 export const noticeApi = async (options) => {
+  const res = await myFetch(
+    `${config.base_url}/user/internal/notice/count`,
+    options,
+    "GET"
+  );
+  // console.log(res, 'res');
+  if (res && res.code === 0) {
+    return res;
+  }
+  return false;
+};
+// 未读消息列表
+export const noticelistApi = async (options) => {
   const res = await myFetch(
     `${config.base_url}/user/internal/notice/list`,
     options,

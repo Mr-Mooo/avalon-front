@@ -225,8 +225,7 @@ class AddArticleContent extends PureComponent {
           >
             <TextArea rows={8} />
           </FormItem>
-          <h4>内容限制</h4>
-
+          <h4>内容限制（*仅用于后台分类，不用于前端展示）</h4>
           <FormItem name="tag1" initialValue="全年龄">
             <Select
               defaultValue="全年龄"
@@ -237,21 +236,7 @@ class AddArticleContent extends PureComponent {
               <Option value="限制内容">限制内容</Option>
             </Select>
           </FormItem>
-
-          <h4>创作属性</h4>
-          <FormItem name="tag2" initialValue="原创">
-            <Select
-              defaultValue="原创"
-              style={{ width: 120 }}
-              onChange={this.handleChange}
-            >
-              <Option value="原创">原创</Option>
-              <Option value="二创">二创</Option>
-            </Select>
-          </FormItem>
-
-          <h4>取向类型</h4>
-
+          <h4>取向类型 （*仅用于后台分类，不用于前端展示）</h4>
           <FormItem name="tag3" initialValue="无取向">
             <Select
               defaultValue="无取向"
@@ -262,6 +247,17 @@ class AddArticleContent extends PureComponent {
               <Option value="BG">BG</Option>
               <Option value="GL">GL</Option>
               <Option value="无取向">无取向</Option>
+            </Select>
+          </FormItem>
+          <h4>创作属性</h4>
+          <FormItem name="tag2" initialValue="原创">
+            <Select
+              defaultValue="原创"
+              style={{ width: 120 }}
+              onChange={this.handleChange}
+            >
+              <Option value="原创">原创</Option>
+              <Option value="二创">二创</Option>
             </Select>
           </FormItem>
           <h4>推荐标签</h4>
