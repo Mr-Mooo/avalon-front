@@ -694,23 +694,33 @@ class Author extends React.PureComponent {
                       收起更多
                     </div>
                   )}
-                {contentData &&
-                  contentData.avl_attachments &&
-                  contentData.avl_attachments.map((val, index) => {
-                    return (
-                      <Zmage
-                        className="margin-author-img"
-                        src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
-                        set={srcData}
-                        onClick={() => this.getIndex(index)}
-                        style={{ width: 100, height: 100 }}
-                        defaultPage={imgIndex}
-                        key={val.document_id}
-                        hideOnScroll={false}
-                        backdrop="rgba(0,0,0,0.5)"
-                      />
-                    );
-                  })}
+                <div
+                  className={
+                    contentData.avl_attachments.length === 4
+                      ? "imgListFour"
+                      : "imgList"
+                  }
+                >
+                  {contentData &&
+                    contentData.avl_attachments &&
+                    contentData.avl_attachments.map((val, index) => {
+                      return (
+                        <Zmage
+                          className="margin-author-img"
+                          src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
+                          set={srcData}
+                          onClick={() => this.getIndex(index)}
+                          style={{ width: 100, height: 100 }}
+                          defaultPage={imgIndex}
+                          key={val.document_id}
+                          hideOnScroll={false}
+                          edge={50}
+                          preset="desktop"
+                          backdrop="rgba(0,0,0,0.5)"
+                        />
+                      );
+                    })}
+                </div>
                 <br />
                 <div>
                   {contentData.tag &&

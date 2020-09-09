@@ -105,17 +105,21 @@ class ProfileHeader extends React.PureComponent {
               </Col>
 
               <Col span={8} style={{ position: "relative" }}>
-                <Link
-                  to={{
-                    pathname: "/all-fan-authors",
-                    state: { id: data.user && data.user.user_id },
-                  }}
-                >
-                  <div onClick={() => this.readFans()}>
-                    <h3>粉丝 {data.user && data.user.be_follow_count}</h3>
-                    {fan > 0 && <Badge count={fan} offset={[30, -60]} />}
-                  </div>
-                </Link>
+                {data.user && data.user.be_follow_count > 0 ? (
+                  <Link
+                    to={{
+                      pathname: "/all-fan-authors",
+                      state: { id: data.user && data.user.user_id },
+                    }}
+                  >
+                    <div onClick={() => this.readFans()}>
+                      <h3>粉丝 {data.user && data.user.be_follow_count}</h3>
+                      {fan > 0 && <Badge count={fan} offset={[30, -60]} />}
+                    </div>
+                  </Link>
+                ) : (
+                  <h3>粉丝 {data.user && data.user.be_follow_count}</h3>
+                )}
               </Col>
               <Col span={8}>
                 <h3>投稿 {data.user && data.user.content_count}</h3>

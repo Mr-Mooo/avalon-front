@@ -59,7 +59,7 @@ class AddImageContent extends React.Component {
       fvisible: false,
       messageImage: "",
       tagData: [],
-      checkedValues: [],
+      checkedValue: [],
     };
   }
   componentDidMount() {
@@ -117,9 +117,10 @@ class AddImageContent extends React.Component {
   onRemove = (file) => {
     const { fileList, imgUrl } = this.state;
     fileList.forEach((item, index) => {
-      if (item.name === file.name) {
+      if (item.uid === file.uid) {
+        imgUrl.splice(index, 1);
         this.setState({
-          imgUrl: imgUrl.splice(index, 1),
+          imgUrl: imgUrl,
         });
       }
     });
@@ -204,7 +205,7 @@ class AddImageContent extends React.Component {
       message,
       messageImage,
       fileList,
-      checkedValues,
+      checkedValue,
     } = this.state;
 
     let fieldsValue = "";
@@ -234,7 +235,7 @@ class AddImageContent extends React.Component {
       brief_introduction: fieldsValue.brief_introduction,
       type: "pictrue",
       attachment: imgUrl,
-      tag: [...tag_id, ...checkedValues, ...tags],
+      tag: [...tag_id, ...tags],
       content: message ? message : "分享图片",
     };
     if (messageImage) {
@@ -260,8 +261,20 @@ class AddImageContent extends React.Component {
     }
   };
   getcheckValue = (checkedValues) => {
+    const { tags, checkedValue } = this.state;
+    if (tags.indexOf(checkedValues) > -1) {
+      return;
+    }
     this.setState({
-      checkedValues: checkedValues,
+      checkedValue: [...checkedValue, checkedValues],
+      tags: [...tags, checkedValues],
+    });
+  };
+  handleClose = (e) => {
+    const tags = this.state.tags.filter((tag) => tag !== e);
+    this.setState({
+      tags: tags,
+      checkedValue: tags,
     });
   };
   forMap = (tag) => {
@@ -295,6 +308,7 @@ class AddImageContent extends React.Component {
       needOption,
       messageImage,
       tagData,
+      checkedValue,
     } = this.state;
     const { visible } = this.props;
     const tagChild = tags.map(this.forMap);
@@ -427,20 +441,27 @@ class AddImageContent extends React.Component {
             </FormItem>
             <h4>推荐标签</h4>
             <FormItem name="tag4">
-              <Checkbox.Group
+              {/* <Checkbox.Group
                 style={{ width: "100%" }}
-                onChange={(checkedValues) => this.getcheckValue(checkedValues)}
-              >
-                <Row>
-                  {tagData.map((item) => {
-                    return (
-                      <Col span={8} key={item.tag_id}>
-                        <Checkbox value={item.content}>{item.content}</Checkbox>
-                      </Col>
-                    );
-                  })}
-                </Row>
-              </Checkbox.Group>
+                value={checkedValue}
+                
+              > */}
+              <Row>
+                {tagData.map((item) => {
+                  return (
+                    <Col span={8} key={item.tag_id}>
+                      <Checkbox
+                        value={item.content}
+                        checked={checkedValue.indexOf(item.content) > -1}
+                        onChange={() => this.getcheckValue(item.content)}
+                      >
+                        {item.content}
+                      </Checkbox>
+                    </Col>
+                  );
+                })}
+              </Row>
+              {/* </Checkbox.Group> */}
 
               {/* {messageImage ? (
                 <Select style={{ width: 120 }} disabled>
@@ -496,7 +517,11 @@ class AddImageContent extends React.Component {
                 />
               )}
               {!inputVisible && (
-                <Tag onClick={this.showInput} className="site-tag-plus">
+                <Tag
+                  onClick={this.showInput}
+                  onClose={(e) => this.handleClose(e)}
+                  className="site-tag-plus"
+                >
                   <PlusOutlined /> 添加标签
                 </Tag>
               )}

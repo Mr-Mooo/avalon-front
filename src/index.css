@@ -80,7 +80,7 @@ div#root {
 }
 
 .margin-author-img {
-  margin-right: 5px;
+  margin-right: 15px;
   margin-top: 10px;
   margin-bottom: 10px;
   object-fit: cover;
@@ -294,6 +294,12 @@ div#root {
   cursor: pointer;
   color: #1890ff;
 }
+.imgList {
+  width: 400px;
+}
+.imgListFour {
+  width: 300px;
+}
 .detail {
   max-height: 300px;
   overflow-y: scroll;
@@ -313,4 +319,7 @@ div#root {
   width: 100%;
   height: 100%;
   margin: auto;
+}
+#zmageControl {
+  background-color: #fff !important;
 }

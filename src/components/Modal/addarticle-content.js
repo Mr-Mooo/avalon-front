@@ -37,7 +37,7 @@ class AddArticleContent extends PureComponent {
       inputVisible: false,
       inputValue: "",
       tagData: [],
-      checkedValues: [],
+      checkedValue: [],
     };
   }
   componentDidMount() {
@@ -147,7 +147,7 @@ class AddArticleContent extends PureComponent {
       brief_introduction: fieldsValue.brief_introduction,
       pid: 0,
       type: "message",
-      tag: [...tag_id, ...checkedValues, ...tags],
+      tag: [...tag_id, ...tags],
     };
     const addRes = await addContentApi(options);
     message.destroy();
@@ -167,8 +167,20 @@ class AddArticleContent extends PureComponent {
     }
   };
   getcheckValue = (checkedValues) => {
+    const { tags, checkedValue } = this.state;
+    if (tags.indexOf(checkedValues) > -1) {
+      return;
+    }
     this.setState({
-      checkedValues: checkedValues,
+      checkedValue: [...checkedValue, checkedValues],
+      tags: [...tags, checkedValues],
+    });
+  };
+  handleClose = (e) => {
+    const tags = this.state.tags.filter((tag) => tag !== e);
+    this.setState({
+      tags: tags,
+      checkedValue: tags,
     });
   };
   onCancel = () => {
@@ -182,7 +194,13 @@ class AddArticleContent extends PureComponent {
   render() {
     const { visible, type, onOk, onCancel, message, options } = this.props;
 
-    const { tags, inputVisible, inputValue, tagData } = this.state;
+    const {
+      tags,
+      inputVisible,
+      inputValue,
+      tagData,
+      checkedValue,
+    } = this.state;
     const tagChild = tags.map(this.forMap);
     return (
       <Modal
@@ -262,20 +280,26 @@ class AddArticleContent extends PureComponent {
           </FormItem>
           <h4>推荐标签</h4>
           <FormItem name="tag4">
-            <Checkbox.Group
+            {/* <Checkbox.Group
               style={{ width: "100%" }}
               onChange={(checkedValues) => this.getcheckValue(checkedValues)}
-            >
-              <Row>
-                {tagData.map((item) => {
-                  return (
-                    <Col span={8} key={item.tag_id}>
-                      <Checkbox value={item.content}>{item.content}</Checkbox>
-                    </Col>
-                  );
-                })}
-              </Row>
-            </Checkbox.Group>
+            > */}
+            <Row>
+              {tagData.map((item) => {
+                return (
+                  <Col span={8} key={item.tag_id}>
+                    <Checkbox
+                      checked={checkedValue.indexOf(item.content) > -1}
+                      onChange={() => this.getcheckValue(item.content)}
+                      value={item.content}
+                    >
+                      {item.content}
+                    </Checkbox>
+                  </Col>
+                );
+              })}
+            </Row>
+            {/* </Checkbox.Group> */}
           </FormItem>
           <h4>添加标签</h4>
           <div>
@@ -309,7 +333,11 @@ class AddArticleContent extends PureComponent {
               />
             )}
             {!inputVisible && (
-              <Tag onClick={this.showInput} className="site-tag-plus">
+              <Tag
+                onClick={this.showInput}
+                onClose={(e) => this.handleClose(e)}
+                className="site-tag-plus"
+              >
                 <PlusOutlined /> 添加标签
               </Tag>
             )}
