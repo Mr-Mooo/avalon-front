@@ -109,6 +109,9 @@ class ContentDetail extends React.Component {
   };
   // 评论
   getFSearch = async (value) => {
+    if (!value) {
+      return;
+    }
     const { id } = this.state;
     const options = {
       content: value,
@@ -125,7 +128,9 @@ class ContentDetail extends React.Component {
   };
   // 回复评论
   getSearch = async (value, item) => {
-    console.log(value, "123");
+    if (!value) {
+      return;
+    }
     const { contentId, replyId, userId, isShowReplay } = this.state;
     const options = {
       content: value,

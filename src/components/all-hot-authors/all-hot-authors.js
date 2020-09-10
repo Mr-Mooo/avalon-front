@@ -1,6 +1,15 @@
 import React from "react";
 
-import { Col, Row, Avatar, Button, Divider, Card, Pagination } from "antd";
+import {
+  Col,
+  Row,
+  Avatar,
+  Button,
+  Divider,
+  Card,
+  Pagination,
+  message,
+} from "antd";
 import "antd/dist/antd.css";
 import { Link, withRouter } from "react-router-dom";
 import {
@@ -9,7 +18,11 @@ import {
   RotateRightOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import { userSentimentListApi, fansListApi } from "../../services/content";
+import {
+  userSentimentListApi,
+  fansListApi,
+  guanzhu,
+} from "../../services/content";
 import { defaultAvatar } from "../../utils/util";
 class AllHotAuthors extends React.PureComponent {
   constructor(props) {
@@ -44,6 +57,15 @@ class AllHotAuthors extends React.PureComponent {
       });
     }
   };
+  refush = async () => {
+    const res = await userSentimentListApi();
+    if (res) {
+      this.setState({
+        data: res.data.rows,
+        count: res.data.count,
+      });
+    }
+  };
   onchange = async (page, pageSize) => {
     const options = {
       page: page,
@@ -57,8 +79,25 @@ class AllHotAuthors extends React.PureComponent {
       });
     }
   };
+  gocollect = async (id, is_recommend) => {
+    let options = {
+      follow_id: id,
+      is_delete: is_recommend ? 1 : 0,
+    };
+    const addRes = await guanzhu(options);
+    if (addRes && addRes.success) {
+      if (is_recommend) {
+        message.success("取消关注");
+        this.refush();
+      } else {
+        message.success("关注成功");
+        this.refush();
+      }
+    }
+  };
   render() {
     const { data, count } = this.state;
+    const { user } = JSON.parse(localStorage.getItem("userInfo"));
     return (
       <div className="mainwidth">
         {data.map((item, index) => {
@@ -78,9 +117,22 @@ class AllHotAuthors extends React.PureComponent {
                   />
                   <br /> {item.avl_user.nick_name} <br />
                   <br />
-                  <Button type="primary" className="gap" size="small">
-                    <SmileOutlined /> 关注
-                  </Button>
+                  {user.user_id !== item.avl_user.user_id && (
+                    <Button
+                      type="primary"
+                      className="gap"
+                      size="small"
+                      onClick={() =>
+                        this.gocollect(
+                          item.avl_user.user_id,
+                          item.avl_user.is_follow
+                        )
+                      }
+                    >
+                      <SmileOutlined />
+                      {item.avl_user.is_follow ? "已关注" : "关注"}
+                    </Button>
+                  )}
                   <Link
                     to={{
                       pathname: "/user-home",

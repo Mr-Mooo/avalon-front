@@ -10,6 +10,7 @@ const { Search } = Input;
 class SearchNav extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.eventEmitter = this.eventEmitter.bind(this);
     this.state = {
       value: "",
     };
@@ -21,12 +22,18 @@ class SearchNav extends React.PureComponent {
       });
     });
   }
+  // componentWillUnmount() {
+  //   // 卸载时移除事件
+  //   emitter.removeListener("changeValue", this.eventEmitter);
+  // }
+  eventEmitter = () => {};
   getValue(e) {
     this.setState({
       value: e.target.value,
     });
   }
-  onchange = (value) => {
+  onchange = () => {
+    const { value } = this.state;
     if (!value) {
       message.info("请输入关键词搜索");
       return;
@@ -39,7 +46,7 @@ class SearchNav extends React.PureComponent {
     return (
       <Search
         placeholder="热搜关键词"
-        onSearch={(value) => this.onchange(value)}
+        onSearch={() => this.onchange()}
         style={{ width: 550 }}
         onChange={(e) => {
           this.getValue(e);

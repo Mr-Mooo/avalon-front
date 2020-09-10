@@ -157,7 +157,7 @@ class Author extends React.PureComponent {
     };
     const addRes = await chaozan(options);
     if (addRes && addRes.success) {
-      message.success("点赞成功");
+      message.success("超赞成功");
       this.props.refush();
     }
   };

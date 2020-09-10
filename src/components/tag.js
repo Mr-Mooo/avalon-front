@@ -17,7 +17,7 @@ class Tag extends React.PureComponent {
     super(props);
     this.state = {
       data: [],
-      isSubscribe: false,
+      is_subscribe: false,
       page: 1,
     };
   }
@@ -74,8 +74,10 @@ class Tag extends React.PureComponent {
   getData = async (options = {}) => {
     const { data } = this.state;
     const res = await tagListApi(options);
+    console.log(res, "dadads");
     this.setState({
       data: [...data, ...res.list.rows],
+      is_subscribe: res.is_subscribe,
     });
   };
   refush = async () => {
@@ -86,30 +88,31 @@ class Tag extends React.PureComponent {
     const res = await tagListApi(options);
     this.setState({
       data: res.list.rows,
+      is_subscribe: res.is_subscribe,
     });
   };
   getSub = async () => {
     const { state } = this.props.location;
-    const { isSubscribe } = this.state;
+    const { is_subscribe } = this.state;
     const options = {
       tag_content: state.tag,
-      is_delete: !isSubscribe ? 0 : 1,
+      is_delete: !is_subscribe ? 0 : 1,
     };
     const res = await subscriptApi(options);
     if (res.code === 0) {
-      if (!isSubscribe) {
+      if (!is_subscribe) {
         message.success("订阅成功");
+        this.refush();
       } else {
         message.success("取消订阅");
+        this.refush();
       }
-      this.setState({
-        isSubscribe: !isSubscribe,
-      });
     }
   };
   render() {
     const { state } = this.props.location;
-    const { data, isSubscribe } = this.state;
+    const { data, is_subscribe } = this.state;
+    console.log(data, "data");
     return (
       <Layout>
         <Content className="mainwidth">
@@ -121,7 +124,7 @@ class Tag extends React.PureComponent {
               style={{ float: "right" }}
               onClick={() => this.getSub()}
             >
-              {!isSubscribe ? "订阅" : "已订阅"}
+              {is_subscribe ? "已订阅" : "订阅"}
             </Button>
           </Card>
           <Card style={{ minHeight: "calc(100vh - 400px)" }}>

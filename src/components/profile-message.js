@@ -14,7 +14,7 @@ import {
   Tabs,
   List,
 } from "antd";
-import { UserOutlined, MailOutlined } from "@ant-design/icons";
+import { UserOutlined, MailOutlined, BellTwoTone } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "../index.css";
 import { logoutApi, userApi } from "../services/user";
@@ -145,12 +145,12 @@ class ProfileMessage extends React.PureComponent {
       page: page + 1,
       type:
         key === "1"
-          ? "like"
+          ? "recommend"
           : key === "2"
           ? "comment"
           : key === "3"
-          ? "super_like"
-          : "recommend",
+          ? "like"
+          : "super_like",
     };
     const res = await noticelistApi(options);
     if (res) {
@@ -169,6 +169,7 @@ class ProfileMessage extends React.PureComponent {
   };
   render() {
     const { data, message, dataList } = this.state;
+    console.log(dataList, "dataList");
     return (
       <Popover
         content={
@@ -194,7 +195,7 @@ class ProfileMessage extends React.PureComponent {
                           to={{
                             pathname: "/user-home",
                             state: {
-                              id: item.user_id,
+                              id: item.operator_user_id,
                               name: "user-home",
                               // user: contentData.avl_user,
                             },
@@ -387,10 +388,9 @@ class ProfileMessage extends React.PureComponent {
                 verticalAlign: "center",
               }}
             >
-              <MailOutlined
+              <BellTwoTone
                 style={{
                   fontSize: "36px",
-                  color: "#1890ff",
                   verticalAlign: "baseline",
                 }}
               />

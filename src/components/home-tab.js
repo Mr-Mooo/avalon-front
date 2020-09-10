@@ -27,26 +27,31 @@ import _ from "lodash";
 const { TabPane } = Tabs;
 
 class HomeTab extends React.Component {
-  state = {
-    data: [],
-    userData: [],
-    loading: false,
-    hasMore: true,
-    count: 0,
-    page: 1,
-    key: "",
-    keyMesage: "",
-    keyValue: "",
-    isShow: false,
-    scrollData: 0,
-    selectKey: "",
-    options: {
-      type: "recommend",
-      limit: 10,
+  constructor(props) {
+    super(props);
+    // this.eventEmitter = this.eventEmitter.bind(this);
+    this.state = {
+      data: [],
+      userData: [],
+      loading: false,
+      hasMore: true,
+      count: 0,
       page: 1,
       key: "",
-    },
-  };
+      keyMesage: "",
+      keyValue: "",
+      isShow: false,
+      scrollData: 0,
+      selectKey: "",
+      options: {
+        type: "recommend",
+        limit: 10,
+        page: 1,
+        key: "",
+      },
+    };
+  }
+  // eventEmitter = () => {};
   callback = async (key) => {
     if (key === "3") {
       this.getSub();
@@ -208,6 +213,7 @@ class HomeTab extends React.Component {
     if (pathname === "/search") {
       this.getUserData();
       const that = this;
+      console.log("知道这里");
       this.eventEmitter = emitter.addListener(
         "changeMessage",
         async (message) => {
@@ -216,6 +222,7 @@ class HomeTab extends React.Component {
             limit: 10,
             page: 1,
           };
+          console.log(message, "message");
           const { selectKey } = that.state;
           this.get(message);
           localStorage.setItem("message", message);
@@ -280,10 +287,12 @@ class HomeTab extends React.Component {
   }, 500);
   componentWillUnmount() {
     window.removeEventListener("scroll", this.scrollHandler);
+    // emitter.removeListener(this.eventEmitter);
+    // emitter("removeListener", this.eventEmitter);
   }
   // componentWillUnmount() {
   //   // 卸载时移除事件
-  //   emitter.removeListener(this.eventEmitter);
+
   // }
   refush = async () => {
     const { options, keyValue, keyMesage, selectKey } = this.state;

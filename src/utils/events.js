@@ -1,3 +1,3 @@
 import { EventEmitter } from "events";
-
-export default new EventEmitter();
+class emitter extends EventEmitter {}
+export default new emitter();

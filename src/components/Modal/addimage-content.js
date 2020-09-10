@@ -84,6 +84,10 @@ class AddImageContent extends React.Component {
     });
     this.getDefaultData();
   }
+  // componentWillUnmount() {
+  //   // 卸载时移除事件
+  //   emitter.removeListener(this.eventEmitter);
+  // }
   getDefaultData = async () => {
     const res = await defaulttagApi();
     if (res) {

@@ -383,7 +383,7 @@ const PersonalProfile = (content) => {
   const mobile = sessionStorage.getItem("mobile");
   const email = sessionStorage.getItem("email");
   const nick_name = sessionStorage.getItem("nick_name");
-
+  console.log(data, email, "121231");
   return (
     <Form
       {...formItemLayout}
@@ -429,7 +429,7 @@ const PersonalProfile = (content) => {
       <Form.Item
         name="email"
         label="绑定邮箱"
-        initialValues={email}
+        initialValue={email}
         rules={[
           {
             required: true,
@@ -438,7 +438,7 @@ const PersonalProfile = (content) => {
           },
         ]}
       >
-        <Input />
+        <Input defaultValue={email} />
       </Form.Item>
 
       {/* <Form.Item name="academic-degree" label="最高学位">
@@ -459,7 +459,7 @@ const PersonalProfile = (content) => {
 
       <Form.Item
         name="introduction"
-        initialValues={data.user.introduce}
+        initialValue={data.user.introduce}
         rules={[
           {
             required: true,
