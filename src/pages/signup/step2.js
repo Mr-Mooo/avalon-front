@@ -352,24 +352,5 @@ class Step2 extends React.PureComponent {
     );
   }
 }
-// const QuestionForm = (func) => {
-//   const onFinish = values => {
-//     console.log(values);
-//     console.log(234567);
-//   };
-//   const props = func.props;
-//   console.log(props, 'this.ques props')
-
-// };
-
-// export default function Step2(props) {
-//   console.log(props, 'this.step2 props')
-//   // console.log(JSON.parse(sessionStorage.getItem('options')))
-//   return (
-//     {/* <Card title="答题验证">
-//       <QuestionForm props={props} />
-//     </Card> */}
-//   );
-// }
 
 export default withRouter(Step2);

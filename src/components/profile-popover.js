@@ -53,7 +53,6 @@ class ProfileHeader extends React.PureComponent {
     const userRes = await userApi({ user_id: user_id });
     localStorage.setItem("userInfo", JSON.stringify(userRes));
     if (userRes) {
-      console.log(userRes, "userRes");
       this.setState({
         data: userRes,
       });
@@ -76,7 +75,6 @@ class ProfileHeader extends React.PureComponent {
   };
   render() {
     const { data, fan } = this.state;
-    console.log("11111", data);
     return (
       <Popover
         content={

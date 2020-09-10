@@ -27,7 +27,6 @@ class AllHotAuthors extends React.PureComponent {
     } else {
       const res = await userSentimentListApi();
       if (res) {
-        console.log(res, "000000");
         this.setState({
           data: res.data.rows,
           count: res.data.count,

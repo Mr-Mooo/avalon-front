@@ -36,7 +36,6 @@ import emitter from "./utils/events.js";
 const { Header, Footer, Content } = Layout;
 // const { SubMenu } = Menu;
 function dashboard() {
-  console.log(11);
   emitter.emit("changeValue", "");
 }
 export default function Home() {

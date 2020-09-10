@@ -101,7 +101,6 @@ class ProfileMessage extends React.PureComponent {
     const userRes = await userApi({ user_id: user_id });
     localStorage.setItem("userInfo", JSON.stringify(userRes));
     if (userRes) {
-      console.log(userRes, "userRes");
       this.setState({
         data: userRes,
       });
@@ -116,7 +115,6 @@ class ProfileMessage extends React.PureComponent {
       count: 0,
     });
     this.noticeMessageList(key);
-    console.log(key);
   };
   internalnotice = async () => {
     const { key } = this.state;

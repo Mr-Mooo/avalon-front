@@ -190,7 +190,6 @@ class HomeTab extends React.Component {
     }
   };
   get = (message) => {
-    console.log(message, "4564");
     this.setState({
       keyMesage: message,
       data: [],
@@ -219,9 +218,7 @@ class HomeTab extends React.Component {
           };
           const { selectKey } = that.state;
           this.get(message);
-          console.log(message, "message");
           localStorage.setItem("message", message);
-          console.log(selectKey, "selectKey");
           if (selectKey === "3") {
             this.getSub();
           } else if (selectKey === "4") {
@@ -373,7 +370,6 @@ class HomeTab extends React.Component {
   };
   render() {
     const { data, isShow, userData } = this.state;
-    console.log(userData, "is");
     return (
       <Card className="margin-1">
         {isShow && (

@@ -10,7 +10,6 @@ export const loginApi = async (options) => {
     options,
     "POST"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -25,7 +24,6 @@ export const logoutApi = async (options) => {
     options,
     "POST"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -34,7 +32,6 @@ export const logoutApi = async (options) => {
 // 发送 otp
 export const sendOtpApi = async (options) => {
   const res = await myFetch(`${config.base_url}/send/notice`, options, "POST");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -43,7 +40,6 @@ export const sendOtpApi = async (options) => {
 // signUp
 export const signUpApi = async (options) => {
   const res = await myFetch(`${config.base_url}/user/create`, options, "POST");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }

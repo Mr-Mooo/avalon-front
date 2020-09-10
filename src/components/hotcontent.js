@@ -9,7 +9,6 @@ import { Link, withRouter } from "react-router-dom";
 import { userSentimentApi, contentSentimentApi } from "../services/content";
 const { TabPane } = Tabs;
 function callback(key) {
-  console.log(key);
 }
 class Hotcontent extends React.PureComponent {
   constructor(props) {
@@ -28,14 +27,12 @@ class Hotcontent extends React.PureComponent {
         this.setState({
           userData: res.data,
         });
-        console.log(res, "res");
       }
     } else {
       const options = {
         type: "both",
       };
       const res = await contentSentimentApi(options);
-      console.log(res, "dd");
       if (res) {
         this.setState({
           contentData: res.data,
@@ -65,7 +62,6 @@ class Hotcontent extends React.PureComponent {
   };
   render() {
     const { name, userData, contentData } = this.state;
-    console.log(contentData, "name");
     return (
       <Card className="margin-1 cardColor">
         <FireOutlined /> {name === "author" ? "用户人气榜单" : "内容人气榜单"}{" "}

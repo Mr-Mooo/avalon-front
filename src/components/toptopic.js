@@ -26,7 +26,6 @@ class Toptopic extends React.PureComponent {
   }
   render() {
     const { tagData } = this.state;
-    console.log(tagData, "ddd");
     return (
       <Card className="margin-1 cardColor">
         <ThunderboltOutlined /> 话题榜单 Top5

@@ -7,7 +7,6 @@ export const addContentApi = async (options) => {
     options,
     "POST"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -20,7 +19,6 @@ export const internalnoticeApi = async (options) => {
     options,
     "POST"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -33,7 +31,6 @@ export const readmessageApi = async (options) => {
     options,
     "POST"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -46,7 +43,6 @@ export const fansListApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -59,7 +55,6 @@ export const readfansApi = async (options) => {
     options,
     "POST"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -72,7 +67,6 @@ export const userMessageApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -85,7 +79,6 @@ export const noticeApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -98,7 +91,6 @@ export const noticelistApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -107,7 +99,6 @@ export const noticelistApi = async (options) => {
 // 推荐标签
 export const defaulttagApi = async (options) => {
   const res = await myFetch(`${config.base_url}/default/tag`, options, "GET");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -120,7 +111,6 @@ export const userFollowApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -133,7 +123,6 @@ export const topSentimentApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -142,7 +131,6 @@ export const topSentimentApi = async (options) => {
 // 话题人气榜单
 export const topSentimentListApi = async (options) => {
   const res = await myFetch(`${config.base_url}/tag/top/list`, options, "GET");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -151,7 +139,6 @@ export const topSentimentListApi = async (options) => {
 // 删除内容
 export const deteleContentlApi = async (options) => {
   const res = await myFetch(`${config.base_url}/content`, options, "DELETE");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -164,7 +151,6 @@ export const contentdetailApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -177,7 +163,6 @@ export const contentSentimentApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -190,7 +175,6 @@ export const contentSentimentListApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -203,7 +187,6 @@ export const userSentimentApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -212,7 +195,6 @@ export const userSentimentApi = async (options) => {
 // 用户人气榜单
 export const userSentimentListApi = async (options) => {
   const res = await myFetch(`${config.base_url}/user/top/list`, options, "GET");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -225,7 +207,6 @@ export const searchUserApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -238,7 +219,6 @@ export const homePageApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -248,7 +228,6 @@ export const homePageApi = async (options) => {
 //上传头像
 export const uploadavatartApi = async (options) => {
   const res = await myFetch(`${config.base_url}/user/avatar`, options, "PUT");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -261,7 +240,6 @@ export const updateDataApi = async (options) => {
     options,
     "PUT"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -274,7 +252,6 @@ export const collectionApi = async (options) => {
     options,
     "POST"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -284,7 +261,6 @@ export const collectionApi = async (options) => {
 // 订阅按钮
 export const subscriptApi = async (options) => {
   const res = await myFetch(`${config.base_url}/follow/tag`, options, "POST");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res;
   }
@@ -294,7 +270,6 @@ export const subscriptApi = async (options) => {
 // 我发布的动态
 export const mySetApi = async (options) => {
   const res = await myFetch(`${config.base_url}/content/user`, options, "GET");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -307,7 +282,6 @@ export const tagListApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -320,7 +294,6 @@ export const searchTagApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -333,7 +306,6 @@ export const mySubApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -347,7 +319,6 @@ export const searchMessageApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -357,7 +328,6 @@ export const searchMessageApi = async (options) => {
 // 获取动态数据
 export const contentListApi = async (options) => {
   const res = await myFetch(`${config.base_url}/content/list`, options, "GET");
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }
@@ -371,7 +341,6 @@ export const followListApi = async (options) => {
     options,
     "GET"
   );
-  // console.log(res, 'res');
   if (res && res.code === 0) {
     return res.data;
   }

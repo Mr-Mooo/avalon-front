@@ -66,12 +66,11 @@ function errTip(e, url) {
 }
 
 const myFetch = async (url, parmas = {}, type = "GET") => {
-  // console.log(url, 'urls')
   try {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     const headers = {};
     headers["Content-Type"] = "application/json";
-    headers['Authorization'] = `Bearer ${token}`;
+    headers["Authorization"] = `Bearer ${token}`;
     let res;
     let promise = {};
     switch (type) {

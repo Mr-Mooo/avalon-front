@@ -18,7 +18,6 @@ class Addarticle extends React.Component {
   };
 
   showModal = () => {
-    console.log(11111111);
     this.setState({
       visible: true,
     });
@@ -29,7 +28,6 @@ class Addarticle extends React.Component {
   };
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
@@ -78,7 +76,6 @@ class Addpic extends React.Component {
   };
 
   handleOk = (e) => {
-    console.log(e);
     window.location.reload();
     this.setState({
       visible: false,
@@ -86,7 +83,6 @@ class Addpic extends React.Component {
   };
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });

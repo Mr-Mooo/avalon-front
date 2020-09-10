@@ -15,7 +15,6 @@ class AllTopTopics extends React.PureComponent {
   }
   async componentDidMount() {
     const res = await topSentimentListApi();
-    console.log(res, "0");
     if (res) {
       this.setState({
         data: res.data.rows,

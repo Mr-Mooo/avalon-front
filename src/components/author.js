@@ -52,6 +52,8 @@ import AddImageContent from "./Modal/addimage-content";
 import emitter from "../utils/events.js";
 import grey from "../img/avalon(grey).png";
 import golden from "../img/avalon(golden).png";
+import Viewer from "react-viewer";
+import RcViewer from "@hanyk/rc-viewer";
 const { Option } = Select;
 const { TextArea, Search } = Input;
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
@@ -177,7 +179,6 @@ class Author extends React.PureComponent {
   };
 
   gogetComment = async (id) => {
-    console.log(id, "12");
     let options = {
       pid: 0,
       content_id: id,
@@ -291,7 +292,6 @@ class Author extends React.PureComponent {
 
   goComment = async (optionss) => {
     let options = { ...optionss };
-    console.log(options, "评论");
     const addRes = await goComment(options);
     if (addRes && addRes.success) {
       message.success("评论成功");
@@ -325,7 +325,6 @@ class Author extends React.PureComponent {
         content_id: content_id,
       };
       const res = await collectionApi(op);
-      console.log(res, "red");
       if (res.code === 0) {
         message.success("收藏成功");
       }
@@ -364,7 +363,6 @@ class Author extends React.PureComponent {
   };
   // 回复评论
   getSearch = async (value, item) => {
-    console.log(value, "123");
     const { contentId, replyId, userId, isShowReplay } = this.state;
     const options = {
       content: value,
@@ -386,7 +384,6 @@ class Author extends React.PureComponent {
   };
   //获取二级评论
   openReply = async (value) => {
-    console.log(value, "123");
     const options = {
       pid: value.comment_id,
       content_id: value.content_id,
@@ -396,11 +393,9 @@ class Author extends React.PureComponent {
       replayData: res.data.rows,
       isShowReplay: value,
     });
-    console.log(res, "12");
   };
   //跳转到tag页面
   goTag = (item) => {
-    console.log(111);
     this.props.history.push({ pathname: "/tag", state: { tag: item } });
   };
   // 获取input变化值
@@ -478,7 +473,7 @@ class Author extends React.PureComponent {
     const dataContent = contentData.content.replace(/\n/g, "</br>");
     const { state } = this.props.location;
     const { user } = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(localStorage.getItem("userInfo"), "sssss");
+    const options = {};
     return (
       <div style={{ width: "100%" }}>
         {!(id === contentData.content_id) && (
@@ -701,25 +696,32 @@ class Author extends React.PureComponent {
                       : "imgList"
                   }
                 >
-                  {contentData &&
-                    contentData.avl_attachments &&
-                    contentData.avl_attachments.map((val, index) => {
-                      return (
-                        <Zmage
-                          className="margin-author-img"
-                          src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
-                          set={srcData}
-                          onClick={() => this.getIndex(index)}
-                          style={{ width: 100, height: 100 }}
-                          defaultPage={imgIndex}
-                          key={val.document_id}
-                          hideOnScroll={false}
-                          edge={50}
-                          preset="desktop"
-                          backdrop="rgba(0,0,0,0.5)"
-                        />
-                      );
-                    })}
+                  <RcViewer options={options} ref="viewer">
+                    {contentData &&
+                      contentData.avl_attachments &&
+                      contentData.avl_attachments.map((val, index) => {
+                        return (
+                          // <Zmage
+                          //   className="margin-author-img"
+                          //   src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
+                          //   set={srcData}
+                          //   onClick={() => this.getIndex(index)}
+                          //   style={{ width: 100, height: 100 }}
+                          //   defaultPage={imgIndex}
+                          //   key={val.document_id}
+                          //   hideOnScroll={false}
+                          //   edge={50}
+                          //   preset="desktop"
+                          //   backdrop="rgba(0,0,0,0.5)"
+                          // />
+                          <img
+                            className="margin-author-img"
+                            style={{ width: 100, height: 100 }}
+                            src={`https://avl-dev.obs.cn-east-2.myhuaweicloud.com/${val.path}`}
+                          />
+                        );
+                      })}
+                  </RcViewer>
                 </div>
                 <br />
                 <div>

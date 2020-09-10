@@ -22,7 +22,7 @@ import {
 } from "../../services/content.js";
 import "antd/dist/antd.css";
 import "cropperjs/dist/cropper.css";
-
+import { defaultAvatar } from "../../utils/util";
 import Cropper from "react-cropper";
 
 function getBase64(file) {
@@ -248,7 +248,13 @@ class AvatarUpload extends React.Component {
     return (
       <div>
         <img
-          src={user.avatar && !imgprv ? user.avatar : imgprv}
+          src={
+            user.avatar && !imgprv
+              ? user.avatar
+              : imgprv
+              ? imgprv
+              : defaultAvatar
+          }
           style={{
             width: 100,
             height: 100,

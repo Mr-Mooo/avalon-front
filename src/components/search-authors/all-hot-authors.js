@@ -20,6 +20,7 @@ import {
 } from "@ant-design/icons";
 import { withRouter, Link } from "react-router-dom";
 import { guanzhu } from "../../services/content";
+import { defaultAvatar } from "../../utils/util";
 class SearchAuthors extends React.PureComponent {
   gocollect = async (id, is_recommend) => {
     let options = {
@@ -46,6 +47,7 @@ class SearchAuthors extends React.PureComponent {
           <Col className="align-center" span={6}>
             <Avatar
               className="margin-bt-sm"
+              src={contentData.avatar ? contentData.avatar : defaultAvatar}
               size={64}
               icon={<UserOutlined />}
             />

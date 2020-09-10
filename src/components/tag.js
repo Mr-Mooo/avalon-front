@@ -22,7 +22,6 @@ class Tag extends React.PureComponent {
     };
   }
   async componentWillReceiveProps(nextprops) {
-    console.log(nextprops, "nextprops");
     const { state } = this.props.location;
     if (nextprops.location.state.tag !== state.tag) {
       const options = {
@@ -46,7 +45,6 @@ class Tag extends React.PureComponent {
       page: 1,
       limit: 10,
     };
-    console.log(state, "state");
     this.getData(options);
     window.addEventListener("scroll", this.scrollHandler);
   }
