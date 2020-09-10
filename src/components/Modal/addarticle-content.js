@@ -226,7 +226,9 @@ class AddArticleContent extends PureComponent {
           >
             <Input placeholder="适当标题可增加阅读意向（16字内）" />
           </FormItem>
-          <h4>文章简介</h4>
+          <h4>
+            文章简介（*用于长文章展开前的内容简介与雷点预警。若不涉及相关内容可不填写）
+          </h4>
           <FormItem
             name="brief_introduction"
             rules={[{ required: false, message: " 内容不能为空" }]}
