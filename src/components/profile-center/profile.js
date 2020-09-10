@@ -258,7 +258,6 @@ class AvatarUpload extends React.Component {
           style={{
             width: 100,
             height: 100,
-            border: "1px solid gray",
             marginBottom: 30,
             objectFit: "cover",
           }}

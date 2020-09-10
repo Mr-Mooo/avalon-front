@@ -334,7 +334,11 @@ class Author extends React.PureComponent {
     this.setState({ visible1: true, content_id: id });
   };
   openMask = (value, id) => {
-    this.setState({ visible2: true, value2: value, openId: id });
+    if (!value) {
+      this.setState({ visible2: false, maskId: id });
+    } else {
+      this.setState({ visible2: true, value2: value, openId: id });
+    }
   };
   // 关闭文章详情弹窗
   handleOk2 = () => {
