@@ -211,38 +211,33 @@ class HomeTab extends React.Component {
       isShow: pathname !== "/search",
     });
     if (pathname === "/search") {
-      this.getUserData();
+      // this.getUserData();
       const that = this;
-      console.log("知道这里");
-      this.eventEmitter = emitter.addListener(
-        "changeMessage",
-        async (message) => {
-          let option = {
-            key: message,
-            limit: 10,
-            page: 1,
-          };
-          console.log(message, "message");
-          const { selectKey } = that.state;
-          this.get(message);
-          localStorage.setItem("message", message);
-          if (selectKey === "3") {
-            this.getSub();
-          } else if (selectKey === "4") {
-            this.getTopic();
-          } else if (selectKey === "6") {
-            this.getSearch(selectKey);
-          } else if (selectKey === "5") {
-            this.getSearch(selectKey);
-          } else {
-            this.getUserData();
-          }
-          this.setState({
-            keyMesage: message,
-            data: [],
-          });
+      emitter.addListener("changeMessage", (message) => {
+        let option = {
+          key: message,
+          limit: 10,
+          page: 1,
+        };
+        const { selectKey } = that.state;
+        this.get(message);
+        localStorage.setItem("message", message);
+        if (selectKey === "3") {
+          this.getSub();
+        } else if (selectKey === "4") {
+          this.getTopic();
+        } else if (selectKey === "6") {
+          this.getSearch(selectKey);
+        } else if (selectKey === "5") {
+          this.getSearch(selectKey);
+        } else {
+          this.getUserData();
         }
-      );
+        this.setState({
+          keyMesage: message,
+          data: [],
+        });
+      });
     }
     window.addEventListener("scroll", this.scrollHandler);
   }
@@ -287,7 +282,9 @@ class HomeTab extends React.Component {
   }, 500);
   componentWillUnmount() {
     window.removeEventListener("scroll", this.scrollHandler);
-    // emitter.removeListener(this.eventEmitter);
+    emitter.removeListener("changeMessage", () => {
+      localStorage.setItem("message", "");
+    });
     // emitter("removeListener", this.eventEmitter);
   }
   // componentWillUnmount() {

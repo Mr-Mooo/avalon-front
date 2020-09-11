@@ -38,7 +38,10 @@ class SearchNav extends React.PureComponent {
       message.info("请输入关键词搜索");
       return;
     }
-    emitter.emit("changeMessage", value);
+    setTimeout(() => {
+      emitter.emit("changeMessage", value);
+    }, 1000);
+
     this.props.history.push("/search");
   };
   render() {
