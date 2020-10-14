@@ -323,3 +323,29 @@ div#root {
 #zmageControl {
   background-color: #fff !important;
 }
+
+.fontBold {
+  font-weight: bold;
+}
+.fontgreen {
+  color: darkgreen;
+  font-weight: bold;
+}
+.fontred {
+  color: red;
+  font-weight: bold;
+}
+.headings {
+  font-weight: bold;
+  font-size: 18px;
+}
+.underline {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.fontTbale table td {
+  border-right: 1px solid #000 !important;
+}
+.fontTbale table th {
+  border-right: 1px solid #000 !important;
+}
