@@ -565,7 +565,12 @@ export default function Profile() {
   const email = sessionStorage.getItem("email");
   const nick_name = sessionStorage.getItem("nick_name");
   console.log(data, "data");
-  const message = {
+  function tabonChange(value) {
+    if (value !== "1") {
+      message.info("功能开发中，敬请期待！！！");
+    }
+  }
+  const message1 = {
     mobile,
     email,
     nick_name,
@@ -574,7 +579,7 @@ export default function Profile() {
   return (
     <Row className="mainwidth margin-1">
       <div>
-        <Tabs tabPosition="left">
+        <Tabs tabPosition="left" activeKey="1" onChange={tabonChange}>
           <TabPane tab="个人基本信息" key="1">
             <Card className="margin-1" title="基本信息">
               <Row style={{ position: "relative" }}>
@@ -593,14 +598,17 @@ export default function Profile() {
                   }}
                 ></div>
                 <Col span={18}>
-                  <PersonalProfile content={message} />
+                  <PersonalProfile content={message1} />
                 </Col>
               </Row>
             </Card>
           </TabPane>
-          {/* <TabPane tab="xxxxxxx" key="2">
+          <TabPane tab="实名认证" key="2">
             Content of Tab 2
-          </TabPane> */}
+          </TabPane>
+          <TabPane tab="我的徽章" key="3">
+            Content of Tab 2
+          </TabPane>
         </Tabs>
       </div>
     </Row>

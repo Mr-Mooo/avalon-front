@@ -235,7 +235,7 @@ class AddImageContent extends React.Component {
       tag_id.push(fieldsValue.tag3);
     }
     const options = {
-      subject: "测试",
+      subject: "分享图片",
       brief_introduction: fieldsValue.brief_introduction,
       type: "pictrue",
       attachment: imgUrl,

@@ -227,7 +227,7 @@ class AddArticleContent extends PureComponent {
             <Input placeholder="适当标题可增加阅读意向（16字内）" />
           </FormItem>
           <h4>
-            文章简介（*用于长文章展开前的内容简介与雷点预警。若不涉及相关内容可不填写）
+            阅前须知（*用于长文章展开前的内容简介与雷点预警。若不涉及相关内容可不填写）
           </h4>
           <FormItem
             name="brief_introduction"

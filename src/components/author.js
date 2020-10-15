@@ -1,10 +1,9 @@
 import React from "react";
-
+// eslint-disable-next-line jsx-a11y/anchor-is-valid
 import {
   Dropdown,
   Menu,
   List,
-  Card,
   Col,
   Row,
   Avatar,
@@ -12,7 +11,6 @@ import {
   Popover,
   Divider,
   Button,
-  Tooltip,
   message,
   Modal,
   Comment,
@@ -45,7 +43,6 @@ import {
   SmileOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import Zmage from "react-zmage";
 import { Link, withRouter } from "react-router-dom";
 import { defaultAvatar } from "../utils/util";
 import AddImageContent from "./Modal/addimage-content";
@@ -434,6 +431,7 @@ class Author extends React.PureComponent {
       imgIndex: index,
     });
   };
+
   render() {
     const {
       comments,
@@ -478,6 +476,7 @@ class Author extends React.PureComponent {
     const { state } = this.props.location;
     const { user } = JSON.parse(localStorage.getItem("userInfo"));
     const options = {};
+
     return (
       <div style={{ width: "100%" }}>
         {!(id === contentData.content_id) && (
@@ -616,13 +615,21 @@ class Author extends React.PureComponent {
                           )}
                           {user.user_id !== contentData.create_user && (
                             <Menu.Item key="3">
-                              <a
-                                onClick={() =>
-                                  this.handleChange1(contentData.content_id, 3)
-                                }
-                              >
-                                收藏
-                              </a>
+                              {this.props.location.pathname === "/user" ? (
+                                <a>取消收藏</a>
+                              ) : (
+                                // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                                <a
+                                  onClick={() =>
+                                    this.handleChange1(
+                                      contentData.content_id,
+                                      3
+                                    )
+                                  }
+                                >
+                                  收藏
+                                </a>
+                              )}
                             </Menu.Item>
                           )}
                           {/* {user.user_id === contentData.create_user && (
@@ -993,7 +1000,7 @@ class Author extends React.PureComponent {
               )}
             </Modal>
             <Modal
-              title="内容详情"
+              title="阅前须知"
               visible={this.state.visible2}
               cancelText="取消"
               okText="确定"
