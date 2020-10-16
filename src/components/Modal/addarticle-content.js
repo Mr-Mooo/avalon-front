@@ -13,6 +13,7 @@ import {
   Tag,
   Row,
   Col,
+  Button,
 } from "antd";
 import FormItem from "antd/lib/form/FormItem";
 import { addContentApi, defaulttagApi } from "../../services/content";
@@ -38,6 +39,7 @@ class AddArticleContent extends PureComponent {
       inputValue: "",
       tagData: [],
       checkedValue: [],
+      defaultTagData: [],
     };
   }
   componentDidMount() {
@@ -48,6 +50,7 @@ class AddArticleContent extends PureComponent {
     if (res) {
       this.setState({
         tagData: res.data,
+        defaultTagData: res.data,
       });
     }
   };
@@ -176,15 +179,43 @@ class AddArticleContent extends PureComponent {
   };
   handleClose = (e) => {
     const tags = this.state.tags.filter((tag) => tag !== e);
+    const { defaultTagData } = this.state;
+    const isData = defaultTagData.some((res) => {
+      if (res.content !== e) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    if (isData) {
+      this.setState({
+        tagData: [...this.state.tagData, { content: e }],
+      });
+    }
     this.setState({
       tags: tags,
       checkedValue: tags,
     });
   };
+  getButtonValue(checkedValues) {
+    const { tags, tagData } = this.state;
+    if (tags.indexOf(checkedValues) > -1) {
+      return;
+    }
+    const data = [...tags, checkedValues];
+    const filterTag = tagData.filter((res) => {
+      return checkedValues !== res.content;
+    });
+    this.setState({
+      tags: data,
+      tagData: filterTag,
+    });
+  }
   onCancel = () => {
     this.formRef.current.resetFields();
     this.setState({
       tags: [],
+      tagData: this.state.defaultTagData,
     });
     this.props.onCancel();
   };
@@ -278,70 +309,74 @@ class AddArticleContent extends PureComponent {
               <Option value="二创">二创</Option>
             </Select>
           </FormItem>
-          <h4>推荐标签</h4>
           <FormItem name="tag4">
-            {/* <Checkbox.Group
-              style={{ width: "100%" }}
-              onChange={(checkedValues) => this.getcheckValue(checkedValues)}
-            > */}
+            <h4>添加标签</h4>
+            <div>
+              <div style={{ marginBottom: 16 }}>
+                <TweenOneGroup
+                  enter={{
+                    scale: 0.8,
+                    opacity: 0,
+                    type: "from",
+                    duration: 100,
+                    onComplete: (e) => {
+                      e.target.style = "";
+                    },
+                  }}
+                  leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                  appear={false}
+                >
+                  {tagChild}
+                </TweenOneGroup>
+              </div>
+              {inputVisible && (
+                <Input
+                  ref={this.saveInputRef}
+                  type="text"
+                  size="small"
+                  style={{ width: 78 }}
+                  value={inputValue}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputConfirm}
+                  onPressEnter={this.handleInputConfirm}
+                />
+              )}
+              {!inputVisible && (
+                <Tag
+                  onClick={this.showInput}
+                  onClose={(e) => this.handleClose(e)}
+                  className="site-tag-plus"
+                >
+                  <PlusOutlined /> 添加标签
+                </Tag>
+              )}
+            </div>
+            <h4 style={{ marginTop: "20px" }}>推荐标签</h4>
             <Row>
-              {tagData.map((item) => {
+              {tagData.map((item, index) => {
                 return (
-                  <Col span={8} key={item.tag_id}>
-                    <Checkbox
-                      checked={checkedValue.indexOf(item.content) > -1}
-                      onChange={() => this.getcheckValue(item.content)}
-                      value={item.content}
+                  <div key={index}>
+                    {/* <Col span={8} > */}
+                    {/* <Checkbox
+                        value={item.content}
+                        checked={checkedValue.indexOf(item.content) > -1}
+                        onChange={() => this.getcheckValue(item.content)}
+                      >
+                        {item.content}
+                      </Checkbox> */}
+                    <Button
+                      type="primary"
+                      style={{ marginRight: "10px", marginBottom: "10px" }}
+                      onClick={() => this.getButtonValue(item.content)}
                     >
                       {item.content}
-                    </Checkbox>
-                  </Col>
+                    </Button>
+                    {/* </Col> */}
+                  </div>
                 );
               })}
             </Row>
-            {/* </Checkbox.Group> */}
           </FormItem>
-          <h4>添加标签</h4>
-          <div>
-            <div style={{ marginBottom: 16 }}>
-              <TweenOneGroup
-                enter={{
-                  scale: 0.8,
-                  opacity: 0,
-                  type: "from",
-                  duration: 100,
-                  onComplete: (e) => {
-                    e.target.style = "";
-                  },
-                }}
-                leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
-                appear={false}
-              >
-                {tagChild}
-              </TweenOneGroup>
-            </div>
-            {inputVisible && (
-              <Input
-                ref={this.saveInputRef}
-                type="text"
-                size="small"
-                style={{ width: 78 }}
-                value={inputValue}
-                onChange={this.handleInputChange}
-                onBlur={this.handleInputConfirm}
-                onPressEnter={this.handleInputConfirm}
-              />
-            )}
-            {!inputVisible && (
-              <Tag
-                onClick={this.showInput}
-                onClose={(e) => this.handleClose(e)}
-                className="site-tag-plus"
-              >
-                <PlusOutlined /> 添加标签
-              </Tag>
-            )}
-          </div>
           {/*   
         <h4>类型</h4>
         <Checkbox onChange={this.onChange}>CP</Checkbox>

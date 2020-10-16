@@ -60,6 +60,7 @@ class AddImageContent extends React.Component {
       messageImage: "",
       tagData: [],
       checkedValue: [],
+      defaultTagData: [],
     };
   }
   componentDidMount() {
@@ -93,6 +94,7 @@ class AddImageContent extends React.Component {
     if (res) {
       this.setState({
         tagData: res.data,
+        defaultTagData: res.data,
       });
       console.log(res, "123");
     }
@@ -157,11 +159,6 @@ class AddImageContent extends React.Component {
   handleChange = async ({ file, fileList }) => {
     this.setState({ fileList });
   };
-  handleClose = (removedTag) => {
-    const tags = this.state.tags.filter((tag) => tag !== removedTag);
-    this.setState({ tags });
-  };
-
   showInput = () => {
     this.setState({ inputVisible: true }, () => this.input.focus());
   };
@@ -198,6 +195,7 @@ class AddImageContent extends React.Component {
       imgUrl: [],
       fileList: [],
       message: "",
+      tagData: this.state.defaultTagData,
     });
     this.formRef.current.resetFields();
     this.props.onCancel();
@@ -276,11 +274,38 @@ class AddImageContent extends React.Component {
   };
   handleClose = (e) => {
     const tags = this.state.tags.filter((tag) => tag !== e);
+    const { defaultTagData } = this.state;
+    const isData = defaultTagData.some((res) => {
+      if (res.content !== e) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    if (isData) {
+      this.setState({
+        tagData: [...this.state.tagData, { content: e }],
+      });
+    }
     this.setState({
       tags: tags,
       checkedValue: tags,
     });
   };
+  getButtonValue(checkedValues) {
+    const { tags, tagData } = this.state;
+    if (tags.indexOf(checkedValues) > -1) {
+      return;
+    }
+    const data = [...tags, checkedValues];
+    const filterTag = tagData.filter((res) => {
+      return checkedValues !== res.content;
+    });
+    this.setState({
+      tags: data,
+      tagData: filterTag,
+    });
+  }
   forMap = (tag) => {
     const tagElem = (
       <Tag
@@ -333,7 +358,7 @@ class AddImageContent extends React.Component {
         onCancel={this.onCancel}
       >
         <div className="margin-1">
-          <h4>图片配文</h4>
+          <h4>分享图片</h4>
           <Form
             className="mb-16"
             ref={this.formRef}
@@ -443,94 +468,78 @@ class AddImageContent extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <h4>推荐标签</h4>
             <FormItem name="tag4">
-              {/* <Checkbox.Group
-                style={{ width: "100%" }}
-                value={checkedValue}
-                
-              > */}
+              <h4>添加标签</h4>
+              {!messageImage && (
+                <div>
+                  <div style={{ marginBottom: 16 }}>
+                    <TweenOneGroup
+                      enter={{
+                        scale: 0.8,
+                        opacity: 0,
+                        type: "from",
+                        duration: 100,
+                        onComplete: (e) => {
+                          e.target.style = "";
+                        },
+                      }}
+                      leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                      appear={false}
+                    >
+                      {tagChild}
+                    </TweenOneGroup>
+                  </div>
+                  {inputVisible && (
+                    <Input
+                      ref={this.saveInputRef}
+                      type="text"
+                      size="small"
+                      style={{ width: 78 }}
+                      value={inputValue}
+                      onChange={this.handleInputChange}
+                      onBlur={this.handleInputConfirm}
+                      onPressEnter={this.handleInputConfirm}
+                    />
+                  )}
+                  {!inputVisible && (
+                    <Tag
+                      onClick={this.showInput}
+                      onClose={(e) => this.handleClose(e)}
+                      className="site-tag-plus"
+                    >
+                      <PlusOutlined /> 添加标签
+                    </Tag>
+                  )}
+                </div>
+              )}
+              <h4 style={{ marginTop: "20px" }}>推荐标签</h4>
               <Row>
-                {tagData.map((item) => {
+                {tagData.map((item, index) => {
                   return (
-                    <Col span={8} key={item.tag_id}>
-                      <Checkbox
+                    <div key={index}>
+                      {/* <Col span={8} > */}
+                      {/* <Checkbox
                         value={item.content}
                         checked={checkedValue.indexOf(item.content) > -1}
                         onChange={() => this.getcheckValue(item.content)}
                       >
                         {item.content}
-                      </Checkbox>
-                    </Col>
+                      </Checkbox> */}
+                      <Button
+                        type="primary"
+                        style={{ marginRight: "10px", marginBottom: "10px" }}
+                        onClick={() => this.getButtonValue(item.content)}
+                      >
+                        {item.content}
+                      </Button>
+                      {/* </Col> */}
+                    </div>
                   );
                 })}
               </Row>
-              {/* </Checkbox.Group> */}
-
-              {/* {messageImage ? (
-                <Select style={{ width: 120 }} disabled>
-                  <Option value="BL">BL</Option>
-                  <Option value="BG">BG</Option>
-                  <Option value="GL">GL</Option>
-                  <Option value="无取向">无取向</Option>
-                </Select>
-              ) : (
-                <Select style={{ width: 120 }}>
-                  {tagData.map((item) => {
-                    return (
-                      <Option value={item.content} key={item.tag_id}>
-                        {item.content}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              )} */}
             </FormItem>
           </Form>
-          {/* <PicturesWall /> */}
-          <h4>添加标签</h4>
-          {!messageImage && (
-            <div>
-              <div style={{ marginBottom: 16 }}>
-                <TweenOneGroup
-                  enter={{
-                    scale: 0.8,
-                    opacity: 0,
-                    type: "from",
-                    duration: 100,
-                    onComplete: (e) => {
-                      e.target.style = "";
-                    },
-                  }}
-                  leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
-                  appear={false}
-                >
-                  {tagChild}
-                </TweenOneGroup>
-              </div>
-              {inputVisible && (
-                <Input
-                  ref={this.saveInputRef}
-                  type="text"
-                  size="small"
-                  style={{ width: 78 }}
-                  value={inputValue}
-                  onChange={this.handleInputChange}
-                  onBlur={this.handleInputConfirm}
-                  onPressEnter={this.handleInputConfirm}
-                />
-              )}
-              {!inputVisible && (
-                <Tag
-                  onClick={this.showInput}
-                  onClose={(e) => this.handleClose(e)}
-                  className="site-tag-plus"
-                >
-                  <PlusOutlined /> 添加标签
-                </Tag>
-              )}
-            </div>
-          )}
+
           {/* <h4>非必选标签</h4>
           <HotTagsNonMandatory />
           <h4>权限设置</h4>
