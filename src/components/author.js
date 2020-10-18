@@ -563,6 +563,16 @@ class Author extends React.PureComponent {
                       </div>
                     }
                   >
+                    <Link
+                          to={{
+                            pathname: "/user-home",
+                            state: {
+                              id: contentData.avl_user.user_id,
+                              name: "user-home",
+                              user: contentData.avl_user,
+                            },
+                          }}
+                        >
                     <Avatar
                       className="margin-bt-sm"
                       style={{ textAlign: "center" }}
@@ -574,6 +584,7 @@ class Author extends React.PureComponent {
                       }
                       icon={<UserOutlined />}
                     />
+                     </Link>
                   </Popover>
                   <br />
                   {contentData &&
@@ -889,7 +900,15 @@ class Author extends React.PureComponent {
                                 icon={<UserOutlined />}
                               />
                             }
-                            title={item.nick_name}
+                            title={ <Link
+                              to={{
+                                pathname: "/user-home",
+                                state: {
+                                  id: item.create_user,
+                                  name: "user-home",
+                                },
+                              }}
+                            >{item.create_user_name}</Link>}
                             description={item.content}
                             onClick={() =>
                               this.setComment(item.pid, item.ref_id)

@@ -75,6 +75,7 @@ class ProfileHeader extends React.PureComponent {
   };
   render() {
     const { data, fan } = this.state;
+    console.log(data,'datadata')
     return (
       <Popover
         content={
@@ -98,8 +99,18 @@ class ProfileHeader extends React.PureComponent {
             <Divider />
             <Row className="align-center">
               <Col span={8}>
-                {" "}
-                <h3>关注 {data.user && data.user.follow_count}</h3>
+                {data.user && data.user.follow_count>0?
+                  <Link
+                  to={{
+                    pathname: "/popover-sentiment",
+                    state: {type:"follow" },
+                  }}
+                  >
+                     <h3 className="buttonHover">关注 {data.user && data.user.follow_count}</h3>
+                  </Link>
+                :<h3 className="buttonHover">关注 {data.user && data.user.follow_count}</h3>
+                }
+                
               </Col>
 
               <Col span={8} style={{ position: "relative" }}>
@@ -111,16 +122,28 @@ class ProfileHeader extends React.PureComponent {
                     }}
                   >
                     <div onClick={() => this.readFans()}>
-                      <h3>粉丝 {data.user && data.user.be_follow_count}</h3>
+                      <h3 className="buttonHover">粉丝 {data.user && data.user.be_follow_count}</h3>
                       {fan > 0 && <Badge count={fan} offset={[30, -60]} />}
                     </div>
                   </Link>
                 ) : (
-                  <h3>粉丝 {data.user && data.user.be_follow_count}</h3>
+                  <h3 className="buttonHover">粉丝 {data.user && data.user.be_follow_count}</h3>
                 )}
               </Col>
               <Col span={8}>
-                <h3>投稿 {data.user && data.user.content_count}</h3>
+                {
+                  data.user && data.user.content_count>0?
+                  <Link
+                  to={{
+                    pathname: "/popover-sentiment",
+                    state: {type:"sub" },
+                  }}
+                  >
+                      <h3 className="buttonHover">订阅 {data.user && data.user.content_count}</h3>
+                  </Link>
+                : <h3 className="buttonHover">订阅 {data.user && data.user.content_count}</h3>
+                }
+               
               </Col>
             </Row>
             <Link to="/profile">

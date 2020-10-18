@@ -94,6 +94,16 @@ class AllFAnAuthors extends React.PureComponent {
             <Card className="margin-1" key={index}>
               <Row>
                 <Col className="align-center" span={6}>
+                <Link
+                    to={{
+                      pathname: "/user-home",
+                      state: {
+                        id: item.avl_user.user_id,
+                        name: "user-home",
+                        user: item,
+                      },
+                    }}
+                  >
                   <Avatar
                     className="margin-bt-sm"
                     src={
@@ -104,6 +114,7 @@ class AllFAnAuthors extends React.PureComponent {
                     size={64}
                     icon={<UserOutlined />}
                   />
+                   </Link>
                   <br /> {item.avl_user.nick_name} <br />
                   <br />
                   <Button

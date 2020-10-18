@@ -349,3 +349,8 @@ div#root {
 .fontTbale table th {
   border-right: 1px solid #000 !important;
 }
+.buttonHover:hover {
+  background-color: #1890ff;
+  color: #fff;
+  cursor: pointer;
+}

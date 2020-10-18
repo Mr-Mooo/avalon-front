@@ -46,6 +46,7 @@ import Toptopic from "./toptopic";
 import HomeTab from "./home-tab";
 import HomeShoppingTab from "./home-shopping-tab";
 import SearchAuthors from "../components/search-authors/all-hot-authors";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 const { TabPane } = Tabs;
 const { Search } = Input;
@@ -388,7 +389,15 @@ class ContentDetail extends React.Component {
                                 icon={<UserOutlined />}
                               />
                             }
-                            title={item.nick_name}
+                            title={<Link
+                              to={{
+                                pathname: "/user-home",
+                                state: {
+                                  id: item.create_user,
+                                  name: "user-home",
+                                },
+                              }}
+                            >{item.create_user_name}</Link>}
                             description={item.content}
                             onClick={() =>
                               this.setComment(item.pid, item.ref_id)
